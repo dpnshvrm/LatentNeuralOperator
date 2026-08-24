@@ -1,0 +1,39 @@
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/dverma/LatentNeuralOperator/LNO-PyTorch/ForwardProblem/exp.py", line 357, in <module>
+[rank0]:     config = Configuration(config_file)
+[rank0]:   File "/home/dverma/LatentNeuralOperator/LNO-PyTorch/ForwardProblem/module/utils.py", line 78, in __init__
+[rank0]:     self.load(path)
+[rank0]:   File "/home/dverma/LatentNeuralOperator/LNO-PyTorch/ForwardProblem/module/utils.py", line 90, in load
+[rank0]:     with open(path) as file:
+[rank0]: FileNotFoundError: [Errno 2] No such file or directory: './configs/LTO_Darcy_resaug_normalized_dilated.jsonc'
+[rank0]:[W823 21:50:46.590973629 ProcessGroupNCCL.cpp:1538] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+E0823 21:50:46.985535 983604 site-packages/torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: 1) local_rank: 0 (pid: 983636) of binary: /scratch/dverma/lno-conda/bin/python3.9
+Traceback (most recent call last):
+  File "/scratch/dverma/lno-conda/bin/torchrun", line 6, in <module>
+    sys.exit(main())
+  File "/scratch/dverma/lno-conda/lib/python3.9/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 357, in wrapper
+    return f(*args, **kwargs)
+  File "/scratch/dverma/lno-conda/lib/python3.9/site-packages/torch/distributed/run.py", line 901, in main
+    run(args)
+  File "/scratch/dverma/lno-conda/lib/python3.9/site-packages/torch/distributed/run.py", line 892, in run
+    elastic_launch(
+  File "/scratch/dverma/lno-conda/lib/python3.9/site-packages/torch/distributed/launcher/api.py", line 143, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/scratch/dverma/lno-conda/lib/python3.9/site-packages/torch/distributed/launcher/api.py", line 277, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+exp.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-08-23_21:50:46
+  host      : nodeai09.palmetto.clemson.edu
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 983636)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

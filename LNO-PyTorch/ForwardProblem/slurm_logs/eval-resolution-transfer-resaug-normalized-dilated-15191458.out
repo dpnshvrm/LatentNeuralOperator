@@ -1,0 +1,6 @@
+Skipping r85 (already exists)
+Skipping r106 (already exists)
+Skipping r141 (already exists)
+Skipping r421 (already exists)
+LNO checkpoint: epoch 350 (./experiments/LNO_Darcy/checkpoint/350.pt)
+LTO checkpoint: epoch 500 (./experiments/LTO_Darcy_resaug_normalized_dilated/checkpoint/500.pt)

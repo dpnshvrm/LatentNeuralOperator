@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/dverma/LatentNeuralOperator/LNO-PyTorch/ForwardProblem/evaluate_resolution_transfer.py", line 143, in <module>
+    lto_model.load_state_dict(strip_module_prefix(torch.load(lto_ckpt, map_location=DEVICE)))
+  File "/scratch/dverma/lno-conda/lib/python3.9/site-packages/torch/nn/modules/module.py", line 2624, in load_state_dict
+    raise RuntimeError(
+RuntimeError: Error(s) in loading state_dict for ConvCNP_LTO:
+	Missing key(s) in state_dict: "operator.conv_mid.weight", "operator.conv_mid.bias". 
+	Unexpected key(s) in state_dict: "operator.dilated_convs.0.weight", "operator.dilated_convs.0.bias", "operator.dilated_convs.1.weight", "operator.dilated_convs.1.bias", "operator.dilated_convs.2.weight", "operator.dilated_convs.2.bias", "operator.dilated_convs.3.weight", "operator.dilated_convs.3.bias", "operator.dilated_convs.4.weight", "operator.dilated_convs.4.bias". 

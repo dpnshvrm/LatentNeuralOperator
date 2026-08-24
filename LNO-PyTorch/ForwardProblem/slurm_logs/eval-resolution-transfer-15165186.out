@@ -1,0 +1,15 @@
+Skipping r85 (already exists)
+Skipping r106 (already exists)
+Skipping r141 (already exists)
+Skipping r421 (already exists)
+LNO checkpoint: epoch 350 (./experiments/LNO_Darcy/checkpoint/350.pt)
+LTO checkpoint: epoch 50 (./experiments/LTO_Darcy/checkpoint/50.pt)
+
+Parameter counts: LNO = 762,113   LTO = 29,139
+
+       Res       LNO rL2       LTO rL2
+        85       0.01215       0.32865
+       106       0.01044       0.28331
+       141       0.00898       0.23670
+       211       0.00815       0.21337
+       421       0.00853       0.92772

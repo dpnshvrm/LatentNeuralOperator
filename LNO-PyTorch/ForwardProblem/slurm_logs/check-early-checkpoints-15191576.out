@@ -1,0 +1,55 @@
+Skipping r85 (already exists)
+Skipping r106 (already exists)
+Skipping r141 (already exists)
+Skipping r421 (already exists)
+=== LTO_Darcy_resaug_normalized_dilated, epoch 50 ===
+LNO checkpoint: epoch 350 (./experiments/LNO_Darcy/checkpoint/350.pt)
+LTO checkpoint: epoch 50 (./experiments/LTO_Darcy_resaug_normalized_dilated/checkpoint/50.pt)
+
+Parameter counts: LNO = 762,113   LTO = 66,131
+
+       Res       LNO rL2       LTO rL2
+        85       0.01215       0.20845
+       106       0.01044       0.20484
+       141       0.00898       0.20198
+       211       0.00815       0.20465
+       421       0.00853       0.49573
+
+=== LTO_Darcy_resaug_normalized_dilated, epoch 100 ===
+LNO checkpoint: epoch 350 (./experiments/LNO_Darcy/checkpoint/350.pt)
+LTO checkpoint: epoch 100 (./experiments/LTO_Darcy_resaug_normalized_dilated/checkpoint/100.pt)
+
+Parameter counts: LNO = 762,113   LTO = 66,131
+
+       Res       LNO rL2       LTO rL2
+        85       0.01215       0.21333
+       106       0.01044       0.21351
+       141       0.00898       0.21248
+       211       0.00815       0.20938
+       421       0.00853       0.29375
+
+=== LTO_Darcy_bigcap_resaug, epoch 50 ===
+LNO checkpoint: epoch 350 (./experiments/LNO_Darcy/checkpoint/350.pt)
+LTO checkpoint: epoch 50 (./experiments/LTO_Darcy_bigcap_resaug/checkpoint/50.pt)
+
+Parameter counts: LNO = 762,113   LTO = 255,603
+
+       Res       LNO rL2       LTO rL2
+        85       0.01215       0.21137
+       106       0.01044       0.20271
+       141       0.00898       0.20251
+       211       0.00815       0.21742
+       421       0.00853       0.93334
+
+=== LTO_Darcy_bigcap_resaug, epoch 100 ===
+LNO checkpoint: epoch 350 (./experiments/LNO_Darcy/checkpoint/350.pt)
+LTO checkpoint: epoch 100 (./experiments/LTO_Darcy_bigcap_resaug/checkpoint/100.pt)
+
+Parameter counts: LNO = 762,113   LTO = 255,603
+
+       Res       LNO rL2       LTO rL2
+        85       0.01215       0.15097
+       106       0.01044       0.14872
+       141       0.00898       0.14634
+       211       0.00815       0.14638
+       421       0.00853       0.63928
