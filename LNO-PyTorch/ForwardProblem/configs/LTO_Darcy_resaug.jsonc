@@ -1,0 +1,60 @@
+{
+    "data": {
+        "name": "Darcy",
+        "train_batch_size" : 4,
+        "val_batch_size": 4
+    },
+    "model": {
+        "name": "LTO_ConvCNP",
+        // grid_size is the LATENT grid resolution, independent of the
+        // data's own 211x211 resolution -- see module/convcnp_lto.py's
+        // memory note before changing this.
+        "grid_size": 64,
+        "hidden_channels": 16,
+        "latent_channels": 8,
+        "flow_hidden": 32,
+        "decoder_hidden": 64,
+        "init_length_scale": 0.1,
+        // raw vs. normalized encoder channel -- the open ablation from
+        // the paper's Corollary A.2. Run this config once as-is, then
+        // again with "normalized" for the comparison.
+        "channel_mode": "raw",
+        // Context-size augmentation -- the fix for the resolution-transfer
+        // collapse found on the original LTO_Darcy run (rL2 18.95 at
+        // res=85 vs 0.108 at native 211, after 500 epochs of always
+        // encoding the full dense 211x211 grid as context). Confirmed on
+        // the PDEBench Advection track first (see
+        // claude/convcnp-lno-integration-plan.md); this is the same fix
+        // ported to the Darcy/LNO-harness side. Every TRAINING batch
+        // (validation stays dense) samples a random context fraction
+        // Uniform(context_frac_min, context_frac_max) instead of always
+        // using the full 211x211=44521 points. 0.05 corresponds to
+        // ~2226 points, below the sparsest resolution (85x85=7225) the
+        // resolution-transfer eval tests. See module/convcnp_lto.py's
+        // docstring for the mechanism.
+        "context_frac_min": 0.05,
+        "context_frac_max": 1.0
+    },
+    "loss": {
+        "name": "rL2"
+    },
+    "optimizer": {
+        "name": "AdamW",
+        "lr": 1e-3,
+        "weight_decay": 0.00005,
+        "beta0": 0.9,
+        "beta1": 0.99
+    },
+    "scheduler": {
+        "name": "OneCycle",
+        "div_factor": 1e4,
+        "final_div_factor": 1e4,
+        "pct_start": 0.2
+    },
+    "train":{
+        "epoch": 500,
+        "log_print_interval_epoch": 1,
+        "model_save_interval_epoch": 50,
+        "grad_clip": 1000.0
+    }
+}

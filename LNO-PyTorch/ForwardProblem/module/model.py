@@ -2,6 +2,7 @@ import torch
 import math
 from einops import rearrange
 from module.addition import NystromAttention
+from module.convcnp_lto import ConvCNP_LTO
 
 
 def Attention_Vanilla(q, k, v):

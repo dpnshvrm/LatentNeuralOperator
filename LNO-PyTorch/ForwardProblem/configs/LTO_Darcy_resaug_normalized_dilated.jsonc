@@ -1,0 +1,71 @@
+{
+    "data": {
+        "name": "Darcy",
+        "train_batch_size" : 4,
+        "val_batch_size": 4
+    },
+    "model": {
+        "name": "LTO_ConvCNP",
+        // grid_size is the LATENT grid resolution, independent of the
+        // data's own 211x211 resolution -- see module/convcnp_lto.py's
+        // memory note before changing this.
+        "grid_size": 64,
+        "hidden_channels": 16,
+        "latent_channels": 8,
+        "flow_hidden": 32,
+        "decoder_hidden": 64,
+        "init_length_scale": 0.1,
+        // Identical to LTO_Darcy_resaug_normalized except for use_dilated
+        // below. "normalized" already confirmed a real, free win over
+        // "raw" (8-14% lower error, same param count) -- kept here as the
+        // new baseline this experiment builds on top of.
+        "channel_mode": "normalized",
+        // Context-size augmentation -- unchanged, same as every resaug*
+        // config.
+        "context_frac_min": 0.05,
+        "context_frac_max": 1.0,
+        // NEW: replaces CNNLatentOperator's 3-layer plain-conv stack
+        // (7x7 receptive field on the 64x64 latent grid, regardless of
+        // channel width) with a dilated stack (dilations 2,4,8,16,32)
+        // whose receptive field covers the FULL 64x64 grid. Motivated by
+        // a diagnosed bottleneck, not blind capacity scaling: Darcy is a
+        // steady elliptic PDE (globally-supported solution operator --
+        // depends on the coefficient field everywhere, not just nearby),
+        // and a 7x7-local CNN cannot represent that regardless of width,
+        // which is the likely reason LTO_Darcy_bigcap_resaug's channel-
+        // width increase made accuracy WORSE, not better (more numbers
+        // inside the same too-small window). Adds ~37K params on top of
+        // LTO_Darcy_resaug_normalized's 29,139 (66,131 total, confirmed
+        // locally before shipping) -- still ~11.5x fewer than LNO's
+        // 762,113, and far below bigcap_resaug's 255,603 that already
+        // failed. See CNNLatentOperator's docstring in
+        // module/convcnp_lto.py and claude/convcnp-lno-integration-plan.md
+        // for the full receptive-field reasoning and local validation
+        // (confirmed: non-dilated perturbation spread = 5x5 cells,
+        // dilated = full 64x64, both zero-init-identity at init, finite
+        // gradients across 10 training steps).
+        "use_dilated": true
+    },
+    "loss": {
+        "name": "rL2"
+    },
+    "optimizer": {
+        "name": "AdamW",
+        "lr": 1e-3,
+        "weight_decay": 0.00005,
+        "beta0": 0.9,
+        "beta1": 0.99
+    },
+    "scheduler": {
+        "name": "OneCycle",
+        "div_factor": 1e4,
+        "final_div_factor": 1e4,
+        "pct_start": 0.2
+    },
+    "train":{
+        "epoch": 500,
+        "log_print_interval_epoch": 1,
+        "model_save_interval_epoch": 50,
+        "grad_clip": 1000.0
+    }
+}

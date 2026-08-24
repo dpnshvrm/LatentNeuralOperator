@@ -98,15 +98,28 @@ class Checkpoint():
         self.dir = dir
         if not os.path.exists(self.dir):
             os.makedirs(self.dir)
-            
+
         self.model = model
         self.device = device
-    
+
     def load(self, epoch):
         self.model.load_state_dict(torch.load("{}/{}.pt".format(self.dir, epoch)), map_location="cuda:{}".format(self.device))
-    
+
     def save(self, epoch):
         torch.save(self.model.state_dict(),  "{}/{}.pt".format(self.dir, epoch))
+
+    def save_best(self):
+        # Lowest-val-loss checkpoint seen so far this run, tracked and
+        # overwritten every epoch by train()/train_time() -- separate from
+        # the numbered epoch checkpoints (which only land every
+        # model_save_interval_epoch and are the epoch actually running at
+        # the end, not necessarily the best one). Added 2026-08-24 after
+        # LTO_Darcy_resaug_normalized_dilated's training log showed val loss
+        # plateauing/oscillating well before the final epoch -- lets
+        # evaluate_resolution_transfer.py's `--lto_epoch best` load the
+        # true best checkpoint directly instead of guessing which of the
+        # every-50-epoch snapshots was closest to it.
+        torch.save(self.model.state_dict(), "{}/best.pt".format(self.dir))
 
 
 def set_seed(num):
@@ -127,7 +140,7 @@ def get_num_params(model):
 class Null():
     def __init__(self, attr=None):
         self.attr = None
-    
+
     def step(self):
         return
 
@@ -138,15 +151,15 @@ class Logger():
         self.f = open(self.dir + "log.txt", "w")
         if not os.path.exists(self.dir):
             os.makedirs(self.dir)
-            
+
     def print(self, st):
         print(st, file=self.f, flush=True)
-    
+
     def save(self, np_list, str_list):
         for i in range(0, len(np_list)):
             np_list[i] = np.array(np_list[i])
             np.save(self.dir + "/" + str_list[i], np_list[i])
-        
+
         for i in range(1, len(np_list)):
             plt.xlabel(str_list[0])
             plt.ylabel(str_list[i])
@@ -159,7 +172,7 @@ class Logger():
 class Scheduler_NULL():
     def __init__(self, optimizer):
         self.optimizer = optimizer
-    
+
     def step(self):
         return
 
@@ -177,45 +190,71 @@ def get_model_data(config, model_attr, device):
     train_sampler = torch.utils.data.distributed.DistributedSampler(train_dataset)
     train_dataloader = torch.utils.data.dataloader.DataLoader(
         dataset=train_dataset,
-        sampler=train_sampler, 
-        batch_size=config.data.train_batch_size, 
-        drop_last=True, 
+        sampler=train_sampler,
+        batch_size=config.data.train_batch_size,
+        drop_last=True,
         pin_memory=True,
         shuffle=False
         )
 
     normalizer = train_dataset.get_normalizer()
-    
+
     val_dataset = LNO_dataset(config.data.name, "val")
     val_sampler = torch.utils.data.distributed.DistributedSampler(val_dataset)
     val_dataloader = torch.utils.data.dataloader.DataLoader(
-        dataset=val_dataset, 
-        sampler=val_sampler, 
-        batch_size=config.data.val_batch_size, 
-        drop_last=True, 
+        dataset=val_dataset,
+        sampler=val_sampler,
+        batch_size=config.data.val_batch_size,
+        drop_last=True,
         pin_memory=True,
         shuffle=False
         )
-    
+
     test_dataset = val_dataloader
     test_sampler = val_sampler
     test_dataloader = val_dataloader
-    
+
     x_dim, y1_dim, y2_dim = train_dataset.dim()
     if config.model.name == "LNO":
-        model = LNO(config.model.n_block, config.model.n_mode, config.model.n_dim, config.model.n_head, config.model.n_layer, 
+        model = LNO(config.model.n_block, config.model.n_mode, config.model.n_dim, config.model.n_head, config.model.n_layer,
                     x_dim, y1_dim, y2_dim, config.model.attn, config.model.act, model_attr).to(device)
     elif config.model.name == "LNO_single":
-        model = LNO_single(config.model.n_block, config.model.n_mode, config.model.n_dim, config.model.n_head, config.model.n_layer, 
+        model = LNO_single(config.model.n_block, config.model.n_mode, config.model.n_dim, config.model.n_head, config.model.n_layer,
                     x_dim, y1_dim, y2_dim, config.model.attn, config.model.act, model_attr).to(device)
     elif config.model.name == "LNO_triple":
-        model = LNO_triple(config.model.n_block, config.model.n_mode, config.model.n_dim, config.model.n_head, config.model.n_layer, 
+        model = LNO_triple(config.model.n_block, config.model.n_mode, config.model.n_dim, config.model.n_head, config.model.n_layer,
                     x_dim, y1_dim, y2_dim, config.model.attn, config.model.act, model_attr).to(device)
+    elif config.model.name == "LTO_ConvCNP":
+        # ConvCNP Latent Twin Operator (Phase 2 port -- see
+        # claude/convcnp-lno-integration-plan.md). No "_single" in the
+        # model name, so model_attr["single"] stays False and exp.py
+        # calls model(x, y1), matching ConvCNP_LTO.forward's signature.
+        # context_frac_min/max (optional, config-controlled) enable the
+        # context-size augmentation fix for the resolution-transfer
+        # collapse -- see module/convcnp_lto.py's docstring. Both default
+        # to None (.get returns None if absent from the config, matching
+        # the old fixed-dense-context behavior exactly) so this is a
+        # no-op for any config that doesn't set them.
+        #
+        # use_dilated (added 2026-08-24, fixing a drift bug caught while
+        # setting up LTO_Darcy_bigcap_resaug_normalized): must be read
+        # from the config and passed through here too, exactly like
+        # evaluate_resolution_transfer.py's own build_lto() already does
+        # -- otherwise a config with "use_dilated": true would silently
+        # TRAIN a plain (non-dilated) model regardless of what the config
+        # says, since ConvCNP_LTO's use_dilated parameter defaults to
+        # False. .get() defaults to False so every existing config
+        # (which doesn't set this field) is unaffected.
+        model = ConvCNP_LTO(config.model.grid_size, x_dim, config.model.hidden_channels, config.model.latent_channels,
+                    config.model.flow_hidden, config.model.decoder_hidden, config.model.init_length_scale,
+                    config.model.channel_mode, config.model.get("context_frac_min"),
+                    config.model.get("context_frac_max"),
+                    use_dilated=config.model.get("use_dilated", False)).to(device)
     else:
         raise NotImplementedError("Invalid Model !")
-    
+
     model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[device])
-    
+
     if config.loss.name == "L2":
         loss = LpLoss(p=2).to(device)
     elif config.loss.name == "L1":
@@ -226,7 +265,7 @@ def get_model_data(config, model_attr, device):
         loss = RelLpLoss(p=1).to(device)
     else:
         raise NotImplementedError("Invalid Loss !")
-    
+
     if config.optimizer.name == "Adam":
         optimizer = torch.optim.Adam(model.parameters(), lr=config.optimizer.lr, weight_decay=config.optimizer.weight_decay, betas=(config.optimizer.beta0, config.optimizer.beta1))
     elif config.optimizer.name == "AdamW":
@@ -235,7 +274,7 @@ def get_model_data(config, model_attr, device):
         optimizer = torch.optim.SGD(model.parameters(), lr=config.optimizer.lr)
     else:
         raise NotImplementedError("Invalid Optimizer !")
-    
+
     if config.scheduler.name == "NULL":
         scheduler = Scheduler_NULL(optimizer)
     elif config.scheduler.name == "Step":
@@ -245,11 +284,11 @@ def get_model_data(config, model_attr, device):
     elif config.scheduler.name == "Cos":
         scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=config.scheduler.T_max*len(train_dataloader))
     elif config.scheduler.name == "OneCycle":
-        scheduler = torch.optim.lr_scheduler.OneCycleLR(optimizer, max_lr=config.optimizer.lr, pct_start=config.scheduler.pct_start, 
+        scheduler = torch.optim.lr_scheduler.OneCycleLR(optimizer, max_lr=config.optimizer.lr, pct_start=config.scheduler.pct_start,
                                                         div_factor=config.scheduler.div_factor, final_div_factor=config.scheduler.final_div_factor,
                                                         steps_per_epoch=len(train_dataloader), epochs=config.train.epoch)
     else:
         raise NotImplementedError("Invalid Scheduler !")
-    
+
     return train_dataloader, val_dataloader, test_dataloader, \
            normalizer, model, loss, optimizer, scheduler

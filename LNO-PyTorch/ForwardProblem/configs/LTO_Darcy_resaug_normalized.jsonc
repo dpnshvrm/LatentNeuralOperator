@@ -1,0 +1,60 @@
+{
+    "data": {
+        "name": "Darcy",
+        "train_batch_size" : 4,
+        "val_batch_size": 4
+    },
+    "model": {
+        "name": "LTO_ConvCNP",
+        // grid_size is the LATENT grid resolution, independent of the
+        // data's own 211x211 resolution -- see module/convcnp_lto.py's
+        // memory note before changing this.
+        "grid_size": 64,
+        "hidden_channels": 16,
+        "latent_channels": 8,
+        "flow_hidden": 32,
+        "decoder_hidden": 64,
+        "init_length_scale": 0.1,
+        // Identical to LTO_Darcy_resaug.jsonc except for this one field.
+        // "normalized" is the theory-recommended encoder channel per the
+        // paper's Corollary A.2 ([density, signal/density] -- an actual
+        // Nadaraya-Watson weighted mean) vs. "raw" ([density, signal],
+        // unnormalized -- what every Darcy/Advection run so far has used).
+        // This is the still-open ablation flagged in LTO_Darcy_bigcap_resaug.jsonc's
+        // own comment. Advection already tested this (channel_mode made
+        // ~no difference there: 0.500 vs 0.484 rL2, within noise) -- this
+        // run checks whether that holds for Darcy too, or whether Darcy's
+        // very wide learned length scale (see the length-scale diagnostic
+        // in claude/convcnp-lno-integration-plan.md -- encoder ell grew to
+        // ~0.84, near-global) makes normalization matter more here, since
+        // an unnormalized sum over a near-global kernel is exactly the
+        // mechanism blamed for the original resolution-transfer collapse.
+        "channel_mode": "normalized",
+        // Context-size augmentation -- kept identical to LTO_Darcy_resaug
+        // so channel_mode is the ONLY changed variable versus that run.
+        "context_frac_min": 0.05,
+        "context_frac_max": 1.0
+    },
+    "loss": {
+        "name": "rL2"
+    },
+    "optimizer": {
+        "name": "AdamW",
+        "lr": 1e-3,
+        "weight_decay": 0.00005,
+        "beta0": 0.9,
+        "beta1": 0.99
+    },
+    "scheduler": {
+        "name": "OneCycle",
+        "div_factor": 1e4,
+        "final_div_factor": 1e4,
+        "pct_start": 0.2
+    },
+    "train":{
+        "epoch": 500,
+        "log_print_interval_epoch": 1,
+        "model_save_interval_epoch": 50,
+        "grad_clip": 1000.0
+    }
+}

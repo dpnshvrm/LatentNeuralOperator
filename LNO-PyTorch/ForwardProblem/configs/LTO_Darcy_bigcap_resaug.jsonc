@@ -1,0 +1,62 @@
+{
+    "data": {
+        "name": "Darcy",
+        "train_batch_size" : 4,
+        "val_batch_size": 4
+    },
+    "model": {
+        "name": "LTO_ConvCNP",
+        // grid_size is the LATENT grid resolution, independent of the
+        // data's own 211x211 resolution -- see module/convcnp_lto.py's
+        // memory note before changing this.
+        "grid_size": 64,
+        // Capacity increase on top of LTO_Darcy_resaug -- same idea as the
+        // PDEBench Advection "combo" run (bigcap's capacity + boundeddt's
+        // task fix, see claude/convcnp-lno-integration-plan.md), applied
+        // here to close some of the accuracy gap to LNO (762,113 params)
+        // while keeping the resolution-invariance fix. 3x each channel
+        // width -> 255,603 total params (confirmed locally before
+        // shipping): ~8.8x LTO_Darcy_resaug's capacity, still ~3x FEWER
+        // params than LNO -- deliberately NOT matching Advection's combo's
+        // 4x ratio (452,931 params here, ~60% of LNO's count), which would
+        // weaken the parameter-efficiency framing more than seems
+        // worthwhile for the accuracy this might buy.
+        "hidden_channels": 48,
+        "latent_channels": 24,
+        "flow_hidden": 96,
+        "decoder_hidden": 192,
+        "init_length_scale": 0.1,
+        // raw vs. normalized encoder channel -- the open ablation from
+        // the paper's Corollary A.2. Run this config once as-is, then
+        // again with "normalized" for the comparison.
+        "channel_mode": "raw",
+        // Context-size augmentation -- same as LTO_Darcy_resaug, kept
+        // identical here so capacity is the ONLY changed variable versus
+        // that run (isolates capacity's effect, same logic as Advection's
+        // bigcap/boundeddt/combo 3-way ablation).
+        "context_frac_min": 0.05,
+        "context_frac_max": 1.0
+    },
+    "loss": {
+        "name": "rL2"
+    },
+    "optimizer": {
+        "name": "AdamW",
+        "lr": 1e-3,
+        "weight_decay": 0.00005,
+        "beta0": 0.9,
+        "beta1": 0.99
+    },
+    "scheduler": {
+        "name": "OneCycle",
+        "div_factor": 1e4,
+        "final_div_factor": 1e4,
+        "pct_start": 0.2
+    },
+    "train":{
+        "epoch": 500,
+        "log_print_interval_epoch": 1,
+        "model_save_interval_epoch": 50,
+        "grad_clip": 1000.0
+    }
+}

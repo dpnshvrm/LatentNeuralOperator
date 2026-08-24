@@ -26,7 +26,7 @@ def load_Darcy(path, src_res, obj_res):
 
 def load_NS2d(path, src_res):
     n_frame = 10
-    matdata = scio.loadmat(path)        
+    matdata = scio.loadmat(path)
     y1 = matdata['u'][:,:,:,:n_frame]
     y2 = matdata['u'][:,:,:,-n_frame:]
     x = np.reshape(np.dstack(np.meshgrid(np.linspace(0, 1, src_res), np.linspace(0, 1, src_res))), (src_res, src_res, 2))
@@ -44,21 +44,33 @@ def split_and_save(data_name, x, y1, y2, train_num, val_num):
     train_x, val_x = split(x, train_num, val_num)
     train_y1, val_y1 = split(y1, train_num, val_num)
     train_y2, val_y2 = split(y2, train_num, val_num)
-    
+
     train_data = {"x":train_x, "y1":train_y1, "y2":train_y2}
     val_data = {"x":val_x, "y1":val_y1, "y2":val_y2}
-    
+
     np.save(os.path.join(DATA_PATH, "{}_train".format(data_name)), train_data)
     np.save(os.path.join(DATA_PATH, "{}_val".format(data_name)), val_data)
-    
-    
+
+
 if __name__ == "__main__":
     if not os.path.exists(os.path.join(DATA_PATH, "{}_train.npy".format(arg.data_name))) or \
         not os.path.exists(os.path.join(DATA_PATH, "{}_val.npy".format(arg.data_name))):
         print("Preparing data...")
         if arg.data_name == "Darcy":
-            SRC_RES = 241
-            OBJ_RES = 241
+            # NOTE (LTO project, 2026-08-22): the file actually available to us is the
+            # raw r421 Darcy simulation (piececonst_r421_N1024_smooth{1,2}.mat) --
+            # LNO's original upstream code assumed a pre-downsampled r241 file that we
+            # don't have. SRC_RES=421 matches the real raw data; OBJ_RES=211 is a clean
+            # stride-2 downsample ((421-1)//(211-1) == 2 exactly, so it's an even
+            # subsample across the whole domain, not a corner crop) and is also one of
+            # the standard resolutions reported in the original FNO paper, so it stays
+            # literature-comparable. To generate additional resolutions later for the
+            # cross-resolution transfer sweep, rerun this script with OBJ_RES set to any
+            # other value where (420 % (OBJ_RES-1) == 0), e.g. 85, 106, 141, 211, 421,
+            # writing to a differently-named data_name each time (prepare.py skips
+            # re-preparing if the target .npy files already exist).
+            SRC_RES = 421
+            OBJ_RES = 211
             TRAIN_NUM = 1024
             VAL_NUM = 1024
             x, y1, y2 = load_Darcy(os.path.join(DATA_PATH, "piececonst_r{}_N1024_smooth1.mat".format(SRC_RES)), SRC_RES, OBJ_RES)

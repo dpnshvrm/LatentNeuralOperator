@@ -1,0 +1,73 @@
+{
+    "data": {
+        "name": "Darcy",
+        "train_batch_size" : 4,
+        "val_batch_size": 4
+    },
+    "model": {
+        "name": "LTO_ConvCNP",
+        // grid_size is the LATENT grid resolution, independent of the
+        // data's own 211x211 resolution -- see module/convcnp_lto.py's
+        // memory note before changing this.
+        "grid_size": 64,
+        // Same 3x-width capacity increase as LTO_Darcy_bigcap_resaug
+        // (255,603 params, confirmed locally, ~3x fewer than LNO's
+        // 762,113) -- but THIS TIME stacked with channel_mode="normalized",
+        // the free win found on top of plain resaug (see
+        // reports/darcy_findings_summary.md). LTO_Darcy_bigcap_resaug was
+        // never combined with normalized -- an oversight caught 2026-08-24
+        // when comparing it against LTO_Darcy_resaug_normalized (raw vs.
+        // normalized was tested at the SMALL capacity, not the large one).
+        "hidden_channels": 48,
+        "latent_channels": 24,
+        "flow_hidden": 96,
+        "decoder_hidden": 192,
+        "init_length_scale": 0.1,
+        "channel_mode": "normalized",
+        // Context-size augmentation -- unchanged from every resaug variant.
+        "context_frac_min": 0.05,
+        "context_frac_max": 1.0
+    },
+    "loss": {
+        "name": "rL2"
+    },
+    "optimizer": {
+        "name": "AdamW",
+        // Lowered from LTO_Darcy_bigcap_resaug's 1e-3 -- that run (and the
+        // separate dilated-receptive-field run) both landed WORSE than the
+        // much smaller LTO_Darcy_resaug_normalized despite more capacity,
+        // which is the classic signature of a bigger model that needs a
+        // different (usually lower) learning rate to actually use its
+        // extra capacity, not necessarily a capacity ceiling. This run
+        // isolates that: same architecture as LTO_Darcy_bigcap_resaug plus
+        // normalized, but properly tuned, to tell "training was undertuned"
+        // apart from "capacity genuinely doesn't help here" -- see
+        // claude/convcnp-lno-integration-plan.md's 2026-08-24 decision.
+        "lr": 3e-4,
+        // 10x LTO_Darcy_resaug's/LTO_Darcy_bigcap_resaug's 0.00005 --
+        // modest extra regularization for the larger model, given the
+        // overfitting shape seen in the dilated variant's training log.
+        "weight_decay": 0.0005,
+        "beta0": 0.9,
+        "beta1": 0.99
+    },
+    "scheduler": {
+        "name": "OneCycle",
+        "div_factor": 1e4,
+        "final_div_factor": 1e4,
+        "pct_start": 0.2
+    },
+    "train":{
+        "epoch": 500,
+        "log_print_interval_epoch": 1,
+        // Numbered snapshots still every 50 epochs as before -- but this
+        // run also gets a continuously-tracked best.pt (module/utils.py's
+        // Checkpoint.save_best(), added 2026-08-24), so the true best
+        // checkpoint is captured directly rather than approximated by
+        // picking the nearest numbered snapshot after the fact. Evaluate
+        // it with: python evaluate_resolution_transfer.py
+        //   --lto_exp LTO_Darcy_bigcap_resaug_normalized --lto_epoch best
+        "model_save_interval_epoch": 50,
+        "grad_clip": 1000.0
+    }
+}
