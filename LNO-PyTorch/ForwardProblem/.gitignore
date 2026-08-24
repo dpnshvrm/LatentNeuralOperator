@@ -1,0 +1,5 @@
+datas/
+experiments/*
+!experiments/LNO_Darcy/
+module/__pycache__/
+*.pyc
