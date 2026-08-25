@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/home/dverma/LatentNeuralOperator-fork/LNO-PyTorch/ForwardProblem/evaluate_resolution_transfer.py", line 174, in <module>
+    lto_ckpt, lto_epoch = latest_checkpoint(LTO_EXP_NAME, epoch=LTO_EPOCH)
+  File "/home/dverma/LatentNeuralOperator-fork/LNO-PyTorch/ForwardProblem/evaluate_resolution_transfer.py", line 78, in latest_checkpoint
+    raise FileNotFoundError(
+FileNotFoundError: No best.pt in ./experiments/LTO_Darcy_bigcap_resaug_normalized/checkpoint -- this experiment predates the best-checkpoint tracking added 2026-08-24 (module/utils.py's Checkpoint.save_best()), or hasn't run since. Use an explicit --lto_epoch <N> instead, or retrain.
