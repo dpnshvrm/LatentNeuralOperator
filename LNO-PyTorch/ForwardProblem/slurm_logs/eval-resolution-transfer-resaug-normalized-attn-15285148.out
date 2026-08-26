@@ -1,0 +1,29 @@
+Skipping r85 (already exists)
+Skipping r106 (already exists)
+Skipping r141 (already exists)
+Skipping r421 (already exists)
+=== LTO_Darcy_resaug_normalized_attn, latest (epoch 500) ===
+LNO checkpoint: epoch 350 (./experiments/LNO_Darcy/checkpoint/350.pt)
+LTO checkpoint: epoch 500 (./experiments/LTO_Darcy_resaug_normalized_attn/checkpoint/500.pt)
+
+Parameter counts: LNO = 762,113   LTO = 28,894
+
+       Res       LNO rL2       LTO rL2
+        85       0.01215       0.04151
+       106       0.01044       0.04140
+       141       0.00898       0.04132
+       211       0.00815       0.04125
+       421       0.00853       0.04121
+
+=== LTO_Darcy_resaug_normalized_attn, best.pt ===
+LNO checkpoint: epoch 350 (./experiments/LNO_Darcy/checkpoint/350.pt)
+LTO checkpoint: epoch best (./experiments/LTO_Darcy_resaug_normalized_attn/checkpoint/best.pt)
+
+Parameter counts: LNO = 762,113   LTO = 28,894
+
+       Res       LNO rL2       LTO rL2
+        85       0.01215       0.04151
+       106       0.01044       0.04140
+       141       0.00898       0.04132
+       211       0.00815       0.04125
+       421       0.00853       0.04121
