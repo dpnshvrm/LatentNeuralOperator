@@ -86,6 +86,90 @@ class SetConvEncoder2D(nn.Module):
         return r.reshape(B, r.shape[1], -1).transpose(1, 2)  # (B, G^2, out_channels)
 
 
+class AttentiveSetConvEncoder2D(nn.Module):
+    """PhCA-style learned cross-attention encoder -- an alternative to
+    SetConvEncoder2D's fixed, distance-decaying Gaussian kernel.
+
+    Motivation (see reports/lno_architecture_notes.md's "how are we
+    different" section and claude/convcnp-lno-integration-plan.md):
+    LNO's PhCA computes its encode weights from a learned score
+    (attention_projector(trunk_projector(x))), softmaxed over context
+    points, with NO locality/distance bias at all -- a grid location can
+    attend strongly to a context point anywhere in the domain if the
+    learned score says to. SetConvEncoder2D's Gaussian kernel, by
+    contrast, has weight w_i = exp(-||grid_pos - x_i||^2 / (2*ell^2)):
+    structurally incapable of putting high weight on a far-away point
+    once ell is fixed, no matter what the data says. That locality bias
+    is the encoder-side candidate explanation for LNO's edge on Darcy
+    (a globally-elliptic PDE) even after the propagator's own receptive
+    field was already fixed (use_dilated=True gives the CNN full 64x64
+    coverage; only the encoder was still local) and capacity was
+    increased (bigcap_resaug/bigcap_resaug_normalized) -- neither
+    intervention touches this specific bias, because it lives upstream
+    of both.
+
+    Mechanically: query = MLP(grid position), key = MLP(context
+    position), value = MLP(context field value); score = scaled dot
+    product (standard transformer-style attention, same shape as PhCA's
+    own score computation); softmax over context points (dim=-1, same
+    normalization axis PhCA uses for its "N points -> tokens" direction).
+    Same O(grid_size^2 * n_points) memory/compute cost as
+    SetConvEncoder2D's own pairwise kernel -- no new complexity class,
+    just a learned weighting function instead of a fixed one.
+
+    THEORY CAVEAT (see claude/convcnp-lno-integration-plan.md and
+    reports/lno_architecture_notes.md): Theorem 2.3 / Corollary 2.4's
+    discretization-error RATE is derived specifically for a symmetric,
+    bandwidth-parameterized kernel (classical kernel-smoothing bias
+    theory) and does NOT automatically transfer to this attention
+    weighting -- proving an analogous rate bound here is out of scope
+    given the paper deadline. Lemma A.1 / Corollary A.2's Lipschitz-
+    stability argument only needs non-negative weights summing to 1,
+    which the softmax here still guarantees, so that argument plausibly
+    DOES still hold, but has not been separately proven for this class.
+    Any result trained with use_attention_encoder=True must be reported
+    as an empirical architectural ablation, not as evidence for the
+    paper's core theorem.
+
+    Drop-in replacement for SetConvEncoder2D: same forward(x_ctx, y_ctx)
+    -> (B, grid_size^2, out_channels) signature, so ConvCNP_LTO can swap
+    between the two via a constructor flag with no other code changes.
+    No channel_mode (raw/normalized) distinction applies here -- the
+    softmax-weighted value sum is already a normalized (mean-like)
+    combination by construction, same as ConvCNPDecoder2D's own softmax
+    weights below.
+    """
+
+    def __init__(self, grid_size, x_dim=2, y_dim=1, attn_dim=32, out_channels=8):
+        super().__init__()
+        g = torch.linspace(0, 1, grid_size)
+        gy, gx = torch.meshgrid(g, g, indexing="ij")
+        self.register_buffer("grid", torch.stack([gx.reshape(-1), gy.reshape(-1)], dim=-1))
+        self.grid_size = grid_size
+        self.attn_dim = attn_dim
+        self.query_mlp = nn.Sequential(nn.Linear(x_dim, attn_dim), nn.ReLU(), nn.Linear(attn_dim, attn_dim))
+        self.key_mlp = nn.Sequential(nn.Linear(x_dim, attn_dim), nn.ReLU(), nn.Linear(attn_dim, attn_dim))
+        self.value_mlp = nn.Sequential(nn.Linear(y_dim, attn_dim), nn.ReLU(), nn.Linear(attn_dim, attn_dim))
+        self.cnn = nn.Sequential(
+            nn.Conv2d(attn_dim, attn_dim, 5, padding=2), nn.ReLU(),
+            nn.Conv2d(attn_dim, attn_dim, 5, padding=2), nn.ReLU(),
+            nn.Conv2d(attn_dim, out_channels, 5, padding=2),
+        )
+
+    def forward(self, x_ctx, y_ctx):
+        # x_ctx: (B, N, x_dim) in [0,1]^x_dim, y_ctx: (B, N, y_dim)
+        B, N, _ = x_ctx.shape
+        q = self.query_mlp(self.grid.unsqueeze(0).expand(B, -1, -1))  # (B, G^2, attn_dim)
+        k = self.key_mlp(x_ctx)  # (B, N, attn_dim)
+        v = self.value_mlp(y_ctx)  # (B, N, attn_dim)
+        score = torch.bmm(q, k.transpose(1, 2)) / (self.attn_dim ** 0.5)  # (B, G^2, N)
+        w = torch.softmax(score, dim=-1)
+        signal = torch.bmm(w, v)  # (B, G^2, attn_dim)
+        h = signal.transpose(1, 2).reshape(B, self.attn_dim, self.grid_size, self.grid_size)
+        r = self.cnn(h)
+        return r.reshape(B, r.shape[1], -1).transpose(1, 2)  # (B, G^2, out_channels)
+
+
 class ConvCNPDecoder2D(nn.Module):
     def __init__(self, grid_size, out_channels=8, hidden_dim=64, init_length_scale=0.1):
         super().__init__()
@@ -171,13 +255,23 @@ class ConvCNP_LTO(nn.Module):
     def __init__(self, grid_size, x_dim=2, hidden_channels=16, latent_channels=8,
                  flow_hidden=32, decoder_hidden=64, init_length_scale=0.1,
                  channel_mode="raw", context_frac_min=None, context_frac_max=None,
-                 use_dilated=False):
+                 use_dilated=False, use_attention_encoder=False, attn_dim=32):
         super().__init__()
         self.x_dim = x_dim
         self.context_frac_min = context_frac_min
         self.context_frac_max = context_frac_max
-        self.encoder = SetConvEncoder2D(grid_size, hidden_channels, latent_channels,
-                                         init_length_scale, channel_mode=channel_mode)
+        self.use_attention_encoder = use_attention_encoder
+        if use_attention_encoder:
+            # PhCA-style learned attention encoder, in place of the fixed
+            # Gaussian SetConv kernel -- see AttentiveSetConvEncoder2D's
+            # docstring above for the motivation and the theory-scope
+            # caveat. channel_mode does not apply here (the softmax
+            # weighting is already a normalized combination).
+            self.encoder = AttentiveSetConvEncoder2D(grid_size, x_dim=x_dim, y_dim=1,
+                                                      attn_dim=attn_dim, out_channels=latent_channels)
+        else:
+            self.encoder = SetConvEncoder2D(grid_size, hidden_channels, latent_channels,
+                                             init_length_scale, channel_mode=channel_mode)
         self.operator = CNNLatentOperator(grid_size, latent_channels, flow_hidden, use_dilated=use_dilated)
         self.decoder = ConvCNPDecoder2D(grid_size, latent_channels, decoder_hidden, init_length_scale)
 

@@ -1,0 +1,76 @@
+{
+    "data": {
+        "name": "Darcy",
+        "train_batch_size" : 4,
+        "val_batch_size": 4
+    },
+    "model": {
+        "name": "LTO_ConvCNP",
+        // Identical to LTO_Darcy_resaug_normalized.jsonc (our locked FINAL
+        // Darcy baseline -- see claude/convcnp-lno-integration-plan.md's
+        // 2026-08-25 decision) except for use_attention_encoder/attn_dim
+        // below, so THAT is the only changed variable versus that run.
+        "grid_size": 64,
+        "hidden_channels": 16,
+        "latent_channels": 8,
+        "flow_hidden": 32,
+        "decoder_hidden": 64,
+        "init_length_scale": 0.1,
+        // channel_mode is IGNORED when use_attention_encoder is true (see
+        // module/convcnp_lto.py's AttentiveSetConvEncoder2D docstring --
+        // the softmax weighting is already a normalized combination).
+        // Kept here at "normalized" only so this config still parses
+        // cleanly against get_model_data's current (non-.get) read of
+        // config.model.channel_mode.
+        "channel_mode": "normalized",
+        // PhCA-style learned cross-attention encoder, replacing the fixed
+        // Gaussian SetConv kernel -- see module/convcnp_lto.py's
+        // AttentiveSetConvEncoder2D docstring for the full motivation
+        // (LNO's PhCA has no locality bias; our Gaussian kernel does,
+        // which is the encoder-side candidate explanation for LNO's edge
+        // on Darcy that neither use_dilated nor capacity scaling could
+        // touch) and the THEORY CAVEAT (empirical ablation only -- not
+        // covered by Theorem 2.3/Corollary 2.4 as currently proven;
+        // Lemma A.1/Corollary A.2 plausibly still holds but is unproven
+        // for this class).
+        //
+        // attn_dim=12 is chosen to param-MATCH the baseline encoder, not
+        // to add capacity: SetConvEncoder2D(hidden_channels=16,
+        // channel_mode="normalized") has 10,441 params; this encoder at
+        // attn_dim=12 has 10,196 -- within 3%, so the comparison isolates
+        // the weighting MECHANISM (fixed kernel vs. learned attention),
+        // not a capacity confound like bigcap_resaug_normalized had.
+        // Total model: 28,894 params vs. resaug_normalized's 29,139.
+        "use_attention_encoder": true,
+        "attn_dim": 12,
+        // Context-size augmentation -- kept identical to
+        // LTO_Darcy_resaug_normalized so it's the only other shared
+        // ingredient (both runs need it for resolution transfer to work
+        // at all; the attention encoder doesn't remove the fixed-N
+        // overfitting problem the augmentation exists to fix).
+        "context_frac_min": 0.05,
+        "context_frac_max": 1.0
+    },
+    "loss": {
+        "name": "rL2"
+    },
+    "optimizer": {
+        "name": "AdamW",
+        "lr": 1e-3,
+        "weight_decay": 0.00005,
+        "beta0": 0.9,
+        "beta1": 0.99
+    },
+    "scheduler": {
+        "name": "OneCycle",
+        "div_factor": 1e4,
+        "final_div_factor": 1e4,
+        "pct_start": 0.2
+    },
+    "train":{
+        "epoch": 500,
+        "log_print_interval_epoch": 1,
+        "model_save_interval_epoch": 50,
+        "grad_clip": 1000.0
+    }
+}

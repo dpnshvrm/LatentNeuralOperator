@@ -245,11 +245,18 @@ def get_model_data(config, model_attr, device):
         # says, since ConvCNP_LTO's use_dilated parameter defaults to
         # False. .get() defaults to False so every existing config
         # (which doesn't set this field) is unaffected.
+        # use_attention_encoder / attn_dim (added 2026-08-26): PhCA-style
+        # learned cross-attention encoder, swapped in for the fixed
+        # Gaussian SetConv kernel -- see module/convcnp_lto.py's
+        # AttentiveSetConvEncoder2D docstring. .get() defaults keep every
+        # existing config (which sets neither field) unaffected.
         model = ConvCNP_LTO(config.model.grid_size, x_dim, config.model.hidden_channels, config.model.latent_channels,
                     config.model.flow_hidden, config.model.decoder_hidden, config.model.init_length_scale,
                     config.model.channel_mode, config.model.get("context_frac_min"),
                     config.model.get("context_frac_max"),
-                    use_dilated=config.model.get("use_dilated", False)).to(device)
+                    use_dilated=config.model.get("use_dilated", False),
+                    use_attention_encoder=config.model.get("use_attention_encoder", False),
+                    attn_dim=config.model.get("attn_dim", 32)).to(device)
     else:
         raise NotImplementedError("Invalid Model !")
 

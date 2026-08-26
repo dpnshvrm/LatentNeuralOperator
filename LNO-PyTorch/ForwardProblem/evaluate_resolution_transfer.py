@@ -158,10 +158,14 @@ def build_lto(config):
     # match a model built with the default plain conv_mid -- exactly the
     # "Missing/Unexpected key(s)" error this fixes. .get() defaults to
     # False so every non-dilated config (the vast majority) is unaffected.
+    # use_attention_encoder/attn_dim (added 2026-08-26): same pattern, for
+    # the PhCA-style attention encoder -- see module/convcnp_lto.py.
     return ConvCNP_LTO(config.model.grid_size, 2, config.model.hidden_channels, config.model.latent_channels,
                         config.model.flow_hidden, config.model.decoder_hidden, config.model.init_length_scale,
                         config.model.channel_mode,
-                        use_dilated=config.model.get("use_dilated", False)).to(DEVICE)
+                        use_dilated=config.model.get("use_dilated", False),
+                        use_attention_encoder=config.model.get("use_attention_encoder", False),
+                        attn_dim=config.model.get("attn_dim", 32)).to(DEVICE)
 
 
 if __name__ == "__main__":
