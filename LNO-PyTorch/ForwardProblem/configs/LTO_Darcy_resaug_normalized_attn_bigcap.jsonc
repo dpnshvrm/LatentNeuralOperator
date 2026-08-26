@@ -1,0 +1,83 @@
+{
+    "data": {
+        "name": "Darcy",
+        "train_batch_size" : 4,
+        "val_batch_size": 4
+    },
+    "model": {
+        "name": "LTO_ConvCNP",
+        // grid_size is the LATENT grid resolution, independent of the
+        // data's own 211x211 resolution -- see module/convcnp_lto.py's
+        // memory note before changing this.
+        "grid_size": 64,
+        // Capacity scaling on TOP of the attention encoder that already
+        // worked big (LTO_Darcy_resaug_normalized_attn: roughly halved
+        // in-range error, cut the 421 extrapolation error by >5x, at
+        // MATCHED parameter count vs. resaug_normalized). This mirrors
+        // exactly the playbook that worked on Advection: fix the
+        // mechanism first (boundeddt there, the attention encoder here),
+        // THEN add capacity on top for a further multiplicative gain
+        // (combo there, this run here) -- see
+        // claude/convcnp-lno-integration-plan.md's 2026-08-26 result and
+        // the Advection "combo" result from 2026-08-23.
+        //
+        // Every PRIOR capacity-scaling attempt on Darcy (bigcap_resaug,
+        // bigcap_resaug_normalized) made things WORSE, because the
+        // encoder's fixed-kernel locality bias was still the bottleneck --
+        // more capacity behind a still-broken encoder just added
+        // overfitting risk. That bottleneck is gone now, so there's a real
+        // reason (not just hope) to expect capacity helps this time.
+        //
+        // hidden_channels is UNUSED here (use_attention_encoder=true
+        // bypasses SetConvEncoder2D entirely) -- kept at bigcap's value
+        // only for config-diff clarity, has no effect.
+        "hidden_channels": 48,
+        "latent_channels": 24,
+        "flow_hidden": 96,
+        "decoder_hidden": 192,
+        "init_length_scale": 0.1,
+        "channel_mode": "normalized",
+        // PhCA-style learned attention encoder -- see
+        // module/convcnp_lto.py's AttentiveSetConvEncoder2D docstring.
+        // attn_dim=32 chosen to roughly match bigcap_resaug_normalized's
+        // TOTAL capacity (240,594 vs. 255,603 params, ~94%) rather than
+        // param-matching the small resaug_normalized baseline this time --
+        // this run is deliberately testing "does more attention capacity
+        // help," the direct analog of the Advection combo question, not
+        // isolating the encoder-mechanism variable again (already
+        // isolated by resaug_normalized_attn).
+        "use_attention_encoder": true,
+        "attn_dim": 32,
+        // Context-size augmentation -- unchanged from every resaug variant.
+        "context_frac_min": 0.05,
+        "context_frac_max": 1.0
+    },
+    "loss": {
+        "name": "rL2"
+    },
+    "optimizer": {
+        "name": "AdamW",
+        // Same lr/weight_decay as bigcap_resaug_normalized -- that run
+        // established these as the right settings for a model at roughly
+        // this capacity scale, regardless of encoder type.
+        "lr": 3e-4,
+        "weight_decay": 0.0005,
+        "beta0": 0.9,
+        "beta1": 0.99
+    },
+    "scheduler": {
+        "name": "OneCycle",
+        "div_factor": 1e4,
+        "final_div_factor": 1e4,
+        "pct_start": 0.2
+    },
+    "train":{
+        "epoch": 500,
+        "log_print_interval_epoch": 1,
+        // best.pt tracked as usual -- evaluate with
+        // --lto_epoch best if the training log shows any overfitting
+        // shape (unlike resaug_normalized_attn, which showed none).
+        "model_save_interval_epoch": 50,
+        "grad_clip": 1000.0
+    }
+}
