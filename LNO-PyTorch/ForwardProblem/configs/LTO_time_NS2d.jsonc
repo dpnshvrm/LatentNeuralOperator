@@ -1,0 +1,89 @@
+{
+    // NS2d time-evolution benchmark (2026-08-27) -- see the "NS2d" section
+    // of claude/convcnp-lno-integration-plan.md. This is a DIRECT-LITERATURE
+    // comparison, not a re-run of LNO: LNO's own paper already reports a
+    // number for this exact benchmark (Table 1, assets/Forward-1.png:
+    // 8.45e-2 relative L2), so LNO is NOT retrained here -- only ConvCNP_LTO
+    // is trained, under LNO's own task convention (module/dataset.py's
+    // NS2d loader, exp.py's train_time/val_time: T_in=10 input frames,
+    // T=10-step autoregressive rollout, no teacher forcing at test time),
+    // so the resulting val_loss_full is directly comparable to that
+    // published number.
+    //
+    // Config file MUST be named with "_time" in it (exp.py branches on
+    // "_time" in the --config CLI value, not on anything inside this
+    // file) so exp.py calls train_time/val_time instead of train/val --
+    // mirrors LNO's own "LNO_time_NS2d.jsonc" naming exactly.
+    "data": {
+        "name": "NS2d",
+        // Same batch size as LNO's own LNO_time_NS2d.jsonc -- fair
+        // comparison on the optimization side, only the architecture
+        // differs.
+        "train_batch_size" : 4,
+        "val_batch_size": 4
+    },
+    "model": {
+        "name": "LTO_ConvCNP",
+        // grid_size = 64 matches NS2d's own native resolution (SRC_RES=64
+        // in prepare.py) -- unlike Darcy, where the latent grid (64) is
+        // deliberately smaller than the data's native resolution (211).
+        // Here they coincide, which is fine: NS2d's raw data is already at
+        // a memory-safe resolution, so there's no need to decouple them
+        // for this first run.
+        "grid_size": 64,
+        "hidden_channels": 16,
+        "latent_channels": 8,
+        // Used as CNNLatentOperator's hidden width (no time-conditioning
+        // needed here -- see module/convcnp_lto.py's NS2d docstring note:
+        // the propagator is a FIXED single-frame step, applied
+        // autoregressively by exp.py's train_time/val_time, matching
+        // LNO's own convention exactly rather than a continuous/variable
+        // dt flow).
+        "flow_hidden": 32,
+        "decoder_hidden": 64,
+        "init_length_scale": 0.1,
+        // Theory-recommended encoder channel (Corollary A.2) -- same
+        // choice as the Darcy/Advection primary checkpoints. This is the
+        // FIRST NS2d result, so it should be the clean, theorem-aligned
+        // baseline -- not the attention-encoder ablation (that's a
+        // follow-on, same playbook as Darcy/Advection).
+        "channel_mode": "normalized",
+        // NEW field (module/convcnp_lto.py, module/utils.py's
+        // get_model_data): the encoder's context-value width. NS2d's
+        // dataset.py concatenation gives y1 = [x(2 coord channels),
+        // 10-frame window] -- ConvCNP_LTO.forward() already slices off
+        // the leading x_dim=2 columns generically, so y_dim=10 here tells
+        // the encoder the REMAINING width is 10, not the Darcy default of 1.
+        "y_dim": 10
+        // No context_frac_min/max set (leave unaugmented, dense full
+        // context every step) -- this run's goal is an exact-protocol
+        // match to LNO's own training setup (always dense), not a
+        // resolution-transfer study. No use_dilated / use_attention_encoder
+        // (both default False) -- get the clean baseline first.
+    },
+    "loss": {
+        "name": "rL2"
+    },
+    "optimizer": {
+        // Matches LNO's own LNO_time_NS2d.jsonc exactly (lr, weight_decay,
+        // betas) -- only the model architecture differs between this run
+        // and the (uninvolved, not-retrained) LNO baseline.
+        "name": "AdamW",
+        "lr": 1e-3,
+        "weight_decay": 0.00005,
+        "beta0": 0.9,
+        "beta1": 0.99
+    },
+    "scheduler": {
+        "name": "OneCycle",
+        "div_factor": 1e4,
+        "final_div_factor": 1e4,
+        "pct_start": 0.2
+    },
+    "train": {
+        "epoch": 500,
+        "log_print_interval_epoch": 1,
+        "model_save_interval_epoch": 50,
+        "grad_clip": 1000.0
+    }
+}

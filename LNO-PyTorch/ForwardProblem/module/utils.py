@@ -250,13 +250,20 @@ def get_model_data(config, model_attr, device):
         # Gaussian SetConv kernel -- see module/convcnp_lto.py's
         # AttentiveSetConvEncoder2D docstring. .get() defaults keep every
         # existing config (which sets neither field) unaffected.
+        # y_dim (added 2026-08-27 for the NS2d time-evolution experiment --
+        # see claude/convcnp-lno-integration-plan.md): the encoder's
+        # context-value width. .get() defaults to 1 (a single steady
+        # field), matching every existing Darcy/Advection-style config
+        # that doesn't set it -- so this is a no-op for those. NS2d's
+        # config sets y_dim=10 (a 10-frame sliding-window history).
         model = ConvCNP_LTO(config.model.grid_size, x_dim, config.model.hidden_channels, config.model.latent_channels,
                     config.model.flow_hidden, config.model.decoder_hidden, config.model.init_length_scale,
                     config.model.channel_mode, config.model.get("context_frac_min"),
                     config.model.get("context_frac_max"),
                     use_dilated=config.model.get("use_dilated", False),
                     use_attention_encoder=config.model.get("use_attention_encoder", False),
-                    attn_dim=config.model.get("attn_dim", 32)).to(device)
+                    attn_dim=config.model.get("attn_dim", 32),
+                    y_dim=config.model.get("y_dim", 1)).to(device)
     else:
         raise NotImplementedError("Invalid Model !")
 

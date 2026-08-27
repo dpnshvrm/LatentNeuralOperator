@@ -46,6 +46,23 @@ module/utils.py's shared training loop are UNCHANGED, so LNO's own
 baseline training is completely unaffected (this is deliberate: the
 augmentation must never touch code paths LNO's own runs go through, or
 the head-to-head comparison stops being fair).
+
+NS2d / y_dim (added 2026-08-27, see claude/convcnp-lno-integration-plan.md's
+NS2d section): `y_dim` generalizes the encoder's context-value width from
+a hardcoded scalar (1) to any number of channels, so the SAME ConvCNP_LTO
+class can encode NS2d's 10-frame sliding-window history (y_dim=10)
+instead of just a single steady field (Darcy, y_dim=1, the default --
+every existing checkpoint is unaffected). The propagator stays
+CNNLatentOperator (no time conditioning) since NS2d's task is a FIXED
+single-frame step applied autoregressively (matching LNO's own
+train_time/val_time exp.py convention exactly, T_in=10 -> T=10 steps,
+sliding window) -- not a continuous/variable dt, which is what
+lto/common.py's CNNLatentFlow (used by examples/evolution_heat.py and
+the Advection track) is for. This lets the exact same exp.py harness
+(train_time/val_time, unmodified) train ConvCNP_LTO on NS2d and produces
+a val_loss_full number directly comparable to LNO's own published NS2d
+result (paper Table 1, assets/Forward-1.png: 8.45e-2 relative L2) without
+retraining LNO itself.
 """
 
 import torch
@@ -54,8 +71,19 @@ import torch.nn.functional as F
 
 
 class SetConvEncoder2D(nn.Module):
+    """y_dim (added 2026-08-27, see the NS2d time-evolution section of
+    claude/convcnp-lno-integration-plan.md): the encoder's context VALUE
+    dimension, generalized from a hardcoded scalar field (y_dim=1) to an
+    arbitrary number of channels. This is what lets the same class encode
+    a multi-frame history window (e.g. NS2d's 10-frame sliding window,
+    y_dim=10) instead of just a single steady field (Darcy, y_dim=1,
+    the default -- fully backward compatible, every existing checkpoint
+    still loads unchanged since in_channels stays 1+1=2). The first CNN
+    layer's in_channels is now 1+y_dim (density channel + y_dim signal
+    channels) instead of a hardcoded 2."""
+
     def __init__(self, grid_size, hidden_channels=16, out_channels=8,
-                 init_length_scale=0.1, channel_mode="raw"):
+                 init_length_scale=0.1, channel_mode="raw", y_dim=1):
         super().__init__()
         assert channel_mode in ("raw", "normalized"), channel_mode
         self.channel_mode = channel_mode
@@ -64,14 +92,14 @@ class SetConvEncoder2D(nn.Module):
         self.register_buffer("grid", torch.stack([gx.reshape(-1), gy.reshape(-1)], dim=-1))
         self.log_length_scale = nn.Parameter(torch.log(torch.tensor(float(init_length_scale))))
         self.cnn = nn.Sequential(
-            nn.Conv2d(2, hidden_channels, 5, padding=2), nn.ReLU(),
+            nn.Conv2d(1 + y_dim, hidden_channels, 5, padding=2), nn.ReLU(),
             nn.Conv2d(hidden_channels, hidden_channels, 5, padding=2), nn.ReLU(),
             nn.Conv2d(hidden_channels, out_channels, 5, padding=2),
         )
         self.grid_size = grid_size
 
     def forward(self, x_ctx, y_ctx):
-        # x_ctx: (B, N, 2) in [0,1]^2, y_ctx: (B, N, 1)
+        # x_ctx: (B, N, 2) in [0,1]^2, y_ctx: (B, N, y_dim)
         ell = torch.exp(self.log_length_scale)
         diff = self.grid.unsqueeze(0).unsqueeze(2) - x_ctx.unsqueeze(1)  # (B, G^2, N, 2)
         w = torch.exp(-0.5 * (diff ** 2).sum(-1) / ell ** 2)  # (B, G^2, N)
@@ -79,9 +107,9 @@ class SetConvEncoder2D(nn.Module):
         signal = torch.bmm(w, y_ctx)
         if self.channel_mode == "normalized":
             signal = signal / (density + 1e-8)
-        h = torch.cat([density, signal], dim=-1)  # (B, G^2, 2)
-        B = h.shape[0]
-        h = h.transpose(1, 2).reshape(B, 2, self.grid_size, self.grid_size)
+        h = torch.cat([density, signal], dim=-1)  # (B, G^2, 1+y_dim)
+        B, _, C = h.shape
+        h = h.transpose(1, 2).reshape(B, C, self.grid_size, self.grid_size)
         r = self.cnn(h)
         return r.reshape(B, r.shape[1], -1).transpose(1, 2)  # (B, G^2, out_channels)
 
@@ -255,8 +283,17 @@ class ConvCNP_LTO(nn.Module):
     def __init__(self, grid_size, x_dim=2, hidden_channels=16, latent_channels=8,
                  flow_hidden=32, decoder_hidden=64, init_length_scale=0.1,
                  channel_mode="raw", context_frac_min=None, context_frac_max=None,
-                 use_dilated=False, use_attention_encoder=False, attn_dim=32):
+                 use_dilated=False, use_attention_encoder=False, attn_dim=32, y_dim=1):
         super().__init__()
+        # y_dim (added 2026-08-27 for the NS2d time-evolution experiment --
+        # see claude/convcnp-lno-integration-plan.md): the encoder's
+        # context VALUE width. Defaults to 1 (a single steady scalar
+        # field, e.g. Darcy's permeability coefficient) -- every existing
+        # checkpoint trained so far used this default and is unaffected.
+        # NS2d sets y_dim=10 (a 10-frame sliding-window history, matching
+        # LNO's own train_time/val_time autoregressive-rollout convention
+        # exactly, see configs/LTO_time_NS2d.jsonc) so the SAME class
+        # encodes a multi-frame history instead of a single field.
         self.x_dim = x_dim
         self.context_frac_min = context_frac_min
         self.context_frac_max = context_frac_max
@@ -267,11 +304,11 @@ class ConvCNP_LTO(nn.Module):
             # docstring above for the motivation and the theory-scope
             # caveat. channel_mode does not apply here (the softmax
             # weighting is already a normalized combination).
-            self.encoder = AttentiveSetConvEncoder2D(grid_size, x_dim=x_dim, y_dim=1,
+            self.encoder = AttentiveSetConvEncoder2D(grid_size, x_dim=x_dim, y_dim=y_dim,
                                                       attn_dim=attn_dim, out_channels=latent_channels)
         else:
             self.encoder = SetConvEncoder2D(grid_size, hidden_channels, latent_channels,
-                                             init_length_scale, channel_mode=channel_mode)
+                                             init_length_scale, channel_mode=channel_mode, y_dim=y_dim)
         self.operator = CNNLatentOperator(grid_size, latent_channels, flow_hidden, use_dilated=use_dilated)
         self.decoder = ConvCNPDecoder2D(grid_size, latent_channels, decoder_hidden, init_length_scale)
 
