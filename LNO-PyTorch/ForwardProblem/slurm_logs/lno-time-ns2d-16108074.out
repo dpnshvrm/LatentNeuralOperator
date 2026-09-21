@@ -1,0 +1,679 @@
+Using prepared data.
+Number of Model Parameters: 5076481
+DistributedDataParallel(
+  (module): LNO(
+    (act): GELU(approximate='none')
+    (trunk_projector): MLP(
+      (act): GELU(approximate='none')
+      (input): Linear(in_features=2, out_features=256, bias=True)
+      (hidden): ModuleList(
+        (0-1): 2 x Linear(in_features=256, out_features=256, bias=True)
+      )
+      (output): Linear(in_features=256, out_features=256, bias=True)
+    )
+    (branch_projector): MLP(
+      (act): GELU(approximate='none')
+      (input): Linear(in_features=12, out_features=256, bias=True)
+      (hidden): ModuleList(
+        (0-1): 2 x Linear(in_features=256, out_features=256, bias=True)
+      )
+      (output): Linear(in_features=256, out_features=256, bias=True)
+    )
+    (out_mlp): MLP(
+      (act): GELU(approximate='none')
+      (input): Linear(in_features=256, out_features=256, bias=True)
+      (hidden): ModuleList(
+        (0-1): 2 x Linear(in_features=256, out_features=256, bias=True)
+      )
+      (output): Linear(in_features=256, out_features=1, bias=True)
+    )
+    (attention_projector): MLP(
+      (act): GELU(approximate='none')
+      (input): Linear(in_features=256, out_features=256, bias=True)
+      (hidden): ModuleList(
+        (0-1): 2 x Linear(in_features=256, out_features=256, bias=True)
+      )
+      (output): Linear(in_features=256, out_features=256, bias=True)
+    )
+    (attn_blocks): Sequential(
+      (0): AttentionBlock(
+        (act): GELU(approximate='none')
+        (self_attn): SelfAttention(
+          (Wq): Linear(in_features=256, out_features=256, bias=True)
+          (Wk): Linear(in_features=256, out_features=256, bias=True)
+          (Wv): Linear(in_features=256, out_features=256, bias=True)
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+        )
+        (ln1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (ln2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (drop): Dropout(p=0.0, inplace=False)
+        (mlp): Sequential(
+          (0): Linear(in_features=256, out_features=512, bias=True)
+          (1): GELU(approximate='none')
+          (2): Linear(in_features=512, out_features=256, bias=True)
+        )
+      )
+      (1): AttentionBlock(
+        (act): GELU(approximate='none')
+        (self_attn): SelfAttention(
+          (Wq): Linear(in_features=256, out_features=256, bias=True)
+          (Wk): Linear(in_features=256, out_features=256, bias=True)
+          (Wv): Linear(in_features=256, out_features=256, bias=True)
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+        )
+        (ln1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (ln2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (drop): Dropout(p=0.0, inplace=False)
+        (mlp): Sequential(
+          (0): Linear(in_features=256, out_features=512, bias=True)
+          (1): GELU(approximate='none')
+          (2): Linear(in_features=512, out_features=256, bias=True)
+        )
+      )
+      (2): AttentionBlock(
+        (act): GELU(approximate='none')
+        (self_attn): SelfAttention(
+          (Wq): Linear(in_features=256, out_features=256, bias=True)
+          (Wk): Linear(in_features=256, out_features=256, bias=True)
+          (Wv): Linear(in_features=256, out_features=256, bias=True)
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+        )
+        (ln1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (ln2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (drop): Dropout(p=0.0, inplace=False)
+        (mlp): Sequential(
+          (0): Linear(in_features=256, out_features=512, bias=True)
+          (1): GELU(approximate='none')
+          (2): Linear(in_features=512, out_features=256, bias=True)
+        )
+      )
+      (3): AttentionBlock(
+        (act): GELU(approximate='none')
+        (self_attn): SelfAttention(
+          (Wq): Linear(in_features=256, out_features=256, bias=True)
+          (Wk): Linear(in_features=256, out_features=256, bias=True)
+          (Wv): Linear(in_features=256, out_features=256, bias=True)
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+        )
+        (ln1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (ln2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (drop): Dropout(p=0.0, inplace=False)
+        (mlp): Sequential(
+          (0): Linear(in_features=256, out_features=512, bias=True)
+          (1): GELU(approximate='none')
+          (2): Linear(in_features=512, out_features=256, bias=True)
+        )
+      )
+      (4): AttentionBlock(
+        (act): GELU(approximate='none')
+        (self_attn): SelfAttention(
+          (Wq): Linear(in_features=256, out_features=256, bias=True)
+          (Wk): Linear(in_features=256, out_features=256, bias=True)
+          (Wv): Linear(in_features=256, out_features=256, bias=True)
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+        )
+        (ln1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (ln2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (drop): Dropout(p=0.0, inplace=False)
+        (mlp): Sequential(
+          (0): Linear(in_features=256, out_features=512, bias=True)
+          (1): GELU(approximate='none')
+          (2): Linear(in_features=512, out_features=256, bias=True)
+        )
+      )
+      (5): AttentionBlock(
+        (act): GELU(approximate='none')
+        (self_attn): SelfAttention(
+          (Wq): Linear(in_features=256, out_features=256, bias=True)
+          (Wk): Linear(in_features=256, out_features=256, bias=True)
+          (Wv): Linear(in_features=256, out_features=256, bias=True)
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+        )
+        (ln1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (ln2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (drop): Dropout(p=0.0, inplace=False)
+        (mlp): Sequential(
+          (0): Linear(in_features=256, out_features=512, bias=True)
+          (1): GELU(approximate='none')
+          (2): Linear(in_features=512, out_features=256, bias=True)
+        )
+      )
+      (6): AttentionBlock(
+        (act): GELU(approximate='none')
+        (self_attn): SelfAttention(
+          (Wq): Linear(in_features=256, out_features=256, bias=True)
+          (Wk): Linear(in_features=256, out_features=256, bias=True)
+          (Wv): Linear(in_features=256, out_features=256, bias=True)
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+        )
+        (ln1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (ln2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (drop): Dropout(p=0.0, inplace=False)
+        (mlp): Sequential(
+          (0): Linear(in_features=256, out_features=512, bias=True)
+          (1): GELU(approximate='none')
+          (2): Linear(in_features=512, out_features=256, bias=True)
+        )
+      )
+      (7): AttentionBlock(
+        (act): GELU(approximate='none')
+        (self_attn): SelfAttention(
+          (Wq): Linear(in_features=256, out_features=256, bias=True)
+          (Wk): Linear(in_features=256, out_features=256, bias=True)
+          (Wv): Linear(in_features=256, out_features=256, bias=True)
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+        )
+        (ln1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (ln2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (drop): Dropout(p=0.0, inplace=False)
+        (mlp): Sequential(
+          (0): Linear(in_features=256, out_features=512, bias=True)
+          (1): GELU(approximate='none')
+          (2): Linear(in_features=512, out_features=256, bias=True)
+        )
+      )
+    )
+  )
+)
+Start Training...
+Epoch: 1	Learning Rate :3.467148803248856e-07	Train Loss Step: 10.019400596618652	Train Loss Full: 1.0018943548202515	Val Loss Step: 10.026052474975586	Val Loss Full: 1.0028860569000244	Best Val Loss Full: 1.0028860569000244
+Epoch: 2	Learning Rate :1.0866160240210424e-06	Train Loss Step: 10.00039005279541	Train Loss Full: 1.0000412464141846	Val Loss Step: 10.006025314331055	Val Loss Full: 1.0006177425384521	Best Val Loss Full: 1.0006177425384521
+Epoch: 3	Learning Rate :2.3189731795749714e-06	Train Loss Step: 10.00003719329834	Train Loss Full: 1.0000039339065552	Val Loss Step: 10.004338264465332	Val Loss Full: 1.0004280805587769	Best Val Loss Full: 1.0004280805587769
+Epoch: 4	Learning Rate :4.042570061965622e-06	Train Loss Step: 10.000036239624023	Train Loss Full: 1.000003457069397	Val Loss Step: 10.00235366821289	Val Loss Full: 1.0002176761627197	Best Val Loss Full: 1.0002176761627197
+Epoch: 5	Learning Rate :6.255705553086591e-06	Train Loss Step: 9.999960899353027	Train Loss Full: 0.9999948143959045	Val Loss Step: 10.001158714294434	Val Loss Full: 1.000113606452942	Best Val Loss Full: 1.000113606452942
+Epoch: 6	Learning Rate :8.956195380679585e-06	Train Loss Step: 9.976837158203125	Train Loss Full: 0.9975131750106812	Val Loss Step: 10.098217964172363	Val Loss Full: 1.0100905895233154	Best Val Loss Full: 1.000113606452942
+Epoch: 7	Learning Rate :1.2141374274118877e-05	Train Loss Step: 9.578934669494629	Train Loss Full: 0.959051251411438	Val Loss Step: 9.817252159118652	Val Loss Full: 0.993510901927948	Best Val Loss Full: 0.993510901927948
+Epoch: 8	Learning Rate :1.5808098594922776e-05	Train Loss Step: 7.408857345581055	Train Loss Full: 0.756252110004425	Val Loss Step: 7.249855041503906	Val Loss Full: 0.764805793762207	Best Val Loss Full: 0.764805793762207
+Epoch: 9	Learning Rate :1.9952749439392653e-05	Train Loss Step: 5.659796237945557	Train Loss Full: 0.5958948731422424	Val Loss Step: 6.381326675415039	Val Loss Full: 0.6846095323562622	Best Val Loss Full: 0.6846095323562622
+Epoch: 10	Learning Rate :2.4571236210320867e-05	Train Loss Step: 5.524192810058594	Train Loss Full: 0.5833333134651184	Val Loss Step: 6.346013069152832	Val Loss Full: 0.6765763759613037	Best Val Loss Full: 0.6765763759613037
+Epoch: 11	Learning Rate :2.9659000654237754e-05	Train Loss Step: 5.42659330368042	Train Loss Full: 0.5737617611885071	Val Loss Step: 6.236367702484131	Val Loss Full: 0.6759881973266602	Best Val Loss Full: 0.6759881973266602
+Epoch: 12	Learning Rate :3.521102136021888e-05	Train Loss Step: 5.36100435256958	Train Loss Full: 0.5671193599700928	Val Loss Step: 5.96437931060791	Val Loss Full: 0.638790488243103	Best Val Loss Full: 0.638790488243103
+Epoch: 13	Learning Rate :4.122181871580677e-05	Train Loss Step: 5.290032863616943	Train Loss Full: 0.5600786209106445	Val Loss Step: 7.940645694732666	Val Loss Full: 0.8865340352058411	Best Val Loss Full: 0.638790488243103
+Epoch: 14	Learning Rate :4.7685460315159906e-05	Train Loss Step: 5.1366047859191895	Train Loss Full: 0.5436590313911438	Val Loss Step: 6.370452880859375	Val Loss Full: 0.6942902207374573	Best Val Loss Full: 0.638790488243103
+Epoch: 15	Learning Rate :5.459556681408921e-05	Train Loss Step: 4.693637847900391	Train Loss Full: 0.4973534345626831	Val Loss Step: 8.027464866638184	Val Loss Full: 0.9243836998939514	Best Val Loss Full: 0.638790488243103
+Epoch: 16	Learning Rate :6.194531822620428e-05	Train Loss Step: 3.8770530223846436	Train Loss Full: 0.4130862057209015	Val Loss Step: 8.458061218261719	Val Loss Full: 1.0018658638000488	Best Val Loss Full: 0.638790488243103
+Epoch: 17	Learning Rate :6.972746065395552e-05	Train Loss Step: 3.3864824771881104	Train Loss Full: 0.3638198971748352	Val Loss Step: 8.353029251098633	Val Loss Full: 0.995396614074707	Best Val Loss Full: 0.638790488243103
+Epoch: 18	Learning Rate :7.793431344792667e-05	Train Loss Step: 3.098726511001587	Train Loss Full: 0.3351116478443146	Val Loss Step: 7.843842506408691	Val Loss Full: 0.9576978087425232	Best Val Loss Full: 0.638790488243103
+Epoch: 19	Learning Rate :8.655777678731613e-05	Train Loss Step: 2.8811323642730713	Train Loss Full: 0.31344717741012573	Val Loss Step: 7.867956161499023	Val Loss Full: 0.9648152589797974	Best Val Loss Full: 0.638790488243103
+Epoch: 20	Learning Rate :9.558933967412128e-05	Train Loss Step: 2.7015371322631836	Train Loss Full: 0.29536986351013184	Val Loss Step: 7.469062805175781	Val Loss Full: 0.9174844026565552	Best Val Loss Full: 0.638790488243103
+Epoch: 21	Learning Rate :0.00010502008833313708	Train Loss Step: 2.5818753242492676	Train Loss Full: 0.2831214666366577	Val Loss Step: 8.003129959106445	Val Loss Full: 0.9777877330780029	Best Val Loss Full: 0.638790488243103
+Epoch: 22	Learning Rate :0.00011484071500948126	Train Loss Step: 2.4538400173187256	Train Loss Full: 0.2702995836734772	Val Loss Step: 6.327946662902832	Val Loss Full: 0.761638343334198	Best Val Loss Full: 0.638790488243103
+Epoch: 23	Learning Rate :0.00012504152715495825	Train Loss Step: 2.355818271636963	Train Loss Full: 0.2602011263370514	Val Loss Step: 5.696431636810303	Val Loss Full: 0.6704277396202087	Best Val Loss Full: 0.638790488243103
+Epoch: 24	Learning Rate :0.00013561245699419966	Train Loss Step: 2.257967710494995	Train Loss Full: 0.24998624622821808	Val Loss Step: 5.639625549316406	Val Loss Full: 0.6836163401603699	Best Val Loss Full: 0.638790488243103
+Epoch: 25	Learning Rate :0.00014654307146113818	Train Loss Step: 2.1476337909698486	Train Loss Full: 0.23886646330356598	Val Loss Step: 6.218808650970459	Val Loss Full: 0.7573809623718262	Best Val Loss Full: 0.638790488243103
+Epoch: 26	Learning Rate :0.00015782258249600744	Train Loss Step: 2.1211984157562256	Train Loss Full: 0.23548771440982819	Val Loss Step: 6.811554431915283	Val Loss Full: 0.8227359056472778	Best Val Loss Full: 0.638790488243103
+Epoch: 27	Learning Rate :0.00016943985769270632	Train Loss Step: 2.0354840755462646	Train Loss Full: 0.22691616415977478	Val Loss Step: 5.708841800689697	Val Loss Full: 0.6778593063354492	Best Val Loss Full: 0.638790488243103
+Epoch: 28	Learning Rate :0.00018138343128601918	Train Loss Step: 2.013392210006714	Train Loss Full: 0.22405381500720978	Val Loss Step: 7.0009613037109375	Val Loss Full: 0.8203545212745667	Best Val Loss Full: 0.638790488243103
+Epoch: 29	Learning Rate :0.00019364151546784596	Train Loss Step: 1.9493083953857422	Train Loss Full: 0.21762679517269135	Val Loss Step: 6.7031378746032715	Val Loss Full: 0.8112401366233826	Best Val Loss Full: 0.638790488243103
+Epoch: 30	Learning Rate :0.00020620201202127748	Train Loss Step: 1.9257140159606934	Train Loss Full: 0.21453362703323364	Val Loss Step: 5.912029266357422	Val Loss Full: 0.7111166715621948	Best Val Loss Full: 0.638790488243103
+Epoch: 31	Learning Rate :0.0002190525242610292	Train Loss Step: 1.9088270664215088	Train Loss Full: 0.2124142050743103	Val Loss Step: 5.243702411651611	Val Loss Full: 0.627229630947113	Best Val Loss Full: 0.627229630947113
+Epoch: 32	Learning Rate :0.00023218036926845166	Train Loss Step: 1.8202911615371704	Train Loss Full: 0.2033851444721222	Val Loss Step: 5.522039890289307	Val Loss Full: 0.6767743825912476	Best Val Loss Full: 0.627229630947113
+Epoch: 33	Learning Rate :0.00024557259040904197	Train Loss Step: 1.8145672082901	Train Loss Full: 0.20261932909488678	Val Loss Step: 5.576369285583496	Val Loss Full: 0.6778345108032227	Best Val Loss Full: 0.627229630947113
+Epoch: 34	Learning Rate :0.00025921597012009974	Train Loss Step: 1.7721025943756104	Train Loss Full: 0.19809600710868835	Val Loss Step: 4.988164901733398	Val Loss Full: 0.5970320701599121	Best Val Loss Full: 0.5970320701599121
+Epoch: 35	Learning Rate :0.0002730970429559099	Train Loss Step: 1.754997730255127	Train Loss Full: 0.195968896150589	Val Loss Step: 6.488380432128906	Val Loss Full: 0.7851794362068176	Best Val Loss Full: 0.5970320701599121
+Epoch: 36	Learning Rate :0.00028720210887757467	Train Loss Step: 1.7066298723220825	Train Loss Full: 0.1911202371120453	Val Loss Step: 4.948620796203613	Val Loss Full: 0.5860416293144226	Best Val Loss Full: 0.5860416293144226
+Epoch: 37	Learning Rate :0.00030151724677437975	Train Loss Step: 1.6662157773971558	Train Loss Full: 0.18678422272205353	Val Loss Step: 6.302117824554443	Val Loss Full: 0.7790347337722778	Best Val Loss Full: 0.5860416293144226
+Epoch: 38	Learning Rate :0.0003160283282033485	Train Loss Step: 1.6528706550598145	Train Loss Full: 0.18491698801517487	Val Loss Step: 6.322340965270996	Val Loss Full: 0.7732985615730286	Best Val Loss Full: 0.5860416293144226
+Epoch: 39	Learning Rate :0.0003307210313334253	Train Loss Step: 1.606164813041687	Train Loss Full: 0.18010063469409943	Val Loss Step: 5.734914302825928	Val Loss Full: 0.6719540357589722	Best Val Loss Full: 0.5860416293144226
+Epoch: 40	Learning Rate :0.00034558085508052435	Train Loss Step: 1.588182806968689	Train Loss Full: 0.17812012135982513	Val Loss Step: 4.750696182250977	Val Loss Full: 0.5600059628486633	Best Val Loss Full: 0.5600059628486633
+Epoch: 41	Learning Rate :0.0003605931334194931	Train Loss Step: 1.597758412361145	Train Loss Full: 0.1789419949054718	Val Loss Step: 5.403934955596924	Val Loss Full: 0.6467996835708618	Best Val Loss Full: 0.5600059628486633
+Epoch: 42	Learning Rate :0.0003757430498588678	Train Loss Step: 1.5333945751190186	Train Loss Full: 0.17241913080215454	Val Loss Step: 4.3069748878479	Val Loss Full: 0.5230651497840881	Best Val Loss Full: 0.5230651497840881
+Epoch: 43	Learning Rate :0.00039101565206412935	Train Loss Step: 1.549100637435913	Train Loss Full: 0.17336522042751312	Val Loss Step: 4.6155171394348145	Val Loss Full: 0.5688605308532715	Best Val Loss Full: 0.5230651497840881
+Epoch: 44	Learning Rate :0.00040639586661503477	Train Loss Step: 1.5019598007202148	Train Loss Full: 0.16868749260902405	Val Loss Step: 4.123176097869873	Val Loss Full: 0.4903193414211273	Best Val Loss Full: 0.4903193414211273
+Epoch: 45	Learning Rate :0.0004218685138824517	Train Loss Step: 1.4986847639083862	Train Loss Full: 0.1676817387342453	Val Loss Step: 4.865828514099121	Val Loss Full: 0.5758719444274902	Best Val Loss Full: 0.4903193414211273
+Epoch: 46	Learning Rate :0.0004374183230100192	Train Loss Step: 1.43425452709198	Train Loss Full: 0.16144415736198425	Val Loss Step: 4.186964988708496	Val Loss Full: 0.5036430358886719	Best Val Loss Full: 0.4903193414211273
+Epoch: 47	Learning Rate :0.000453029946985844	Train Loss Step: 1.4613372087478638	Train Loss Full: 0.16405904293060303	Val Loss Step: 4.674205303192139	Val Loss Full: 0.5582309365272522	Best Val Loss Full: 0.4903193414211273
+Epoch: 48	Learning Rate :0.0004686879777893605	Train Loss Step: 1.3977426290512085	Train Loss Full: 0.15739573538303375	Val Loss Step: 4.017628192901611	Val Loss Full: 0.4793814420700073	Best Val Loss Full: 0.4793814420700073
+Epoch: 49	Learning Rate :0.00048437696159840356	Train Loss Step: 1.3816474676132202	Train Loss Full: 0.15565742552280426	Val Loss Step: 5.088431358337402	Val Loss Full: 0.620200514793396	Best Val Loss Full: 0.4793814420700073
+Epoch: 50	Learning Rate :0.0005000814140414842	Train Loss Step: 1.3711490631103516	Train Loss Full: 0.15429456532001495	Val Loss Step: 3.993433952331543	Val Loss Full: 0.4800562262535095	Best Val Loss Full: 0.4793814420700073
+Epoch: 51	Learning Rate :0.0005157858354802186	Train Loss Step: 1.351719856262207	Train Loss Full: 0.15193787217140198	Val Loss Step: 3.616469144821167	Val Loss Full: 0.43831896781921387	Best Val Loss Full: 0.43831896781921387
+Epoch: 52	Learning Rate :0.0005314747263068223	Train Loss Step: 1.3026455640792847	Train Loss Full: 0.14680485427379608	Val Loss Step: 4.629861831665039	Val Loss Full: 0.5521151423454285	Best Val Loss Full: 0.43831896781921387
+Epoch: 53	Learning Rate :0.000547132602241577	Train Loss Step: 1.328076720237732	Train Loss Full: 0.1491229385137558	Val Loss Step: 4.429553508758545	Val Loss Full: 0.533463180065155	Best Val Loss Full: 0.43831896781921387
+Epoch: 54	Learning Rate :0.0005627440096151657	Train Loss Step: 1.2799490690231323	Train Loss Full: 0.144365131855011	Val Loss Step: 4.038844108581543	Val Loss Full: 0.4987952411174774	Best Val Loss Full: 0.43831896781921387
+Epoch: 55	Learning Rate :0.0005782935406208003	Train Loss Step: 1.2605329751968384	Train Loss Full: 0.14220194518566132	Val Loss Step: 4.4412946701049805	Val Loss Full: 0.5458505749702454	Best Val Loss Full: 0.43831896781921387
+Epoch: 56	Learning Rate :0.0005937658485210828	Train Loss Step: 1.257644534111023	Train Loss Full: 0.14149583876132965	Val Loss Step: 4.9211931228637695	Val Loss Full: 0.5917653441429138	Best Val Loss Full: 0.43831896781921387
+Epoch: 57	Learning Rate :0.0006091456627945928	Train Loss Step: 1.226398229598999	Train Loss Full: 0.1383194476366043	Val Loss Step: 4.398885726928711	Val Loss Full: 0.5418650507926941	Best Val Loss Full: 0.43831896781921387
+Epoch: 58	Learning Rate :0.0006244178042072556	Train Loss Step: 1.2017546892166138	Train Loss Full: 0.13542722165584564	Val Loss Step: 3.7729876041412354	Val Loss Full: 0.456580251455307	Best Val Loss Full: 0.43831896781921387
+Epoch: 59	Learning Rate :0.0006395671997936104	Train Loss Step: 1.1892272233963013	Train Loss Full: 0.13429510593414307	Val Loss Step: 4.064121723175049	Val Loss Full: 0.4982801675796509	Best Val Loss Full: 0.43831896781921387
+Epoch: 60	Learning Rate :0.0006545788977331995	Train Loss Step: 1.172261118888855	Train Loss Full: 0.13230450451374054	Val Loss Step: 3.8349485397338867	Val Loss Full: 0.4792138934135437	Best Val Loss Full: 0.43831896781921387
+Epoch: 61	Learning Rate :0.0006694380821073878	Train Loss Step: 1.1307276487350464	Train Loss Full: 0.12783659994602203	Val Loss Step: 3.7668159008026123	Val Loss Full: 0.46108368039131165	Best Val Loss Full: 0.43831896781921387
+Epoch: 62	Learning Rate :0.0006841300875220581	Train Loss Step: 1.1478346586227417	Train Loss Full: 0.12957340478897095	Val Loss Step: 3.7021477222442627	Val Loss Full: 0.4424997568130493	Best Val Loss Full: 0.43831896781921387
+Epoch: 63	Learning Rate :0.0006986404135817398	Train Loss Step: 1.1253911256790161	Train Loss Full: 0.1270797848701477	Val Loss Step: 3.14477276802063	Val Loss Full: 0.38410720229148865	Best Val Loss Full: 0.38410720229148865
+Epoch: 64	Learning Rate :0.0007129547392008958	Train Loss Step: 1.1115773916244507	Train Loss Full: 0.12552623450756073	Val Loss Step: 3.800004243850708	Val Loss Full: 0.4673669636249542	Best Val Loss Full: 0.38410720229148865
+Epoch: 65	Learning Rate :0.0007270589367382332	Train Loss Step: 1.0851281881332397	Train Loss Full: 0.12288767844438553	Val Loss Step: 3.162712335586548	Val Loss Full: 0.3834804594516754	Best Val Loss Full: 0.3834804594516754
+Epoch: 66	Learning Rate :0.000740939085940097	Train Loss Step: 1.0687832832336426	Train Loss Full: 0.12115462124347687	Val Loss Step: 3.73990797996521	Val Loss Full: 0.44852685928344727	Best Val Loss Full: 0.3834804594516754
+Epoch: 67	Learning Rate :0.0007545814876791775	Train Loss Step: 1.0496407747268677	Train Loss Full: 0.11887504160404205	Val Loss Step: 3.372424840927124	Val Loss Full: 0.41314342617988586	Best Val Loss Full: 0.3834804594516754
+Epoch: 68	Learning Rate :0.0007679726774749767	Train Loss Step: 1.0198577642440796	Train Loss Full: 0.11582616716623306	Val Loss Step: 3.112663507461548	Val Loss Full: 0.3772583305835724	Best Val Loss Full: 0.3772583305835724
+Epoch: 69	Learning Rate :0.0007810994387826888	Train Loss Step: 0.9982903599739075	Train Loss Full: 0.11340384185314178	Val Loss Step: 3.7690746784210205	Val Loss Full: 0.4557609558105469	Best Val Loss Full: 0.3772583305835724
+Epoch: 70	Learning Rate :0.0007939488160373773	Train Loss Step: 1.0182691812515259	Train Loss Full: 0.11528380215167999	Val Loss Step: 2.8853676319122314	Val Loss Full: 0.3516325354576111	Best Val Loss Full: 0.3516325354576111
+Epoch: 71	Learning Rate :0.0008065081274405755	Train Loss Step: 0.9684852361679077	Train Loss Full: 0.11024316400289536	Val Loss Step: 3.4838356971740723	Val Loss Full: 0.42684829235076904	Best Val Loss Full: 0.3516325354576111
+Epoch: 72	Learning Rate :0.0008187649774766924	Train Loss Step: 0.9618480801582336	Train Loss Full: 0.10959593206644058	Val Loss Step: 3.461359739303589	Val Loss Full: 0.42995038628578186	Best Val Loss Full: 0.3516325354576111
+Epoch: 73	Learning Rate :0.0008307072691468693	Train Loss Step: 0.9478687644004822	Train Loss Full: 0.10826071351766586	Val Loss Step: 3.299145221710205	Val Loss Full: 0.40493044257164	Best Val Loss Full: 0.3516325354576111
+Epoch: 74	Learning Rate :0.0008423232159082107	Train Loss Step: 0.9359771013259888	Train Loss Full: 0.10663217306137085	Val Loss Step: 2.931936502456665	Val Loss Full: 0.35996320843696594	Best Val Loss Full: 0.3516325354576111
+Epoch: 75	Learning Rate :0.000853601353306611	Train Loss Step: 0.9204117059707642	Train Loss Full: 0.10506313294172287	Val Loss Step: 2.904555320739746	Val Loss Full: 0.3571726977825165	Best Val Loss Full: 0.3516325354576111
+Epoch: 76	Learning Rate :0.000864530550291691	Train Loss Step: 0.8874808549880981	Train Loss Full: 0.1014886125922203	Val Loss Step: 3.054065227508545	Val Loss Full: 0.38292640447616577	Best Val Loss Full: 0.3516325354576111
+Epoch: 77	Learning Rate :0.0008751000202026798	Train Loss Step: 0.894025444984436	Train Loss Full: 0.10219226032495499	Val Loss Step: 2.9073612689971924	Val Loss Full: 0.3614748418331146	Best Val Loss Full: 0.3516325354576111
+Epoch: 78	Learning Rate :0.000885299331414398	Train Loss Step: 0.8759022951126099	Train Loss Full: 0.10031282156705856	Val Loss Step: 3.160416603088379	Val Loss Full: 0.39110496640205383	Best Val Loss Full: 0.3516325354576111
+Epoch: 79	Learning Rate :0.0008951184176328364	Train Loss Step: 0.8738762140274048	Train Loss Full: 0.0996997281908989	Val Loss Step: 3.1416432857513428	Val Loss Full: 0.3893289864063263	Best Val Loss Full: 0.3516325354576111
+Epoch: 80	Learning Rate :0.000904547587830167	Train Loss Step: 0.8463308215141296	Train Loss Full: 0.09676769375801086	Val Loss Step: 2.99521541595459	Val Loss Full: 0.37795042991638184	Best Val Loss Full: 0.3516325354576111
+Epoch: 81	Learning Rate :0.0009135775358093829	Train Loss Step: 0.844139814376831	Train Loss Full: 0.09662294387817383	Val Loss Step: 2.9551591873168945	Val Loss Full: 0.3672800362110138	Best Val Loss Full: 0.3516325354576111
+Epoch: 82	Learning Rate :0.0009221993493891257	Train Loss Step: 0.838624894618988	Train Loss Full: 0.09600738435983658	Val Loss Step: 3.0464532375335693	Val Loss Full: 0.3855389952659607	Best Val Loss Full: 0.3516325354576111
+Epoch: 83	Learning Rate :0.0009304045191996368	Train Loss Step: 0.8227099180221558	Train Loss Full: 0.09427859634160995	Val Loss Step: 2.5756871700286865	Val Loss Full: 0.31555795669555664	Best Val Loss Full: 0.31555795669555664
+Epoch: 84	Learning Rate :0.0009381849470811483	Train Loss Step: 0.8195945024490356	Train Loss Full: 0.09371725469827652	Val Loss Step: 3.3694753646850586	Val Loss Full: 0.41725942492485046	Best Val Loss Full: 0.31555795669555664
+Epoch: 85	Learning Rate :0.0009455329540764302	Train Loss Step: 0.7944064736366272	Train Loss Full: 0.09133653342723846	Val Loss Step: 2.85290265083313	Val Loss Full: 0.34941336512565613	Best Val Loss Full: 0.31555795669555664
+Epoch: 86	Learning Rate :0.000952441288009599	Train Loss Step: 0.7917959094047546	Train Loss Full: 0.09071049839258194	Val Loss Step: 3.4575698375701904	Val Loss Full: 0.4282444715499878	Best Val Loss Full: 0.31555795669555664
+Epoch: 87	Learning Rate :0.0009589031306437125	Train Loss Step: 0.7803362011909485	Train Loss Full: 0.0894014984369278	Val Loss Step: 2.7516512870788574	Val Loss Full: 0.34563446044921875	Best Val Loss Full: 0.31555795669555664
+Epoch: 88	Learning Rate :0.0009649121044100855	Train Loss Step: 0.7631758451461792	Train Loss Full: 0.08759621530771255	Val Loss Step: 3.025836706161499	Val Loss Full: 0.3779872953891754	Best Val Loss Full: 0.31555795669555664
+Epoch: 89	Learning Rate :0.0009704622787026826	Train Loss Step: 0.7550715804100037	Train Loss Full: 0.08686640858650208	Val Loss Step: 2.860574960708618	Val Loss Full: 0.3540017902851105	Best Val Loss Full: 0.31555795669555664
+Epoch: 90	Learning Rate :0.0009755481757313796	Train Loss Step: 0.7533887624740601	Train Loss Full: 0.08641169220209122	Val Loss Step: 2.7002336978912354	Val Loss Full: 0.3341490626335144	Best Val Loss Full: 0.31555795669555664
+Epoch: 91	Learning Rate :0.0009801647759283122	Train Loss Step: 0.7291549444198608	Train Loss Full: 0.0839424729347229	Val Loss Step: 2.876220941543579	Val Loss Full: 0.3574869930744171	Best Val Loss Full: 0.31555795669555664
+Epoch: 92	Learning Rate :0.000984307522901981	Train Loss Step: 0.7293332815170288	Train Loss Full: 0.08373803645372391	Val Loss Step: 2.904693126678467	Val Loss Full: 0.3616243600845337	Best Val Loss Full: 0.31555795669555664
+Epoch: 93	Learning Rate :0.000987972327934219	Train Loss Step: 0.7208832502365112	Train Loss Full: 0.08303897827863693	Val Loss Step: 2.7363393306732178	Val Loss Full: 0.3389846384525299	Best Val Loss Full: 0.31555795669555664
+Epoch: 94	Learning Rate :0.0009911555740155854	Train Loss Step: 0.7215969562530518	Train Loss Full: 0.08276241272687912	Val Loss Step: 2.678365468978882	Val Loss Full: 0.3368617296218872	Best Val Loss Full: 0.31555795669555664
+Epoch: 95	Learning Rate :0.0009938541194152032	Train Loss Step: 0.7054819464683533	Train Loss Full: 0.08112752437591553	Val Loss Step: 2.6414332389831543	Val Loss Full: 0.3279697597026825	Best Val Loss Full: 0.31555795669555664
+Epoch: 96	Learning Rate :0.0009960653007815156	Train Loss Step: 0.7022427320480347	Train Loss Full: 0.08074955642223358	Val Loss Step: 2.6236953735351562	Val Loss Full: 0.33809417486190796	Best Val Loss Full: 0.31555795669555664
+Epoch: 97	Learning Rate :0.000997786935770904	Train Loss Step: 0.6970949769020081	Train Loss Full: 0.08024896681308746	Val Loss Step: 2.4658055305480957	Val Loss Full: 0.3158625364303589	Best Val Loss Full: 0.31555795669555664
+Epoch: 98	Learning Rate :0.0009990173252015684	Train Loss Step: 0.6785759329795837	Train Loss Full: 0.0780533105134964	Val Loss Step: 2.9050166606903076	Val Loss Full: 0.3659747242927551	Best Val Loss Full: 0.31555795669555664
+Epoch: 99	Learning Rate :0.0009997552547305504	Train Loss Step: 0.6682260632514954	Train Loss Full: 0.07700001448392868	Val Loss Step: 2.1727747917175293	Val Loss Full: 0.2701251208782196	Best Val Loss Full: 0.2701251208782196
+Epoch: 100	Learning Rate :0.00099999999975326	Train Loss Step: 0.6722692847251892	Train Loss Full: 0.07737714052200317	Val Loss Step: 2.364664077758789	Val Loss Full: 0.2986868619918823	Best Val Loss Full: 0.2701251208782196
+Epoch: 101	Learning Rate :0.0009999844552070311	Train Loss Step: 0.6544148325920105	Train Loss Full: 0.07530773431062698	Val Loss Step: 2.7639553546905518	Val Loss Full: 0.33965232968330383	Best Val Loss Full: 0.2701251208782196
+Epoch: 102	Learning Rate :0.0009999380692647766	Train Loss Step: 0.6522481441497803	Train Loss Full: 0.07497423142194748	Val Loss Step: 2.6667513847351074	Val Loss Full: 0.3348503112792969	Best Val Loss Full: 0.2701251208782196
+Epoch: 103	Learning Rate :0.0009998608447877998	Train Loss Step: 0.6408549547195435	Train Loss Full: 0.07372817397117615	Val Loss Step: 2.240638017654419	Val Loss Full: 0.2830014228820801	Best Val Loss Full: 0.2701251208782196
+Epoch: 104	Learning Rate :0.0009997527865396698	Train Loss Step: 0.6379826068878174	Train Loss Full: 0.07322380691766739	Val Loss Step: 2.308013677597046	Val Loss Full: 0.290009081363678	Best Val Loss Full: 0.2701251208782196
+Epoch: 105	Learning Rate :0.000999613901185929	Train Loss Step: 0.6279210448265076	Train Loss Full: 0.07234301418066025	Val Loss Step: 2.175758123397827	Val Loss Full: 0.2747655212879181	Best Val Loss Full: 0.2701251208782196
+Epoch: 106	Learning Rate :0.0009994441972936796	Train Loss Step: 0.628056526184082	Train Loss Full: 0.07216998189687729	Val Loss Step: 2.2221662998199463	Val Loss Full: 0.27619579434394836	Best Val Loss Full: 0.2701251208782196
+Epoch: 107	Learning Rate :0.0009992436853310572	Train Loss Step: 0.6188809871673584	Train Loss Full: 0.07127531617879868	Val Loss Step: 2.181813955307007	Val Loss Full: 0.27608591318130493	Best Val Loss Full: 0.2701251208782196
+Epoch: 108	Learning Rate :0.0009990123776665845	Train Loss Step: 0.605871856212616	Train Loss Full: 0.06964931637048721	Val Loss Step: 2.346597909927368	Val Loss Full: 0.29251495003700256	Best Val Loss Full: 0.2701251208782196
+Epoch: 109	Learning Rate :0.0009987502885684077	Train Loss Step: 0.6014590263366699	Train Loss Full: 0.06930901855230331	Val Loss Step: 2.4898672103881836	Val Loss Full: 0.3176448345184326	Best Val Loss Full: 0.2701251208782196
+Epoch: 110	Learning Rate :0.0009984574342034166	Train Loss Step: 0.5985069274902344	Train Loss Full: 0.0687653198838234	Val Loss Step: 2.2074480056762695	Val Loss Full: 0.28205469250679016	Best Val Loss Full: 0.2701251208782196
+Epoch: 111	Learning Rate :0.0009981338326362484	Train Loss Step: 0.5938535928726196	Train Loss Full: 0.06830676645040512	Val Loss Step: 2.370109796524048	Val Loss Full: 0.3012009561061859	Best Val Loss Full: 0.2701251208782196
+Epoch: 112	Learning Rate :0.0009977795038281713	Train Loss Step: 0.5906732678413391	Train Loss Full: 0.06778573244810104	Val Loss Step: 2.1061058044433594	Val Loss Full: 0.26683372259140015	Best Val Loss Full: 0.26683372259140015
+Epoch: 113	Learning Rate :0.000997394469635856	Train Loss Step: 0.5828450918197632	Train Loss Full: 0.06710274517536163	Val Loss Step: 2.4025912284851074	Val Loss Full: 0.3131354749202728	Best Val Loss Full: 0.26683372259140015
+Epoch: 114	Learning Rate :0.0009969787538100247	Train Loss Step: 0.5808044672012329	Train Loss Full: 0.06665480136871338	Val Loss Step: 2.0676939487457275	Val Loss Full: 0.2672909200191498	Best Val Loss Full: 0.26683372259140015
+Epoch: 115	Learning Rate :0.000996532381993988	Train Loss Step: 0.5794554948806763	Train Loss Full: 0.06676273792982101	Val Loss Step: 2.0616343021392822	Val Loss Full: 0.27235147356987	Best Val Loss Full: 0.26683372259140015
+Epoch: 116	Learning Rate :0.0009960553817220618	Train Loss Step: 0.5715578198432922	Train Loss Full: 0.0658026933670044	Val Loss Step: 2.2743210792541504	Val Loss Full: 0.29361480474472046	Best Val Loss Full: 0.26683372259140015
+Epoch: 117	Learning Rate :0.0009955477824178701	Train Loss Step: 0.5617963075637817	Train Loss Full: 0.06450092792510986	Val Loss Step: 2.1086974143981934	Val Loss Full: 0.2700013220310211	Best Val Loss Full: 0.26683372259140015
+Epoch: 118	Learning Rate :0.0009950096153925289	Train Loss Step: 0.5592023134231567	Train Loss Full: 0.06435488909482956	Val Loss Step: 2.10426926612854	Val Loss Full: 0.26664555072784424	Best Val Loss Full: 0.26664555072784424
+Epoch: 119	Learning Rate :0.0009944409138427151	Train Loss Step: 0.5515637993812561	Train Loss Full: 0.06337511539459229	Val Loss Step: 2.156208038330078	Val Loss Full: 0.26976221799850464	Best Val Loss Full: 0.26664555072784424
+Epoch: 120	Learning Rate :0.0009938417128486192	Train Loss Step: 0.5474154353141785	Train Loss Full: 0.06302782893180847	Val Loss Step: 2.3616249561309814	Val Loss Full: 0.300202339887619	Best Val Loss Full: 0.26664555072784424
+Epoch: 121	Learning Rate :0.000993212049371781	Train Loss Step: 0.5428822636604309	Train Loss Full: 0.062461007386446	Val Loss Step: 1.9611932039260864	Val Loss Full: 0.2575165033340454	Best Val Loss Full: 0.2575165033340454
+Epoch: 122	Learning Rate :0.00099255196225281	Train Loss Step: 0.5406526923179626	Train Loss Full: 0.062212079763412476	Val Loss Step: 2.375925064086914	Val Loss Full: 0.3003329336643219	Best Val Loss Full: 0.2575165033340454
+Epoch: 123	Learning Rate :0.0009918614922089885	Train Loss Step: 0.5314725041389465	Train Loss Full: 0.06100715696811676	Val Loss Step: 2.057623863220215	Val Loss Full: 0.2652147710323334	Best Val Loss Full: 0.2575165033340454
+Epoch: 124	Learning Rate :0.0009911406818317618	Train Loss Step: 0.5336277484893799	Train Loss Full: 0.06135955825448036	Val Loss Step: 2.0209202766418457	Val Loss Full: 0.26548677682876587	Best Val Loss Full: 0.2575165033340454
+Epoch: 125	Learning Rate :0.0009903895755841087	Train Loss Step: 0.5314908027648926	Train Loss Full: 0.06098296120762825	Val Loss Step: 1.9565476179122925	Val Loss Full: 0.25274962186813354	Best Val Loss Full: 0.25274962186813354
+Epoch: 126	Learning Rate :0.000989608219797801	Train Loss Step: 0.5178797245025635	Train Loss Full: 0.059441398829221725	Val Loss Step: 2.170867443084717	Val Loss Full: 0.2738937437534332	Best Val Loss Full: 0.25274962186813354
+Epoch: 127	Learning Rate :0.000988796662670544	Train Loss Step: 0.5269725918769836	Train Loss Full: 0.06043358892202377	Val Loss Step: 2.2425320148468018	Val Loss Full: 0.28833621740341187	Best Val Loss Full: 0.25274962186813354
+Epoch: 128	Learning Rate :0.000987954954263004	Train Loss Step: 0.5182324051856995	Train Loss Full: 0.059565428644418716	Val Loss Step: 1.9241459369659424	Val Loss Full: 0.24822385609149933	Best Val Loss Full: 0.24822385609149933
+Epoch: 129	Learning Rate :0.0009870831464957202	Train Loss Step: 0.5132847428321838	Train Loss Full: 0.05912615731358528	Val Loss Step: 1.8462040424346924	Val Loss Full: 0.2380989044904709	Best Val Loss Full: 0.2380989044904709
+Epoch: 130	Learning Rate :0.0009861812931459028	Train Loss Step: 0.5078721642494202	Train Loss Full: 0.058282628655433655	Val Loss Step: 2.091446876525879	Val Loss Full: 0.269942045211792	Best Val Loss Full: 0.2380989044904709
+Epoch: 131	Learning Rate :0.000985249449844114	Train Loss Step: 0.503600537776947	Train Loss Full: 0.057822175323963165	Val Loss Step: 2.841768503189087	Val Loss Full: 0.37129297852516174	Best Val Loss Full: 0.2380989044904709
+Epoch: 132	Learning Rate :0.0009842876740708386	Train Loss Step: 0.5003078579902649	Train Loss Full: 0.057478222995996475	Val Loss Step: 2.2533326148986816	Val Loss Full: 0.2902926802635193	Best Val Loss Full: 0.2380989044904709
+Epoch: 133	Learning Rate :0.000983296025152936	Train Loss Step: 0.49602240324020386	Train Loss Full: 0.056929923593997955	Val Loss Step: 1.791200041770935	Val Loss Full: 0.23272250592708588	Best Val Loss Full: 0.23272250592708588
+Epoch: 134	Learning Rate :0.0009822745642599827	Train Loss Step: 0.49615535140037537	Train Loss Full: 0.05702073127031326	Val Loss Step: 1.7754383087158203	Val Loss Full: 0.22834058105945587	Best Val Loss Full: 0.22834058105945587
+Epoch: 135	Learning Rate :0.0009812233544004986	Train Loss Step: 0.49460405111312866	Train Loss Full: 0.05672360211610794	Val Loss Step: 1.9947645664215088	Val Loss Full: 0.25878727436065674	Best Val Loss Full: 0.22834058105945587
+Epoch: 136	Learning Rate :0.000980142460418059	Train Loss Step: 0.49322962760925293	Train Loss Full: 0.05666079372167587	Val Loss Step: 1.6096677780151367	Val Loss Full: 0.20688708126544952	Best Val Loss Full: 0.20688708126544952
+Epoch: 137	Learning Rate :0.0009790319489872963	Train Loss Step: 0.4789949059486389	Train Loss Full: 0.05494797229766846	Val Loss Step: 2.0559680461883545	Val Loss Full: 0.2652391791343689	Best Val Loss Full: 0.20688708126544952
+Epoch: 138	Learning Rate :0.0009778918886097865	Train Loss Step: 0.48583728075027466	Train Loss Full: 0.05571307614445686	Val Loss Step: 2.007471799850464	Val Loss Full: 0.26239141821861267	Best Val Loss Full: 0.20688708126544952
+Epoch: 139	Learning Rate :0.000976722349609824	Train Loss Step: 0.47954362630844116	Train Loss Full: 0.055011942982673645	Val Loss Step: 2.130073070526123	Val Loss Full: 0.27673622965812683	Best Val Loss Full: 0.20688708126544952
+Epoch: 140	Learning Rate :0.000975523404130083	Train Loss Step: 0.4755134880542755	Train Loss Full: 0.054735247045755386	Val Loss Step: 1.9916012287139893	Val Loss Full: 0.26494139432907104	Best Val Loss Full: 0.20688708126544952
+Epoch: 141	Learning Rate :0.0009742951261271685	Train Loss Step: 0.4765565097332001	Train Loss Full: 0.05472526326775551	Val Loss Step: 1.916868805885315	Val Loss Full: 0.24808001518249512	Best Val Loss Full: 0.20688708126544952
+Epoch: 142	Learning Rate :0.0009730375913670535	Train Loss Step: 0.46411600708961487	Train Loss Full: 0.05324851721525192	Val Loss Step: 2.139803171157837	Val Loss Full: 0.2744668424129486	Best Val Loss Full: 0.20688708126544952
+Epoch: 143	Learning Rate :0.0009717508774204053	Train Loss Step: 0.4698329269886017	Train Loss Full: 0.05362611636519432	Val Loss Step: 1.7488012313842773	Val Loss Full: 0.22262345254421234	Best Val Loss Full: 0.20688708126544952
+Epoch: 144	Learning Rate :0.0009704350636578013	Train Loss Step: 0.46791839599609375	Train Loss Full: 0.05363564193248749	Val Loss Step: 2.074648380279541	Val Loss Full: 0.2678889036178589	Best Val Loss Full: 0.20688708126544952
+Epoch: 145	Learning Rate :0.0009690902312448322	Train Loss Step: 0.4609597325325012	Train Loss Full: 0.05301639065146446	Val Loss Step: 1.8518894910812378	Val Loss Full: 0.2383565604686737	Best Val Loss Full: 0.20688708126544952
+Epoch: 146	Learning Rate :0.0009677164631370961	Train Loss Step: 0.4598410427570343	Train Loss Full: 0.052760690450668335	Val Loss Step: 1.74647057056427	Val Loss Full: 0.22659747302532196	Best Val Loss Full: 0.20688708126544952
+Epoch: 147	Learning Rate :0.000966313844075081	Train Loss Step: 0.45622366666793823	Train Loss Full: 0.0523250550031662	Val Loss Step: 1.7002553939819336	Val Loss Full: 0.22173292934894562	Best Val Loss Full: 0.20688708126544952
+Epoch: 148	Learning Rate :0.0009648824605789373	Train Loss Step: 0.45644354820251465	Train Loss Full: 0.05238277465105057	Val Loss Step: 1.6570924520492554	Val Loss Full: 0.2142525464296341	Best Val Loss Full: 0.20688708126544952
+Epoch: 149	Learning Rate :0.0009634224009431418	Train Loss Step: 0.45014458894729614	Train Loss Full: 0.051682788878679276	Val Loss Step: 1.7105151414871216	Val Loss Full: 0.22380176186561584	Best Val Loss Full: 0.20688708126544952
+Epoch: 150	Learning Rate :0.0009619337552310499	Train Loss Step: 0.4514262080192566	Train Loss Full: 0.05186402052640915	Val Loss Step: 1.7845906019210815	Val Loss Full: 0.23098759353160858	Best Val Loss Full: 0.20688708126544952
+Epoch: 151	Learning Rate :0.0009604166152693415	Train Loss Step: 0.4432910680770874	Train Loss Full: 0.05081712082028389	Val Loss Step: 1.7225353717803955	Val Loss Full: 0.22188013792037964	Best Val Loss Full: 0.20688708126544952
+Epoch: 152	Learning Rate :0.0009588710746423559	Train Loss Step: 0.44526100158691406	Train Loss Full: 0.051150716841220856	Val Loss Step: 1.9765169620513916	Val Loss Full: 0.25310564041137695	Best Val Loss Full: 0.20688708126544952
+Epoch: 153	Learning Rate :0.0009572972286863191	Train Loss Step: 0.4356299042701721	Train Loss Full: 0.049824781715869904	Val Loss Step: 1.7168078422546387	Val Loss Full: 0.22661501169204712	Best Val Loss Full: 0.20688708126544952
+Epoch: 154	Learning Rate :0.000955695174483463	Train Loss Step: 0.4436565041542053	Train Loss Full: 0.05087479576468468	Val Loss Step: 2.007744312286377	Val Loss Full: 0.26484012603759766	Best Val Loss Full: 0.20688708126544952
+Epoch: 155	Learning Rate :0.0009540650108560373	Train Loss Step: 0.43384286761283875	Train Loss Full: 0.049811042845249176	Val Loss Step: 1.8018479347229004	Val Loss Full: 0.23655669391155243	Best Val Loss Full: 0.20688708126544952
+Epoch: 156	Learning Rate :0.0009524068383602132	Train Loss Step: 0.4330509901046753	Train Loss Full: 0.04965302720665932	Val Loss Step: 1.7340072393417358	Val Loss Full: 0.22802408039569855	Best Val Loss Full: 0.20688708126544952
+Epoch: 157	Learning Rate :0.000950720759279881	Train Loss Step: 0.43272560834884644	Train Loss Full: 0.049588464200496674	Val Loss Step: 1.9609639644622803	Val Loss Full: 0.26354801654815674	Best Val Loss Full: 0.20688708126544952
+Epoch: 158	Learning Rate :0.0009490068776203406	Train Loss Step: 0.42294856905937195	Train Loss Full: 0.04838518798351288	Val Loss Step: 1.801476240158081	Val Loss Full: 0.23055478930473328	Best Val Loss Full: 0.20688708126544952
+Epoch: 159	Learning Rate :0.0009472652991018857	Train Loss Step: 0.4237672686576843	Train Loss Full: 0.04849366471171379	Val Loss Step: 1.5889071226119995	Val Loss Full: 0.2064608931541443	Best Val Loss Full: 0.2064608931541443
+Epoch: 160	Learning Rate :0.0009454961311532828	Train Loss Step: 0.4223127067089081	Train Loss Full: 0.04833068698644638	Val Loss Step: 1.647615671157837	Val Loss Full: 0.21259474754333496	Best Val Loss Full: 0.2064608931541443
+Epoch: 161	Learning Rate :0.0009436994829051448	Train Loss Step: 0.422580361366272	Train Loss Full: 0.04840297996997833	Val Loss Step: 1.654409646987915	Val Loss Full: 0.21160179376602173	Best Val Loss Full: 0.2064608931541443
+Epoch: 162	Learning Rate :0.0009418754651831985	Train Loss Step: 0.41603997349739075	Train Loss Full: 0.04773503541946411	Val Loss Step: 1.6831438541412354	Val Loss Full: 0.21824057400226593	Best Val Loss Full: 0.2064608931541443
+Epoch: 163	Learning Rate :0.0009400241905014487	Train Loss Step: 0.4172554016113281	Train Loss Full: 0.04778348281979561	Val Loss Step: 1.7488572597503662	Val Loss Full: 0.2230454832315445	Best Val Loss Full: 0.2064608931541443
+Epoch: 164	Learning Rate :0.0009381457730552384	Train Loss Step: 0.4189554750919342	Train Loss Full: 0.04800429940223694	Val Loss Step: 1.6642884016036987	Val Loss Full: 0.21530993282794952	Best Val Loss Full: 0.2064608931541443
+Epoch: 165	Learning Rate :0.0009362403287142035	Train Loss Step: 0.4105744957923889	Train Loss Full: 0.04697158932685852	Val Loss Step: 1.5372248888015747	Val Loss Full: 0.20144449174404144	Best Val Loss Full: 0.20144449174404144
+Epoch: 166	Learning Rate :0.0009343079750151264	Train Loss Step: 0.4088439345359802	Train Loss Full: 0.046990614384412766	Val Loss Step: 1.6224244832992554	Val Loss Full: 0.21209609508514404	Best Val Loss Full: 0.20144449174404144
+Epoch: 167	Learning Rate :0.0009323488311546857	Train Loss Step: 0.41240403056144714	Train Loss Full: 0.04730134457349777	Val Loss Step: 1.8119795322418213	Val Loss Full: 0.23461554944515228	Best Val Loss Full: 0.20144449174404144
+Epoch: 168	Learning Rate :0.0009303630179821029	Train Loss Step: 0.4073083996772766	Train Loss Full: 0.04661882668733597	Val Loss Step: 1.4970730543136597	Val Loss Full: 0.19376598298549652	Best Val Loss Full: 0.19376598298549652
+Epoch: 169	Learning Rate :0.0009283506579916886	Train Loss Step: 0.4046345055103302	Train Loss Full: 0.046355895698070526	Val Loss Step: 1.6282154321670532	Val Loss Full: 0.21154500544071198	Best Val Loss Full: 0.19376598298549652
+Epoch: 170	Learning Rate :0.000926311875315286	Train Loss Step: 0.39751797914505005	Train Loss Full: 0.04558373615145683	Val Loss Step: 1.8048450946807861	Val Loss Full: 0.2400897741317749	Best Val Loss Full: 0.19376598298549652
+Epoch: 171	Learning Rate :0.0009242467957146143	Train Loss Step: 0.40280961990356445	Train Loss Full: 0.0460631400346756	Val Loss Step: 1.7055720090866089	Val Loss Full: 0.22364787757396698	Best Val Loss Full: 0.19376598298549652
+Epoch: 172	Learning Rate :0.0009221555465735104	Train Loss Step: 0.39398622512817383	Train Loss Full: 0.04501265659928322	Val Loss Step: 1.6173946857452393	Val Loss Full: 0.21003229916095734	Best Val Loss Full: 0.19376598298549652
+Epoch: 173	Learning Rate :0.0009200382568900722	Train Loss Step: 0.3994826674461365	Train Loss Full: 0.04562842845916748	Val Loss Step: 1.5549404621124268	Val Loss Full: 0.2017769068479538	Best Val Loss Full: 0.19376598298549652
+Epoch: 174	Learning Rate :0.0009178950572687004	Train Loss Step: 0.39590442180633545	Train Loss Full: 0.045305248349905014	Val Loss Step: 2.0476226806640625	Val Loss Full: 0.2659129798412323	Best Val Loss Full: 0.19376598298549652
+Epoch: 175	Learning Rate :0.0009157260799120434	Train Loss Step: 0.40106144547462463	Train Loss Full: 0.046088267117738724	Val Loss Step: 1.7055543661117554	Val Loss Full: 0.2206665575504303	Best Val Loss Full: 0.19376598298549652
+Epoch: 176	Learning Rate :0.000913531458612841	Train Loss Step: 0.39054057002067566	Train Loss Full: 0.044620122760534286	Val Loss Step: 1.7428638935089111	Val Loss Full: 0.22594663500785828	Best Val Loss Full: 0.19376598298549652
+Epoch: 177	Learning Rate :0.0009113113287456729	Train Loss Step: 0.3938654363155365	Train Loss Full: 0.044929053634405136	Val Loss Step: 1.6388109922409058	Val Loss Full: 0.21174781024456024	Best Val Loss Full: 0.19376598298549652
+Epoch: 178	Learning Rate :0.0009090658272586067	Train Loss Step: 0.3922521471977234	Train Loss Full: 0.04491441696882248	Val Loss Step: 1.6491557359695435	Val Loss Full: 0.2242693156003952	Best Val Loss Full: 0.19376598298549652
+Epoch: 179	Learning Rate :0.0009067950926647515	Train Loss Step: 0.38976582884788513	Train Loss Full: 0.044747959822416306	Val Loss Step: 1.557214617729187	Val Loss Full: 0.20457333326339722	Best Val Loss Full: 0.19376598298549652
+Epoch: 180	Learning Rate :0.0009044992650337132	Train Loss Step: 0.383548766374588	Train Loss Full: 0.04382958263158798	Val Loss Step: 1.7509195804595947	Val Loss Full: 0.2271437793970108	Best Val Loss Full: 0.19376598298549652
+Epoch: 181	Learning Rate :0.0009021784859829544	Train Loss Step: 0.3829612135887146	Train Loss Full: 0.04385675489902496	Val Loss Step: 1.6753603219985962	Val Loss Full: 0.21976272761821747	Best Val Loss Full: 0.19376598298549652
+Epoch: 182	Learning Rate :0.0008998328986690588	Train Loss Step: 0.384414941072464	Train Loss Full: 0.044094037264585495	Val Loss Step: 1.6071538925170898	Val Loss Full: 0.20878073573112488	Best Val Loss Full: 0.19376598298549652
+Epoch: 183	Learning Rate :0.0008974626477789007	Train Loss Step: 0.3763014078140259	Train Loss Full: 0.04300403967499733	Val Loss Step: 1.6564544439315796	Val Loss Full: 0.21498136222362518	Best Val Loss Full: 0.19376598298549652
+Epoch: 184	Learning Rate :0.0008950678795207195	Train Loss Step: 0.3831368088722229	Train Loss Full: 0.04386518523097038	Val Loss Step: 1.881783127784729	Val Loss Full: 0.2601803243160248	Best Val Loss Full: 0.19376598298549652
+Epoch: 185	Learning Rate :0.0008926487416151023	Train Loss Step: 0.37538060545921326	Train Loss Full: 0.04283849522471428	Val Loss Step: 1.3425794839859009	Val Loss Full: 0.17418651282787323	Best Val Loss Full: 0.17418651282787323
+Epoch: 186	Learning Rate :0.0008902053832858699	Train Loss Step: 0.3656471073627472	Train Loss Full: 0.041941724717617035	Val Loss Step: 1.4832085371017456	Val Loss Full: 0.19394059479236603	Best Val Loss Full: 0.17418651282787323
+Epoch: 187	Learning Rate :0.0008877379552508733	Train Loss Step: 0.3712379038333893	Train Loss Full: 0.04252609238028526	Val Loss Step: 1.6103146076202393	Val Loss Full: 0.20973369479179382	Best Val Loss Full: 0.17418651282787323
+Epoch: 188	Learning Rate :0.0008852466097126966	Train Loss Step: 0.37193575501441956	Train Loss Full: 0.04252389818429947	Val Loss Step: 1.5828478336334229	Val Loss Full: 0.20677487552165985	Best Val Loss Full: 0.17418651282787323
+Epoch: 189	Learning Rate :0.0008827315003492675	Train Loss Step: 0.3709840476512909	Train Loss Full: 0.04231327772140503	Val Loss Step: 1.632009744644165	Val Loss Full: 0.21157817542552948	Best Val Loss Full: 0.17418651282787323
+Epoch: 190	Learning Rate :0.0008801927823043791	Train Loss Step: 0.3690856397151947	Train Loss Full: 0.04214383289217949	Val Loss Step: 1.5043554306030273	Val Loss Full: 0.20226509869098663	Best Val Loss Full: 0.17418651282787323
+Epoch: 191	Learning Rate :0.0008776306121781186	Train Loss Step: 0.3628615140914917	Train Loss Full: 0.04148491844534874	Val Loss Step: 1.528272271156311	Val Loss Full: 0.20216716825962067	Best Val Loss Full: 0.17418651282787323
+Epoch: 192	Learning Rate :0.0008750451480172084	Train Loss Step: 0.3680059015750885	Train Loss Full: 0.042000919580459595	Val Loss Step: 1.540495753288269	Val Loss Full: 0.19712060689926147	Best Val Loss Full: 0.17418651282787323
+Epoch: 193	Learning Rate :0.0008724365493052565	Train Loss Step: 0.361381471157074	Train Loss Full: 0.04134979471564293	Val Loss Step: 1.5219439268112183	Val Loss Full: 0.1981157660484314	Best Val Loss Full: 0.17418651282787323
+Epoch: 194	Learning Rate :0.0008698049769529192	Train Loss Step: 0.3587348759174347	Train Loss Full: 0.04098626226186752	Val Loss Step: 1.5466256141662598	Val Loss Full: 0.20704364776611328	Best Val Loss Full: 0.17418651282787323
+Epoch: 195	Learning Rate :0.0008671505932879748	Train Loss Step: 0.3584881126880646	Train Loss Full: 0.04095437750220299	Val Loss Step: 1.4277973175048828	Val Loss Full: 0.18756961822509766	Best Val Loss Full: 0.17418651282787323
+Epoch: 196	Learning Rate :0.000864473562045311	Train Loss Step: 0.35336655378341675	Train Loss Full: 0.04042515158653259	Val Loss Step: 1.3733936548233032	Val Loss Full: 0.17767122387886047	Best Val Loss Full: 0.17418651282787323
+Epoch: 197	Learning Rate :0.000861774048356825	Train Loss Step: 0.3529551327228546	Train Loss Full: 0.04032853990793228	Val Loss Step: 1.638916254043579	Val Loss Full: 0.21676874160766602	Best Val Loss Full: 0.17418651282787323
+Epoch: 198	Learning Rate :0.000859052218741237	Train Loss Step: 0.3553980886936188	Train Loss Full: 0.04055801406502724	Val Loss Step: 1.584841012954712	Val Loss Full: 0.21394941210746765	Best Val Loss Full: 0.17418651282787323
+Epoch: 199	Learning Rate :0.0008563082410938183	Train Loss Step: 0.34883028268814087	Train Loss Full: 0.039895039051771164	Val Loss Step: 1.6664915084838867	Val Loss Full: 0.21953275799751282	Best Val Loss Full: 0.17418651282787323
+Epoch: 200	Learning Rate :0.0008535422846760357	Train Loss Step: 0.35011976957321167	Train Loss Full: 0.03989633545279503	Val Loss Step: 1.8327083587646484	Val Loss Full: 0.25289392471313477	Best Val Loss Full: 0.17418651282787323
+Epoch: 201	Learning Rate :0.00085075452010511	Train Loss Step: 0.34818124771118164	Train Loss Full: 0.039719969034194946	Val Loss Step: 1.3920904397964478	Val Loss Full: 0.18018609285354614	Best Val Loss Full: 0.17418651282787323
+Epoch: 202	Learning Rate :0.0008479451193434913	Train Loss Step: 0.34680646657943726	Train Loss Full: 0.03956776484847069	Val Loss Step: 1.4484978914260864	Val Loss Full: 0.18858173489570618	Best Val Loss Full: 0.17418651282787323
+Epoch: 203	Learning Rate :0.0008451142556882519	Train Loss Step: 0.34281206130981445	Train Loss Full: 0.03917071968317032	Val Loss Step: 1.4279024600982666	Val Loss Full: 0.18932339549064636	Best Val Loss Full: 0.17418651282787323
+Epoch: 204	Learning Rate :0.0008422621037603968	Train Loss Step: 0.34734636545181274	Train Loss Full: 0.03954290598630905	Val Loss Step: 1.3018569946289062	Val Loss Full: 0.1711801439523697	Best Val Loss Full: 0.1711801439523697
+Epoch: 205	Learning Rate :0.000839388839494092	Train Loss Step: 0.3451440930366516	Train Loss Full: 0.039435096085071564	Val Loss Step: 1.5083776712417603	Val Loss Full: 0.1987212747335434	Best Val Loss Full: 0.1711801439523697
+Epoch: 206	Learning Rate :0.0008364946401258113	Train Loss Step: 0.34137046337127686	Train Loss Full: 0.03903007507324219	Val Loss Step: 1.6342345476150513	Val Loss Full: 0.223871648311615	Best Val Loss Full: 0.1711801439523697
+Epoch: 207	Learning Rate :0.0008335796841834047	Train Loss Step: 0.34034261107444763	Train Loss Full: 0.038911882787942886	Val Loss Step: 1.549309492111206	Val Loss Full: 0.2063015252351761	Best Val Loss Full: 0.1711801439523697
+Epoch: 208	Learning Rate :0.0008306441514750856	Train Loss Step: 0.3408723771572113	Train Loss Full: 0.03892979025840759	Val Loss Step: 1.4672298431396484	Val Loss Full: 0.19142086803913116	Best Val Loss Full: 0.1711801439523697
+Epoch: 209	Learning Rate :0.0008276882230783389	Train Loss Step: 0.3403072655200958	Train Loss Full: 0.03881077468395233	Val Loss Step: 1.5451514720916748	Val Loss Full: 0.20359928905963898	Best Val Loss Full: 0.1711801439523697
+Epoch: 210	Learning Rate :0.0008247120813287519	Train Loss Step: 0.33526137471199036	Train Loss Full: 0.038262829184532166	Val Loss Step: 1.5388085842132568	Val Loss Full: 0.19774459302425385	Best Val Loss Full: 0.1711801439523697
+Epoch: 211	Learning Rate :0.0008217159098087663	Train Loss Step: 0.33561334013938904	Train Loss Full: 0.038329578936100006	Val Loss Step: 1.3318393230438232	Val Loss Full: 0.17592757940292358	Best Val Loss Full: 0.1711801439523697
+Epoch: 212	Learning Rate :0.000818699893336355	Train Loss Step: 0.33619096875190735	Train Loss Full: 0.03841625899076462	Val Loss Step: 1.474794626235962	Val Loss Full: 0.1967242956161499	Best Val Loss Full: 0.1711801439523697
+Epoch: 213	Learning Rate :0.0008156642179536204	Train Loss Step: 0.3280846178531647	Train Loss Full: 0.03737793117761612	Val Loss Step: 1.6768150329589844	Val Loss Full: 0.23217031359672546	Best Val Loss Full: 0.1711801439523697
+Epoch: 214	Learning Rate :0.0008126090709153198	Train Loss Step: 0.3269217908382416	Train Loss Full: 0.03721016272902489	Val Loss Step: 1.4007927179336548	Val Loss Full: 0.18489886820316315	Best Val Loss Full: 0.1711801439523697
+Epoch: 215	Learning Rate :0.0008095346406773134	Train Loss Step: 0.3292454481124878	Train Loss Full: 0.03755875676870346	Val Loss Step: 1.3528907299041748	Val Loss Full: 0.18083249032497406	Best Val Loss Full: 0.1711801439523697
+Epoch: 216	Learning Rate :0.00080644111688494	Train Loss Step: 0.32853665947914124	Train Loss Full: 0.03745078295469284	Val Loss Step: 1.2739145755767822	Val Loss Full: 0.16770943999290466	Best Val Loss Full: 0.16770943999290466
+Epoch: 217	Learning Rate :0.0008033286903613192	Train Loss Step: 0.3226461708545685	Train Loss Full: 0.036787260323762894	Val Loss Step: 1.519874095916748	Val Loss Full: 0.20079000294208527	Best Val Loss Full: 0.16770943999290466
+Epoch: 218	Learning Rate :0.0008001975530955794	Train Loss Step: 0.32256394624710083	Train Loss Full: 0.03678043931722641	Val Loss Step: 1.5023950338363647	Val Loss Full: 0.1946941316127777	Best Val Loss Full: 0.16770943999290466
+Epoch: 219	Learning Rate :0.0007970478982310164	Train Loss Step: 0.32157576084136963	Train Loss Full: 0.03666156157851219	Val Loss Step: 1.336608648300171	Val Loss Full: 0.1812557876110077	Best Val Loss Full: 0.16770943999290466
+Epoch: 220	Learning Rate :0.0007938799200531785	Train Loss Step: 0.3240129053592682	Train Loss Full: 0.03695901483297348	Val Loss Step: 1.380996823310852	Val Loss Full: 0.1824198067188263	Best Val Loss Full: 0.16770943999290466
+Epoch: 221	Learning Rate :0.000790693813977882	Train Loss Step: 0.3217390179634094	Train Loss Full: 0.0367119275033474	Val Loss Step: 1.3098276853561401	Val Loss Full: 0.17450019717216492	Best Val Loss Full: 0.16770943999290466
+Epoch: 222	Learning Rate :0.0007874897765391578	Train Loss Step: 0.31995221972465515	Train Loss Full: 0.03645011782646179	Val Loss Step: 1.419045329093933	Val Loss Full: 0.1897660791873932	Best Val Loss Full: 0.16770943999290466
+Epoch: 223	Learning Rate :0.0007842680053771272	Train Loss Step: 0.3169015645980835	Train Loss Full: 0.036094971001148224	Val Loss Step: 1.4535514116287231	Val Loss Full: 0.18841016292572021	Best Val Loss Full: 0.16770943999290466
+Epoch: 224	Learning Rate :0.0007810286992258116	Train Loss Step: 0.3180716931819916	Train Loss Full: 0.03612717613577843	Val Loss Step: 1.4383018016815186	Val Loss Full: 0.18891602754592896	Best Val Loss Full: 0.16770943999290466
+Epoch: 225	Learning Rate :0.0007777720579008728	Train Loss Step: 0.31677359342575073	Train Loss Full: 0.03613489866256714	Val Loss Step: 1.3580034971237183	Val Loss Full: 0.17899462580680847	Best Val Loss Full: 0.16770943999290466
+Epoch: 226	Learning Rate :0.0007744982822872878	Train Loss Step: 0.3145705461502075	Train Loss Full: 0.03586139529943466	Val Loss Step: 1.4387998580932617	Val Loss Full: 0.19203181564807892	Best Val Loss Full: 0.16770943999290466
+Epoch: 227	Learning Rate :0.0007712075743269575	Train Loss Step: 0.3080364167690277	Train Loss Full: 0.0350564606487751	Val Loss Step: 1.193900465965271	Val Loss Full: 0.15742650628089905	Best Val Loss Full: 0.15742650628089905
+Epoch: 228	Learning Rate :0.0007679001370062493	Train Loss Step: 0.30949991941452026	Train Loss Full: 0.0351988710463047	Val Loss Step: 1.3677849769592285	Val Loss Full: 0.18245373666286469	Best Val Loss Full: 0.15742650628089905
+Epoch: 229	Learning Rate :0.0007645761743434766	Train Loss Step: 0.30887842178344727	Train Loss Full: 0.03506910428404808	Val Loss Step: 1.2347580194473267	Val Loss Full: 0.1624830663204193	Best Val Loss Full: 0.15742650628089905
+Epoch: 230	Learning Rate :0.0007612358913763139	Train Loss Step: 0.3086641728878021	Train Loss Full: 0.03497052192687988	Val Loss Step: 1.4645955562591553	Val Loss Full: 0.20117783546447754	Best Val Loss Full: 0.15742650628089905
+Epoch: 231	Learning Rate :0.0007578794941491485	Train Loss Step: 0.3040507137775421	Train Loss Full: 0.03457581624388695	Val Loss Step: 1.3600804805755615	Val Loss Full: 0.1776600480079651	Best Val Loss Full: 0.15742650628089905
+Epoch: 232	Learning Rate :0.0007545071897003718	Train Loss Step: 0.3060949146747589	Train Loss Full: 0.034829024225473404	Val Loss Step: 1.351923942565918	Val Loss Full: 0.1790332943201065	Best Val Loss Full: 0.15742650628089905
+Epoch: 233	Learning Rate :0.0007511191860496066	Train Loss Step: 0.30001747608184814	Train Loss Full: 0.034133054316043854	Val Loss Step: 1.28915536403656	Val Loss Full: 0.17317882180213928	Best Val Loss Full: 0.15742650628089905
+Epoch: 234	Learning Rate :0.0007477156921848775	Train Loss Step: 0.3029690384864807	Train Loss Full: 0.03448142483830452	Val Loss Step: 1.3262240886688232	Val Loss Full: 0.1780499815940857	Best Val Loss Full: 0.15742650628089905
+Epoch: 235	Learning Rate :0.0007442969180497177	Train Loss Step: 0.30096548795700073	Train Loss Full: 0.03418153524398804	Val Loss Step: 1.343605875968933	Val Loss Full: 0.17861324548721313	Best Val Loss Full: 0.15742650628089905
+Epoch: 236	Learning Rate :0.0007408630745302198	Train Loss Step: 0.30100828409194946	Train Loss Full: 0.034209951758384705	Val Loss Step: 1.2267537117004395	Val Loss Full: 0.16463854908943176	Best Val Loss Full: 0.15742650628089905
+Epoch: 237	Learning Rate :0.0007374143734420268	Train Loss Step: 0.29579347372055054	Train Loss Full: 0.03353220969438553	Val Loss Step: 1.215151309967041	Val Loss Full: 0.16238617897033691	Best Val Loss Full: 0.15742650628089905
+Epoch: 238	Learning Rate :0.0007339510275172668	Train Loss Step: 0.29512351751327515	Train Loss Full: 0.033549338579177856	Val Loss Step: 1.3781722784042358	Val Loss Full: 0.18664735555648804	Best Val Loss Full: 0.15742650628089905
+Epoch: 239	Learning Rate :0.0007304732503914303	Train Loss Step: 0.29882317781448364	Train Loss Full: 0.033999476581811905	Val Loss Step: 1.2182939052581787	Val Loss Full: 0.1632775515317917	Best Val Loss Full: 0.15742650628089905
+Epoch: 240	Learning Rate :0.0007269812565901922	Train Loss Step: 0.2921368479728699	Train Loss Full: 0.03311825171113014	Val Loss Step: 1.2052173614501953	Val Loss Full: 0.15759117901325226	Best Val Loss Full: 0.15742650628089905
+Epoch: 241	Learning Rate :0.0007234752615161786	Train Loss Step: 0.29494237899780273	Train Loss Full: 0.03350982442498207	Val Loss Step: 1.3640187978744507	Val Loss Full: 0.17690178751945496	Best Val Loss Full: 0.15742650628089905
+Epoch: 242	Learning Rate :0.0007199554814356808	Train Loss Step: 0.2921440601348877	Train Loss Full: 0.03311895206570625	Val Loss Step: 1.435758352279663	Val Loss Full: 0.19678537547588348	Best Val Loss Full: 0.15742650628089905
+Epoch: 243	Learning Rate :0.0007164221334653136	Train Loss Step: 0.29054149985313416	Train Loss Full: 0.03303166478872299	Val Loss Step: 1.2673598527908325	Val Loss Full: 0.16978968679904938	Best Val Loss Full: 0.15742650628089905
+Epoch: 244	Learning Rate :0.0007128754355586235	Train Loss Step: 0.2914423942565918	Train Loss Full: 0.033173009753227234	Val Loss Step: 1.448616623878479	Val Loss Full: 0.19545122981071472	Best Val Loss Full: 0.15742650628089905
+Epoch: 245	Learning Rate :0.0007093156064926436	Train Loss Step: 0.29097074270248413	Train Loss Full: 0.03295884653925896	Val Loss Step: 1.3100417852401733	Val Loss Full: 0.17267665266990662	Best Val Loss Full: 0.15742650628089905
+Epoch: 246	Learning Rate :0.0007057428658543993	Train Loss Step: 0.28316646814346313	Train Loss Full: 0.032082896679639816	Val Loss Step: 1.232988715171814	Val Loss Full: 0.16494989395141602	Best Val Loss Full: 0.15742650628089905
+Epoch: 247	Learning Rate :0.000702157434027362	Train Loss Step: 0.28698456287384033	Train Loss Full: 0.03250408545136452	Val Loss Step: 1.2325716018676758	Val Loss Full: 0.16319526731967926	Best Val Loss Full: 0.15742650628089905
+Epoch: 248	Learning Rate :0.0006985595321778559	Train Loss Step: 0.28634345531463623	Train Loss Full: 0.03251469135284424	Val Loss Step: 1.1836707592010498	Val Loss Full: 0.15520605444908142	Best Val Loss Full: 0.15520605444908142
+Epoch: 249	Learning Rate :0.0006949493822414145	Train Loss Step: 0.28091204166412354	Train Loss Full: 0.03175590559840202	Val Loss Step: 1.4401435852050781	Val Loss Full: 0.1993059515953064	Best Val Loss Full: 0.15520605444908142
+Epoch: 250	Learning Rate :0.0006913272069090912	Train Loss Step: 0.28332793712615967	Train Loss Full: 0.0321880578994751	Val Loss Step: 1.2288240194320679	Val Loss Full: 0.16550859808921814	Best Val Loss Full: 0.15520605444908142
+Epoch: 251	Learning Rate :0.0006876932296137226	Train Loss Step: 0.27865615487098694	Train Loss Full: 0.03159530460834503	Val Loss Step: 1.2001904249191284	Val Loss Full: 0.15921351313591003	Best Val Loss Full: 0.15520605444908142
+Epoch: 252	Learning Rate :0.0006840476745161459	Train Loss Step: 0.27989232540130615	Train Loss Full: 0.031715258955955505	Val Loss Step: 1.1956470012664795	Val Loss Full: 0.15952982008457184	Best Val Loss Full: 0.15520605444908142
+Epoch: 253	Learning Rate :0.0006803907664913714	Train Loss Step: 0.2785941958427429	Train Loss Full: 0.031516384333372116	Val Loss Step: 1.2659088373184204	Val Loss Full: 0.1656501293182373	Best Val Loss Full: 0.15520605444908142
+Epoch: 254	Learning Rate :0.0006767227311147117	Train Loss Step: 0.2830207645893097	Train Loss Full: 0.032118260860443115	Val Loss Step: 1.3384455442428589	Val Loss Full: 0.18500663340091705	Best Val Loss Full: 0.15520605444908142
+Epoch: 255	Learning Rate :0.000673043794647867	Train Loss Step: 0.2763233184814453	Train Loss Full: 0.031230244785547256	Val Loss Step: 1.0937803983688354	Val Loss Full: 0.14325638115406036	Best Val Loss Full: 0.14325638115406036
+Epoch: 256	Learning Rate :0.0006693541840249678	Train Loss Step: 0.2733341157436371	Train Loss Full: 0.030857829377055168	Val Loss Step: 1.1563533544540405	Val Loss Full: 0.1535927951335907	Best Val Loss Full: 0.14325638115406036
+Epoch: 257	Learning Rate :0.000665654126838577	Train Loss Step: 0.2699834704399109	Train Loss Full: 0.03058498725295067	Val Loss Step: 1.222126841545105	Val Loss Full: 0.1622493863105774	Best Val Loss Full: 0.14325638115406036
+Epoch: 258	Learning Rate :0.0006619438513256505	Train Loss Step: 0.26825475692749023	Train Loss Full: 0.03039821796119213	Val Loss Step: 1.0399820804595947	Val Loss Full: 0.13773658871650696	Best Val Loss Full: 0.13773658871650696
+Epoch: 259	Learning Rate :0.000658223586353459	Train Loss Step: 0.2726312577724457	Train Loss Full: 0.030746014788746834	Val Loss Step: 1.0921502113342285	Val Loss Full: 0.1461668610572815	Best Val Loss Full: 0.13773658871650696
+Epoch: 260	Learning Rate :0.0006544935614054701	Train Loss Step: 0.2669849097728729	Train Loss Full: 0.03016854077577591	Val Loss Step: 1.366937279701233	Val Loss Full: 0.18788617849349976	Best Val Loss Full: 0.13773658871650696
+Epoch: 261	Learning Rate :0.0006507540065671923	Train Loss Step: 0.2672501504421234	Train Loss Full: 0.030174171552062035	Val Loss Step: 1.1915194988250732	Val Loss Full: 0.1551009714603424	Best Val Loss Full: 0.13773658871650696
+Epoch: 262	Learning Rate :0.0006470051525119833	Train Loss Step: 0.26425978541374207	Train Loss Full: 0.02980901300907135	Val Loss Step: 1.1337890625	Val Loss Full: 0.1507367193698883	Best Val Loss Full: 0.13773658871650696
+Epoch: 263	Learning Rate :0.0006432472304868195	Train Loss Step: 0.2676711976528168	Train Loss Full: 0.030281055718660355	Val Loss Step: 1.0849627256393433	Val Loss Full: 0.14374707639217377	Best Val Loss Full: 0.13773658871650696
+Epoch: 264	Learning Rate :0.0006394804722980331	Train Loss Step: 0.2639680802822113	Train Loss Full: 0.029791252687573433	Val Loss Step: 1.1456056833267212	Val Loss Full: 0.1529371589422226	Best Val Loss Full: 0.13773658871650696
+Epoch: 265	Learning Rate :0.0006357051102970122	Train Loss Step: 0.2648373544216156	Train Loss Full: 0.029837852343916893	Val Loss Step: 1.2881014347076416	Val Loss Full: 0.1702292263507843	Best Val Loss Full: 0.13773658871650696
+Epoch: 266	Learning Rate :0.0006319213773658682	Train Loss Step: 0.26651301980018616	Train Loss Full: 0.03002319671213627	Val Loss Step: 1.1560982465744019	Val Loss Full: 0.1542980819940567	Best Val Loss Full: 0.13773658871650696
+Epoch: 267	Learning Rate :0.0006281295069030717	Train Loss Step: 0.2584993839263916	Train Loss Full: 0.02918279357254505	Val Loss Step: 1.2221853733062744	Val Loss Full: 0.1609758585691452	Best Val Loss Full: 0.13773658871650696
+Epoch: 268	Learning Rate :0.0006243297328090539	Train Loss Step: 0.26118695735931396	Train Loss Full: 0.029471730813384056	Val Loss Step: 1.2746739387512207	Val Loss Full: 0.17321404814720154	Best Val Loss Full: 0.13773658871650696
+Epoch: 269	Learning Rate :0.0006205222894717796	Train Loss Step: 0.2597322463989258	Train Loss Full: 0.029285898432135582	Val Loss Step: 1.0793629884719849	Val Loss Full: 0.14309698343276978	Best Val Loss Full: 0.13773658871650696
+Epoch: 270	Learning Rate :0.0006167074117522883	Train Loss Step: 0.2565873861312866	Train Loss Full: 0.028960134834051132	Val Loss Step: 1.055943250656128	Val Loss Full: 0.14042842388153076	Best Val Loss Full: 0.13773658871650696
+Epoch: 271	Learning Rate :0.0006128853349702077	Train Loss Step: 0.2564760744571686	Train Loss Full: 0.028866063803434372	Val Loss Step: 1.2637603282928467	Val Loss Full: 0.1684763878583908	Best Val Loss Full: 0.13773658871650696
+Epoch: 272	Learning Rate :0.0006090562948892371	Train Loss Step: 0.2551318109035492	Train Loss Full: 0.028773251920938492	Val Loss Step: 1.1414824724197388	Val Loss Full: 0.1507008820772171	Best Val Loss Full: 0.13773658871650696
+Epoch: 273	Learning Rate :0.0006052205277026052	Train Loss Step: 0.2553193271160126	Train Loss Full: 0.028723113238811493	Val Loss Step: 1.1598190069198608	Val Loss Full: 0.15648357570171356	Best Val Loss Full: 0.13773658871650696
+Epoch: 274	Learning Rate :0.0006013782700185	Train Loss Step: 0.25234150886535645	Train Loss Full: 0.02843310497701168	Val Loss Step: 1.1401625871658325	Val Loss Full: 0.15395429730415344	Best Val Loss Full: 0.13773658871650696
+Epoch: 275	Learning Rate :0.0005975297588454742	Train Loss Step: 0.25108736753463745	Train Loss Full: 0.028262224048376083	Val Loss Step: 1.0898041725158691	Val Loss Full: 0.1442459523677826	Best Val Loss Full: 0.13773658871650696
+Epoch: 276	Learning Rate :0.0005936752315778251	Train Loss Step: 0.2510634958744049	Train Loss Full: 0.028316965326666832	Val Loss Step: 1.0373414754867554	Val Loss Full: 0.13653257489204407	Best Val Loss Full: 0.13653257489204407
+Epoch: 277	Learning Rate :0.0005898149259809509	Train Loss Step: 0.24945013225078583	Train Loss Full: 0.028107939288020134	Val Loss Step: 1.251320481300354	Val Loss Full: 0.17142392694950104	Best Val Loss Full: 0.13653257489204407
+Epoch: 278	Learning Rate :0.0005859490801766846	Train Loss Step: 0.2509637176990509	Train Loss Full: 0.028217773884534836	Val Loss Step: 1.2114819288253784	Val Loss Full: 0.16423572599887848	Best Val Loss Full: 0.13653257489204407
+Epoch: 279	Learning Rate :0.0005820779326286051	Train Loss Step: 0.24817515909671783	Train Loss Full: 0.02792849950492382	Val Loss Step: 0.9658601880073547	Val Loss Full: 0.12828348577022552	Best Val Loss Full: 0.12828348577022552
+Epoch: 280	Learning Rate :0.0005782017221273279	Train Loss Step: 0.24394650757312775	Train Loss Full: 0.027447616681456566	Val Loss Step: 0.9970582127571106	Val Loss Full: 0.13306255638599396	Best Val Loss Full: 0.12828348577022552
+Epoch: 281	Learning Rate :0.0005743206877757753	Train Loss Step: 0.24675463140010834	Train Loss Full: 0.027791040018200874	Val Loss Step: 1.0418187379837036	Val Loss Full: 0.1393866389989853	Best Val Loss Full: 0.12828348577022552
+Epoch: 282	Learning Rate :0.0005704350689744275	Train Loss Step: 0.24527238309383392	Train Loss Full: 0.02746901474893093	Val Loss Step: 1.4072767496109009	Val Loss Full: 0.19509148597717285	Best Val Loss Full: 0.12828348577022552
+Epoch: 283	Learning Rate :0.0005665451054065549	Train Loss Step: 0.24345487356185913	Train Loss Full: 0.027354758232831955	Val Loss Step: 1.201164722442627	Val Loss Full: 0.161380797624588	Best Val Loss Full: 0.12828348577022552
+Epoch: 284	Learning Rate :0.0005626510370234339	Train Loss Step: 0.24708259105682373	Train Loss Full: 0.027807291597127914	Val Loss Step: 1.0838216543197632	Val Loss Full: 0.1437121033668518	Best Val Loss Full: 0.12828348577022552
+Epoch: 285	Learning Rate :0.0005587531040295449	Train Loss Step: 0.23913075029850006	Train Loss Full: 0.02688990719616413	Val Loss Step: 0.9864516854286194	Val Loss Full: 0.1317366659641266	Best Val Loss Full: 0.12828348577022552
+Epoch: 286	Learning Rate :0.000554851546867756	Train Loss Step: 0.2397126406431198	Train Loss Full: 0.026881694793701172	Val Loss Step: 1.0695937871932983	Val Loss Full: 0.14282605051994324	Best Val Loss Full: 0.12828348577022552
+Epoch: 287	Learning Rate :0.0005509466062044907	Train Loss Step: 0.23890002071857452	Train Loss Full: 0.026777924969792366	Val Loss Step: 1.0194995403289795	Val Loss Full: 0.13677097856998444	Best Val Loss Full: 0.12828348577022552
+Epoch: 288	Learning Rate :0.0005470385229148833	Train Loss Step: 0.24069048464298248	Train Loss Full: 0.027009205892682076	Val Loss Step: 1.0111044645309448	Val Loss Full: 0.1345774084329605	Best Val Loss Full: 0.12828348577022552
+Epoch: 289	Learning Rate :0.0005431275380679199	Train Loss Step: 0.2330259382724762	Train Loss Full: 0.026139432564377785	Val Loss Step: 1.0736140012741089	Val Loss Full: 0.14699216187000275	Best Val Loss Full: 0.12828348577022552
+Epoch: 290	Learning Rate :0.0005392138929115678	Train Loss Step: 0.238786518573761	Train Loss Full: 0.026764558628201485	Val Loss Step: 1.1125421524047852	Val Loss Full: 0.1469491869211197	Best Val Loss Full: 0.12828348577022552
+Epoch: 291	Learning Rate :0.0005352978288578954	Train Loss Step: 0.23437674343585968	Train Loss Full: 0.026276636868715286	Val Loss Step: 1.0502336025238037	Val Loss Full: 0.14046986401081085	Best Val Loss Full: 0.12828348577022552
+Epoch: 292	Learning Rate :0.0005313795874681799	Train Loss Step: 0.2328217625617981	Train Loss Full: 0.026031913235783577	Val Loss Step: 0.9167020916938782	Val Loss Full: 0.12128995358943939	Best Val Loss Full: 0.12128995358943939
+Epoch: 293	Learning Rate :0.0005274594104380068	Train Loss Step: 0.23329892754554749	Train Loss Full: 0.02616463229060173	Val Loss Step: 1.0764961242675781	Val Loss Full: 0.14414891600608826	Best Val Loss Full: 0.12128995358943939
+Epoch: 294	Learning Rate :0.000523537539582361	Train Loss Step: 0.22889743745326996	Train Loss Full: 0.025614984333515167	Val Loss Step: 0.9684021472930908	Val Loss Full: 0.12836866080760956	Best Val Loss Full: 0.12128995358943939
+Epoch: 295	Learning Rate :0.0005196142168207102	Train Loss Step: 0.2323535531759262	Train Loss Full: 0.026011010631918907	Val Loss Step: 0.9639912843704224	Val Loss Full: 0.12946733832359314	Best Val Loss Full: 0.12128995358943939
+Epoch: 296	Learning Rate :0.0005156896841620834	Train Loss Step: 0.2300034463405609	Train Loss Full: 0.0257534421980381	Val Loss Step: 1.2312005758285522	Val Loss Full: 0.17154720425605774	Best Val Loss Full: 0.12128995358943939
+Epoch: 297	Learning Rate :0.0005117641836901407	Train Loss Step: 0.22997671365737915	Train Loss Full: 0.025794710963964462	Val Loss Step: 0.9552310109138489	Val Loss Full: 0.12882991135120392	Best Val Loss Full: 0.12128995358943939
+Epoch: 298	Learning Rate :0.0005078379575482422	Train Loss Step: 0.2277495414018631	Train Loss Full: 0.02546275593340397	Val Loss Step: 1.2358169555664062	Val Loss Full: 0.16627489030361176	Best Val Loss Full: 0.12128995358943939
+Epoch: 299	Learning Rate :0.0005039112479245107	Train Loss Step: 0.22749173641204834	Train Loss Full: 0.025469930842518806	Val Loss Step: 0.9903908371925354	Val Loss Full: 0.13395391404628754	Best Val Loss Full: 0.12128995358943939
+Epoch: 300	Learning Rate :0.0004999842970368918	Train Loss Step: 0.2256592959165573	Train Loss Full: 0.025254230946302414	Val Loss Step: 1.058048963546753	Val Loss Full: 0.14105193316936493	Best Val Loss Full: 0.12128995358943939
+Epoch: 301	Learning Rate :0.000496057347118214	Train Loss Step: 0.2236461639404297	Train Loss Full: 0.025040511041879654	Val Loss Step: 1.011748194694519	Val Loss Full: 0.1346292346715927	Best Val Loss Full: 0.12128995358943939
+Epoch: 302	Learning Rate :0.0004921306404012462	Train Loss Step: 0.2239151895046234	Train Loss Full: 0.025062961503863335	Val Loss Step: 1.0611553192138672	Val Loss Full: 0.14419475197792053	Best Val Loss Full: 0.12128995358943939
+Epoch: 303	Learning Rate :0.0004882044191037546	Train Loss Step: 0.22190949320793152	Train Loss Full: 0.02477359026670456	Val Loss Step: 0.9819831848144531	Val Loss Full: 0.12862606346607208	Best Val Loss Full: 0.12128995358943939
+Epoch: 304	Learning Rate :0.0004842789254135633	Train Loss Step: 0.21998804807662964	Train Loss Full: 0.024545179679989815	Val Loss Step: 0.910496711730957	Val Loss Full: 0.11991048604249954	Best Val Loss Full: 0.11991048604249954
+Epoch: 305	Learning Rate :0.0004803544014736138	Train Loss Step: 0.2214691936969757	Train Loss Full: 0.024782299995422363	Val Loss Step: 1.001625895500183	Val Loss Full: 0.13271231949329376	Best Val Loss Full: 0.11991048604249954
+Epoch: 306	Learning Rate :0.000476431089367029	Train Loss Step: 0.2187989503145218	Train Loss Full: 0.024413108825683594	Val Loss Step: 1.0161017179489136	Val Loss Full: 0.1358112245798111	Best Val Loss Full: 0.11991048604249954
+Epoch: 307	Learning Rate :0.00047250923110217974	Train Loss Step: 0.22228361666202545	Train Loss Full: 0.02482139877974987	Val Loss Step: 0.9366181492805481	Val Loss Full: 0.12402848899364471	Best Val Loss Full: 0.11991048604249954
+Epoch: 308	Learning Rate :0.00046858906859775773	Train Loss Step: 0.2151508927345276	Train Loss Full: 0.02394622378051281	Val Loss Step: 0.999529242515564	Val Loss Full: 0.132017582654953	Best Val Loss Full: 0.11991048604249954
+Epoch: 309	Learning Rate :0.00046467084366785154	Train Loss Step: 0.21716371178627014	Train Loss Full: 0.024212969467043877	Val Loss Step: 1.0145546197891235	Val Loss Full: 0.13560335338115692	Best Val Loss Full: 0.11991048604249954
+Epoch: 310	Learning Rate :0.00046075479800703183	Train Loss Step: 0.21415691077709198	Train Loss Full: 0.023829951882362366	Val Loss Step: 0.8666259050369263	Val Loss Full: 0.11327704787254333	Best Val Loss Full: 0.11327704787254333
+Epoch: 311	Learning Rate :0.00045684117317544066	Train Loss Step: 0.2137317806482315	Train Loss Full: 0.023803843185305595	Val Loss Step: 0.8819442391395569	Val Loss Full: 0.11778780072927475	Best Val Loss Full: 0.11327704787254333
+Epoch: 312	Learning Rate :0.00045293021058389276	Train Loss Step: 0.21328528225421906	Train Loss Full: 0.0237180907279253	Val Loss Step: 1.036202073097229	Val Loss Full: 0.14258694648742676	Best Val Loss Full: 0.11327704787254333
+Epoch: 313	Learning Rate :0.0004490221514789829	Train Loss Step: 0.2130393087863922	Train Loss Full: 0.023698018863797188	Val Loss Step: 0.9942216873168945	Val Loss Full: 0.1280806064605713	Best Val Loss Full: 0.11327704787254333
+Epoch: 314	Learning Rate :0.00044511723692820554	Train Loss Step: 0.2129373997449875	Train Loss Full: 0.02364570088684559	Val Loss Step: 0.9429476857185364	Val Loss Full: 0.12428108602762222	Best Val Loss Full: 0.11327704787254333
+Epoch: 315	Learning Rate :0.0004412157078050835	Train Loss Step: 0.21049076318740845	Train Loss Full: 0.023402972146868706	Val Loss Step: 1.0014076232910156	Val Loss Full: 0.13438701629638672	Best Val Loss Full: 0.11327704787254333
+Epoch: 316	Learning Rate :0.00043731780477431143	Train Loss Step: 0.20897676050662994	Train Loss Full: 0.023234998807311058	Val Loss Step: 0.966772735118866	Val Loss Full: 0.12762518227100372	Best Val Loss Full: 0.11327704787254333
+Epoch: 317	Learning Rate :0.0004334237682769086	Train Loss Step: 0.21112164855003357	Train Loss Full: 0.023481270298361778	Val Loss Step: 0.9147236943244934	Val Loss Full: 0.12405475974082947	Best Val Loss Full: 0.11327704787254333
+Epoch: 318	Learning Rate :0.00042953383851538913	Train Loss Step: 0.20761485397815704	Train Loss Full: 0.023042190819978714	Val Loss Step: 0.9811108708381653	Val Loss Full: 0.13177387416362762	Best Val Loss Full: 0.11327704787254333
+Epoch: 319	Learning Rate :0.0004256482554389436	Train Loss Step: 0.2063777893781662	Train Loss Full: 0.02292921394109726	Val Loss Step: 0.9156608581542969	Val Loss Full: 0.1214512437582016	Best Val Loss Full: 0.11327704787254333
+Epoch: 320	Learning Rate :0.000421767258728639	Train Loss Step: 0.2055468112230301	Train Loss Full: 0.02276710979640484	Val Loss Step: 0.9882022738456726	Val Loss Full: 0.13335976004600525	Best Val Loss Full: 0.11327704787254333
+Epoch: 321	Learning Rate :0.00041789108778263374	Train Loss Step: 0.20470662415027618	Train Loss Full: 0.02268141135573387	Val Loss Step: 0.895935595035553	Val Loss Full: 0.12007556855678558	Best Val Loss Full: 0.11327704787254333
+Epoch: 322	Learning Rate :0.00041401998170140973	Train Loss Step: 0.2053377628326416	Train Loss Full: 0.022822607308626175	Val Loss Step: 0.9384878873825073	Val Loss Full: 0.12596838176250458	Best Val Loss Full: 0.11327704787254333
+Epoch: 323	Learning Rate :0.00041015417927302506	Train Loss Step: 0.20346277952194214	Train Loss Full: 0.022520337253808975	Val Loss Step: 0.8719169497489929	Val Loss Full: 0.11783858388662338	Best Val Loss Full: 0.11327704787254333
+Epoch: 324	Learning Rate :0.0004062939189583827	Train Loss Step: 0.20300570130348206	Train Loss Full: 0.022446366026997566	Val Loss Step: 0.8630478382110596	Val Loss Full: 0.11470025032758713	Best Val Loss Full: 0.11327704787254333
+Epoch: 325	Learning Rate :0.00040243943887652246	Train Loss Step: 0.19915556907653809	Train Loss Full: 0.021964212879538536	Val Loss Step: 0.85667884349823	Val Loss Full: 0.11342546343803406	Best Val Loss Full: 0.11327704787254333
+Epoch: 326	Learning Rate :0.00039859097678993197	Train Loss Step: 0.20358160138130188	Train Loss Full: 0.022581279277801514	Val Loss Step: 0.9126386046409607	Val Loss Full: 0.12292101234197617	Best Val Loss Full: 0.11327704787254333
+Epoch: 327	Learning Rate :0.00039474877008988086	Train Loss Step: 0.19940350949764252	Train Loss Full: 0.022042419761419296	Val Loss Step: 0.8461471199989319	Val Loss Full: 0.11328601837158203	Best Val Loss Full: 0.11327704787254333
+Epoch: 328	Learning Rate :0.00039091305578177644	Train Loss Step: 0.19972316920757294	Train Loss Full: 0.022081414237618446	Val Loss Step: 0.9523278474807739	Val Loss Full: 0.13199013471603394	Best Val Loss Full: 0.11327704787254333
+Epoch: 329	Learning Rate :0.00038708407047054525	Train Loss Step: 0.19905030727386475	Train Loss Full: 0.021976150572299957	Val Loss Step: 0.8423430323600769	Val Loss Full: 0.1117781549692154	Best Val Loss Full: 0.1117781549692154
+Epoch: 330	Learning Rate :0.0003832620503460373	Train Loss Step: 0.19662879407405853	Train Loss Full: 0.021696319803595543	Val Loss Step: 0.9643978476524353	Val Loss Full: 0.12993383407592773	Best Val Loss Full: 0.1117781549692154
+Epoch: 331	Learning Rate :0.00037944723116845746	Train Loss Step: 0.1944800168275833	Train Loss Full: 0.021458985283970833	Val Loss Step: 1.0030298233032227	Val Loss Full: 0.13751240074634552	Best Val Loss Full: 0.1117781549692154
+Epoch: 332	Learning Rate :0.00037563984825382155	Train Loss Step: 0.19595493376255035	Train Loss Full: 0.021609773859381676	Val Loss Step: 0.9611245393753052	Val Loss Full: 0.1298278123140335	Best Val Loss Full: 0.1117781549692154
+Epoch: 333	Learning Rate :0.0003718401364594425	Train Loss Step: 0.19567066431045532	Train Loss Full: 0.021556366235017776	Val Loss Step: 1.0159204006195068	Val Loss Full: 0.1383468061685562	Best Val Loss Full: 0.1117781549692154
+Epoch: 334	Learning Rate :0.0003680483301694419	Train Loss Step: 0.19404660165309906	Train Loss Full: 0.021371405571699142	Val Loss Step: 0.8231245279312134	Val Loss Full: 0.10972156375646591	Best Val Loss Full: 0.10972156375646591
+Epoch: 335	Learning Rate :0.0003642646632802929	Train Loss Step: 0.191719189286232	Train Loss Full: 0.021131426095962524	Val Loss Step: 0.7907969355583191	Val Loss Full: 0.1049659252166748	Best Val Loss Full: 0.1049659252166748
+Epoch: 336	Learning Rate :0.0003604893691863915	Train Loss Step: 0.192152738571167	Train Loss Full: 0.021150540560483932	Val Loss Step: 0.8957448601722717	Val Loss Full: 0.11953545361757278	Best Val Loss Full: 0.1049659252166748
+Epoch: 337	Learning Rate :0.000356722680765661	Train Loss Step: 0.1906411498785019	Train Loss Full: 0.020999515429139137	Val Loss Step: 0.8580136895179749	Val Loss Full: 0.11395589262247086	Best Val Loss Full: 0.1049659252166748
+Epoch: 338	Learning Rate :0.00035296483036518556	Train Loss Step: 0.1913573294878006	Train Loss Full: 0.021024800837039948	Val Loss Step: 0.9449277520179749	Val Loss Full: 0.12830956280231476	Best Val Loss Full: 0.1049659252166748
+Epoch: 339	Learning Rate :0.0003492160497868794	Train Loss Step: 0.18719568848609924	Train Loss Full: 0.020559251308441162	Val Loss Step: 0.7897827625274658	Val Loss Full: 0.10535804182291031	Best Val Loss Full: 0.1049659252166748
+Epoch: 340	Learning Rate :0.00034547657027318626	Train Loss Step: 0.18828792870044708	Train Loss Full: 0.020683126524090767	Val Loss Step: 0.8369470834732056	Val Loss Full: 0.11136230826377869	Best Val Loss Full: 0.1049659252166748
+Epoch: 341	Learning Rate :0.0003417466224928177	Train Loss Step: 0.1885250210762024	Train Loss Full: 0.020735932514071465	Val Loss Step: 0.805550754070282	Val Loss Full: 0.10704416036605835	Best Val Loss Full: 0.1049659252166748
+Epoch: 342	Learning Rate :0.000338026436526522	Train Loss Step: 0.18681955337524414	Train Loss Full: 0.020509030669927597	Val Loss Step: 0.8552451729774475	Val Loss Full: 0.11561080068349838	Best Val Loss Full: 0.1049659252166748
+Epoch: 343	Learning Rate :0.0003343162418528936	Train Loss Step: 0.18642857670783997	Train Loss Full: 0.020490525290369987	Val Loss Step: 0.7930213809013367	Val Loss Full: 0.10510919988155365	Best Val Loss Full: 0.1049659252166748
+Epoch: 344	Learning Rate :0.0003306162673342161	Train Loss Step: 0.18313650786876678	Train Loss Full: 0.02006949856877327	Val Loss Step: 0.8199887871742249	Val Loss Full: 0.10998012125492096	Best Val Loss Full: 0.1049659252166748
+Epoch: 345	Learning Rate :0.0003269267412023466	Train Loss Step: 0.18583621084690094	Train Loss Full: 0.020392458885908127	Val Loss Step: 0.899194061756134	Val Loss Full: 0.12317943572998047	Best Val Loss Full: 0.1049659252166748
+Epoch: 346	Learning Rate :0.0003232478910446361	Train Loss Step: 0.18313570320606232	Train Loss Full: 0.02008664421737194	Val Loss Step: 0.7875034213066101	Val Loss Full: 0.10465466976165771	Best Val Loss Full: 0.10465466976165771
+Epoch: 347	Learning Rate :0.0003195799437898909	Train Loss Step: 0.18060100078582764	Train Loss Full: 0.019753092899918556	Val Loss Step: 0.8453059196472168	Val Loss Full: 0.11341532319784164	Best Val Loss Full: 0.10465466976165771
+Epoch: 348	Learning Rate :0.00031592312569437577	Train Loss Step: 0.18117910623550415	Train Loss Full: 0.019824782386422157	Val Loss Step: 0.8199771642684937	Val Loss Full: 0.10855096578598022	Best Val Loss Full: 0.10465466976165771
+Epoch: 349	Learning Rate :0.0003122776623278555	Train Loss Step: 0.18188214302062988	Train Loss Full: 0.019898060709238052	Val Loss Step: 0.804966390132904	Val Loss Full: 0.10758037120103836	Best Val Loss Full: 0.10465466976165771
+Epoch: 350	Learning Rate :0.00030864377855968254	Train Loss Step: 0.18020956218242645	Train Loss Full: 0.019705843180418015	Val Loss Step: 0.8250457644462585	Val Loss Full: 0.11153385788202286	Best Val Loss Full: 0.10465466976165771
+Epoch: 351	Learning Rate :0.00030502169854492464	Train Loss Step: 0.17857195436954498	Train Loss Full: 0.01950918138027191	Val Loss Step: 0.8659831285476685	Val Loss Full: 0.11931131780147552	Best Val Loss Full: 0.10465466976165771
+Epoch: 352	Learning Rate :0.00030141164571053893	Train Loss Step: 0.17998065054416656	Train Loss Full: 0.0196716096252203	Val Loss Step: 0.8144280314445496	Val Loss Full: 0.10790959000587463	Best Val Loss Full: 0.10465466976165771
+Epoch: 353	Learning Rate :0.00029781384274158866	Train Loss Step: 0.17796841263771057	Train Loss Full: 0.019402796402573586	Val Loss Step: 0.8323708772659302	Val Loss Full: 0.11079830676317215	Best Val Loss Full: 0.10465466976165771
+Epoch: 354	Learning Rate :0.0002942285115675084	Train Loss Step: 0.1772664338350296	Train Loss Full: 0.01934937573969364	Val Loss Step: 0.7959118485450745	Val Loss Full: 0.10749082267284393	Best Val Loss Full: 0.10465466976165771
+Epoch: 355	Learning Rate :0.00029065587334841335	Train Loss Step: 0.17680557072162628	Train Loss Full: 0.01929682120680809	Val Loss Step: 0.7530056834220886	Val Loss Full: 0.09947515279054642	Best Val Loss Full: 0.09947515279054642
+Epoch: 356	Learning Rate :0.0002870961484614575	Train Loss Step: 0.17679259181022644	Train Loss Full: 0.019292274489998817	Val Loss Step: 0.7411845922470093	Val Loss Full: 0.09891492873430252	Best Val Loss Full: 0.09891492873430252
+Epoch: 357	Learning Rate :0.00028354955648723966	Train Loss Step: 0.17531147599220276	Train Loss Full: 0.019090713933110237	Val Loss Step: 0.7488537430763245	Val Loss Full: 0.09980787336826324	Best Val Loss Full: 0.09891492873430252
+Epoch: 358	Learning Rate :0.00028001631619625875	Train Loss Step: 0.17393521964550018	Train Loss Full: 0.01895993761718273	Val Loss Step: 0.8255542516708374	Val Loss Full: 0.10955704748630524	Best Val Loss Full: 0.09891492873430252
+Epoch: 359	Learning Rate :0.00027649664553541895	Train Loss Step: 0.17373214662075043	Train Loss Full: 0.018907174468040466	Val Loss Step: 0.7577561736106873	Val Loss Full: 0.10113020986318588	Best Val Loss Full: 0.09891492873430252
+Epoch: 360	Learning Rate :0.0002729907616145857	Train Loss Step: 0.17278331518173218	Train Loss Full: 0.018787870183587074	Val Loss Step: 0.7871332168579102	Val Loss Full: 0.10528150200843811	Best Val Loss Full: 0.09891492873430252
+Epoch: 361	Learning Rate :0.0002694988806931933	Train Loss Step: 0.17174021899700165	Train Loss Full: 0.018679454922676086	Val Loss Step: 0.7557249069213867	Val Loss Full: 0.1004447266459465	Best Val Loss Full: 0.09891492873430252
+Epoch: 362	Learning Rate :0.0002660212181669058	Train Loss Step: 0.17020608484745026	Train Loss Full: 0.018455876037478447	Val Loss Step: 0.8395438194274902	Val Loss Full: 0.11487148702144623	Best Val Loss Full: 0.09891492873430252
+Epoch: 363	Learning Rate :0.00026255798855432825	Train Loss Step: 0.16938702762126923	Train Loss Full: 0.018389593809843063	Val Loss Step: 0.784543514251709	Val Loss Full: 0.10455598682165146	Best Val Loss Full: 0.09891492873430252
+Epoch: 364	Learning Rate :0.000259109405483777	Train Loss Step: 0.17112945020198822	Train Loss Full: 0.018612172454595566	Val Loss Step: 0.725692093372345	Val Loss Full: 0.09680622071027756	Best Val Loss Full: 0.09680622071027756
+Epoch: 365	Learning Rate :0.0002556756816801	Train Loss Step: 0.16902951896190643	Train Loss Full: 0.018357837572693825	Val Loss Step: 0.7917464375495911	Val Loss Full: 0.10608450323343277	Best Val Loss Full: 0.09680622071027756
+Epoch: 366	Learning Rate :0.0002522570289515557	Train Loss Step: 0.16877584159374237	Train Loss Full: 0.018312787637114525	Val Loss Step: 0.7494235038757324	Val Loss Full: 0.10061028599739075	Best Val Loss Full: 0.09680622071027756
+Epoch: 367	Learning Rate :0.0002488536581767476	Train Loss Step: 0.16759073734283447	Train Loss Full: 0.018154293298721313	Val Loss Step: 0.762154757976532	Val Loss Full: 0.10289093852043152	Best Val Loss Full: 0.09680622071027756
+Epoch: 368	Learning Rate :0.00024546577929161653	Train Loss Step: 0.16680210828781128	Train Loss Full: 0.018059901893138885	Val Loss Step: 0.7450289130210876	Val Loss Full: 0.10076398402452469	Best Val Loss Full: 0.09680622071027756
+Epoch: 369	Learning Rate :0.0002420936012764902	Train Loss Step: 0.16662807762622833	Train Loss Full: 0.01803353987634182	Val Loss Step: 0.7255278825759888	Val Loss Full: 0.09713169932365417	Best Val Loss Full: 0.09680622071027756
+Epoch: 370	Learning Rate :0.00023873733214319355	Train Loss Step: 0.1664028912782669	Train Loss Full: 0.01797829009592533	Val Loss Step: 0.6980648636817932	Val Loss Full: 0.09314414858818054	Best Val Loss Full: 0.09314414858818054
+Epoch: 371	Learning Rate :0.00023539717892221554	Train Loss Step: 0.165660560131073	Train Loss Full: 0.01792621612548828	Val Loss Step: 0.7198247313499451	Val Loss Full: 0.09667397290468216	Best Val Loss Full: 0.09314414858818054
+Epoch: 372	Learning Rate :0.00023207334764994048	Train Loss Step: 0.16366805136203766	Train Loss Full: 0.017675090581178665	Val Loss Step: 0.7384303212165833	Val Loss Full: 0.09914199262857437	Best Val Loss Full: 0.09314414858818054
+Epoch: 373	Learning Rate :0.00022876604335593834	Train Loss Step: 0.1635408252477646	Train Loss Full: 0.017644381150603294	Val Loss Step: 0.7404365539550781	Val Loss Full: 0.09922917932271957	Best Val Loss Full: 0.09314414858818054
+Epoch: 374	Learning Rate :0.00022547547005031613	Train Loss Step: 0.16400201618671417	Train Loss Full: 0.017703240737318993	Val Loss Step: 0.7376502752304077	Val Loss Full: 0.09830824285745621	Best Val Loss Full: 0.09314414858818054
+Epoch: 375	Learning Rate :0.000222201830711136	Train Loss Step: 0.16319122910499573	Train Loss Full: 0.01761322095990181	Val Loss Step: 0.7129433751106262	Val Loss Full: 0.09482608735561371	Best Val Loss Full: 0.09314414858818054
+Epoch: 376	Learning Rate :0.00021894532727189186	Train Loss Step: 0.16114337742328644	Train Loss Full: 0.017362801358103752	Val Loss Step: 0.716011106967926	Val Loss Full: 0.09539693593978882	Best Val Loss Full: 0.09314414858818054
+Epoch: 377	Learning Rate :0.00021570616060905584	Train Loss Step: 0.16024023294448853	Train Loss Full: 0.017247144132852554	Val Loss Step: 0.7086087465286255	Val Loss Full: 0.09467098116874695	Best Val Loss Full: 0.09314414858818054
+Epoch: 378	Learning Rate :0.00021248453052968554	Train Loss Step: 0.16045862436294556	Train Loss Full: 0.017271356657147408	Val Loss Step: 0.7281487584114075	Val Loss Full: 0.09694395959377289	Best Val Loss Full: 0.09314414858818054
+Epoch: 379	Learning Rate :0.0002092806357590993	Train Loss Step: 0.15982738137245178	Train Loss Full: 0.01718868874013424	Val Loss Step: 0.7925933003425598	Val Loss Full: 0.1086161807179451	Best Val Loss Full: 0.09314414858818054
+Epoch: 380	Learning Rate :0.00020609467392861832	Train Loss Step: 0.16058215498924255	Train Loss Full: 0.017301123589277267	Val Loss Step: 0.7354463934898376	Val Loss Full: 0.09859941154718399	Best Val Loss Full: 0.09314414858818054
+Epoch: 381	Learning Rate :0.00020292684156337563	Train Loss Step: 0.15855559706687927	Train Loss Full: 0.01704929582774639	Val Loss Step: 0.7111104130744934	Val Loss Full: 0.0947323888540268	Best Val Loss Full: 0.09314414858818054
+Epoch: 382	Learning Rate :0.00019977733407019303	Train Loss Step: 0.15848587453365326	Train Loss Full: 0.01703764870762825	Val Loss Step: 0.7056559324264526	Val Loss Full: 0.09374302625656128	Best Val Loss Full: 0.09314414858818054
+Epoch: 383	Learning Rate :0.00019664634572552875	Train Loss Step: 0.15790577232837677	Train Loss Full: 0.016977233812212944	Val Loss Step: 0.7010076642036438	Val Loss Full: 0.0927743911743164	Best Val Loss Full: 0.0927743911743164
+Epoch: 384	Learning Rate :0.0001935340696634915	Train Loss Step: 0.15655367076396942	Train Loss Full: 0.016792260110378265	Val Loss Step: 0.6993137001991272	Val Loss Full: 0.09375089406967163	Best Val Loss Full: 0.0927743911743164
+Epoch: 385	Learning Rate :0.00019044069786392949	Train Loss Step: 0.15667036175727844	Train Loss Full: 0.0168039221316576	Val Loss Step: 0.7104770541191101	Val Loss Full: 0.09473943710327148	Best Val Loss Full: 0.0927743911743164
+Epoch: 386	Learning Rate :0.0001873664211405861	Train Loss Step: 0.15532852709293365	Train Loss Full: 0.016637274995446205	Val Loss Step: 0.7009050846099854	Val Loss Full: 0.09313615411520004	Best Val Loss Full: 0.0927743911743164
+Epoch: 387	Learning Rate :0.0001843114291293308	Train Loss Step: 0.15584035217761993	Train Loss Full: 0.016702717170119286	Val Loss Step: 0.7474779486656189	Val Loss Full: 0.09979313611984253	Best Val Loss Full: 0.0927743911743164
+Epoch: 388	Learning Rate :0.00018127591027646125	Train Loss Step: 0.1543901413679123	Train Loss Full: 0.016531987115740776	Val Loss Step: 0.6862567067146301	Val Loss Full: 0.09149068593978882	Best Val Loss Full: 0.09149068593978882
+Epoch: 389	Learning Rate :0.00017826005182707873	Train Loss Step: 0.15369407832622528	Train Loss Full: 0.016442598775029182	Val Loss Step: 0.6707972288131714	Val Loss Full: 0.08907560259103775	Best Val Loss Full: 0.08907560259103775
+Epoch: 390	Learning Rate :0.00017526403981353822	Train Loss Step: 0.15313096344470978	Train Loss Full: 0.016364531591534615	Val Loss Step: 0.6904560923576355	Val Loss Full: 0.09218934178352356	Best Val Loss Full: 0.08907560259103775
+Epoch: 391	Learning Rate :0.00017228805904397377	Train Loss Step: 0.15295086801052094	Train Loss Full: 0.016333241015672684	Val Loss Step: 0.6864562630653381	Val Loss Full: 0.09165880084037781	Best Val Loss Full: 0.08907560259103775
+Epoch: 392	Learning Rate :0.00016933229309089662	Train Loss Step: 0.15254724025726318	Train Loss Full: 0.01630285754799843	Val Loss Step: 0.6831032633781433	Val Loss Full: 0.09093956649303436	Best Val Loss Full: 0.08907560259103775
+Epoch: 393	Learning Rate :0.0001663969242798742	Train Loss Step: 0.15165017545223236	Train Loss Full: 0.016197221353650093	Val Loss Step: 0.6983597874641418	Val Loss Full: 0.09416233748197556	Best Val Loss Full: 0.08907560259103775
+Epoch: 394	Learning Rate :0.00016348213367828137	Train Loss Step: 0.15150713920593262	Train Loss Full: 0.016173461452126503	Val Loss Step: 0.6846134066581726	Val Loss Full: 0.09101933240890503	Best Val Loss Full: 0.08907560259103775
+Epoch: 395	Learning Rate :0.0001605881010841324	Train Loss Step: 0.1507723182439804	Train Loss Full: 0.016081396490335464	Val Loss Step: 0.6618911623954773	Val Loss Full: 0.0884314551949501	Best Val Loss Full: 0.0884314551949501
+Epoch: 396	Learning Rate :0.00015771500501498997	Train Loss Step: 0.14994913339614868	Train Loss Full: 0.01597653701901436	Val Loss Step: 0.7024033069610596	Val Loss Full: 0.09317241609096527	Best Val Loss Full: 0.0884314551949501
+Epoch: 397	Learning Rate :0.00015486302269695254	Train Loss Step: 0.1502697914838791	Train Loss Full: 0.01601715199649334	Val Loss Step: 0.6608551740646362	Val Loss Full: 0.08756009489297867	Best Val Loss Full: 0.08756009489297867
+Epoch: 398	Learning Rate :0.00015203233005372412	Train Loss Step: 0.14905418455600739	Train Loss Full: 0.015864335000514984	Val Loss Step: 0.672390878200531	Val Loss Full: 0.08992771059274673	Best Val Loss Full: 0.08756009489297867
+Epoch: 399	Learning Rate :0.00014922310169576043	Train Loss Step: 0.14901745319366455	Train Loss Full: 0.0158579982817173	Val Loss Step: 0.684948205947876	Val Loss Full: 0.09104041755199432	Best Val Loss Full: 0.08756009489297867
+Epoch: 400	Learning Rate :0.0001464355109094993	Train Loss Step: 0.1482921540737152	Train Loss Full: 0.0157649926841259	Val Loss Step: 0.6709786653518677	Val Loss Full: 0.08872168511152267	Best Val Loss Full: 0.08756009489297867
+Epoch: 401	Learning Rate :0.00014366972964667118	Train Loss Step: 0.14840514957904816	Train Loss Full: 0.015780605375766754	Val Loss Step: 0.7036275863647461	Val Loss Full: 0.09538733214139938	Best Val Loss Full: 0.08756009489297867
+Epoch: 402	Learning Rate :0.0001409259285136923	Train Loss Step: 0.14718596637248993	Train Loss Full: 0.015623670071363449	Val Loss Step: 0.6579039692878723	Val Loss Full: 0.0875450000166893	Best Val Loss Full: 0.0875450000166893
+Epoch: 403	Learning Rate :0.00013820427676114084	Train Loss Step: 0.14708034694194794	Train Loss Full: 0.015626028180122375	Val Loss Step: 0.6785427927970886	Val Loss Full: 0.09077566117048264	Best Val Loss Full: 0.0875450000166893
+Epoch: 404	Learning Rate :0.0001355049422733175	Train Loss Step: 0.1470624953508377	Train Loss Full: 0.015607844106853008	Val Loss Step: 0.6520751118659973	Val Loss Full: 0.08693893253803253	Best Val Loss Full: 0.08693893253803253
+Epoch: 405	Learning Rate :0.00013282809155788788	Train Loss Step: 0.14589819312095642	Train Loss Full: 0.015470381826162338	Val Loss Step: 0.6823803782463074	Val Loss Full: 0.09074296057224274	Best Val Loss Full: 0.08693893253803253
+Epoch: 406	Learning Rate :0.0001301738897356137	Train Loss Step: 0.1456969827413559	Train Loss Full: 0.015450207516551018	Val Loss Step: 0.6515941619873047	Val Loss Full: 0.0867890790104866	Best Val Loss Full: 0.0867890790104866
+Epoch: 407	Learning Rate :0.00012754250053016548	Train Loss Step: 0.14505279064178467	Train Loss Full: 0.015368855558335781	Val Loss Step: 0.6614425778388977	Val Loss Full: 0.08814036101102829	Best Val Loss Full: 0.0867890790104866
+Epoch: 408	Learning Rate :0.0001249340862580245	Train Loss Step: 0.14484918117523193	Train Loss Full: 0.015349868685007095	Val Loss Step: 0.6711605191230774	Val Loss Full: 0.08974368125200272	Best Val Loss Full: 0.0867890790104866
+Epoch: 409	Learning Rate :0.0001223488078184698	Train Loss Step: 0.14412732422351837	Train Loss Full: 0.015253078192472458	Val Loss Step: 0.6599077582359314	Val Loss Full: 0.0878392681479454	Best Val Loss Full: 0.0867890790104866
+Epoch: 410	Learning Rate :0.0001197868246836532	Train Loss Step: 0.14393819868564606	Train Loss Full: 0.01522553525865078	Val Loss Step: 0.6674999594688416	Val Loss Full: 0.0885428786277771	Best Val Loss Full: 0.0867890790104866
+Epoch: 411	Learning Rate :0.00011724829488876231	Train Loss Step: 0.14349134266376495	Train Loss Full: 0.015176708810031414	Val Loss Step: 0.6939051151275635	Val Loss Full: 0.09376151859760284	Best Val Loss Full: 0.0867890790104866
+Epoch: 412	Learning Rate :0.0001147333750222729	Train Loss Step: 0.14279797673225403	Train Loss Full: 0.015092505142092705	Val Loss Step: 0.680198073387146	Val Loss Full: 0.0909121111035347	Best Val Loss Full: 0.0867890790104866
+Epoch: 413	Learning Rate :0.00011224222021628816	Train Loss Step: 0.14276672899723053	Train Loss Full: 0.015083245933055878	Val Loss Step: 0.6505432724952698	Val Loss Full: 0.08643211424350739	Best Val Loss Full: 0.08643211424350739
+Epoch: 414	Learning Rate :0.00010977498413697121	Train Loss Step: 0.14209429919719696	Train Loss Full: 0.014993100427091122	Val Loss Step: 0.6510348916053772	Val Loss Full: 0.08641721308231354	Best Val Loss Full: 0.08641721308231354
+Epoch: 415	Learning Rate :0.00010733181897506507	Train Loss Step: 0.1416504979133606	Train Loss Full: 0.014954034239053726	Val Loss Step: 0.6501715183258057	Val Loss Full: 0.08640256524085999	Best Val Loss Full: 0.08640256524085999
+Epoch: 416	Learning Rate :0.00010491287543650526	Train Loss Step: 0.14153216779232025	Train Loss Full: 0.014936481602489948	Val Loss Step: 0.6512479782104492	Val Loss Full: 0.08692394196987152	Best Val Loss Full: 0.08640256524085999
+Epoch: 417	Learning Rate :0.00010251830273312346	Train Loss Step: 0.14105558395385742	Train Loss Full: 0.01486960332840681	Val Loss Step: 0.6344401240348816	Val Loss Full: 0.08415780961513519	Best Val Loss Full: 0.08415780961513519
+Epoch: 418	Learning Rate :0.00010014824857344346	Train Loss Step: 0.14100001752376556	Train Loss Full: 0.014866787008941174	Val Loss Step: 0.6345705389976501	Val Loss Full: 0.08402375131845474	Best Val Loss Full: 0.08402375131845474
+Epoch: 419	Learning Rate :9.780285915356968e-05	Train Loss Step: 0.14032340049743652	Train Loss Full: 0.01478616800159216	Val Loss Step: 0.6567822098731995	Val Loss Full: 0.08773061633110046	Best Val Loss Full: 0.08402375131845474
+Epoch: 420	Learning Rate :9.548227914816967e-05	Train Loss Step: 0.14050959050655365	Train Loss Full: 0.01480370108038187	Val Loss Step: 0.638791561126709	Val Loss Full: 0.08494560420513153	Best Val Loss Full: 0.08402375131845474
+Epoch: 421	Learning Rate :9.318665170154867e-05	Train Loss Step: 0.13961736857891083	Train Loss Full: 0.014698089100420475	Val Loss Step: 0.6347081661224365	Val Loss Full: 0.0843472108244896	Best Val Loss Full: 0.08402375131845474
+Epoch: 422	Learning Rate :9.091611841882102e-05	Train Loss Step: 0.13934031128883362	Train Loss Full: 0.014661711640655994	Val Loss Step: 0.6442419290542603	Val Loss Full: 0.08602993190288544	Best Val Loss Full: 0.08402375131845474
+Epoch: 423	Learning Rate :8.867081935717509e-05	Train Loss Step: 0.13890917599201202	Train Loss Full: 0.014606445096433163	Val Loss Step: 0.6268304586410522	Val Loss Full: 0.08296652883291245	Best Val Loss Full: 0.08296652883291245
+Epoch: 424	Learning Rate :8.645089301723282e-05	Train Loss Step: 0.13876976072788239	Train Loss Full: 0.014592459425330162	Val Loss Step: 0.6365519762039185	Val Loss Full: 0.08446300029754639	Best Val Loss Full: 0.08296652883291245
+Epoch: 425	Learning Rate :8.425647633450813e-05	Train Loss Step: 0.13852129876613617	Train Loss Full: 0.014561943709850311	Val Loss Step: 0.6349841356277466	Val Loss Full: 0.0843229591846466	Best Val Loss Full: 0.08296652883291245
+Epoch: 426	Learning Rate :8.20877046709582e-05	Train Loss Step: 0.13806459307670593	Train Loss Full: 0.01450345292687416	Val Loss Step: 0.6418209075927734	Val Loss Full: 0.08559823781251907	Best Val Loss Full: 0.08296652883291245
+Epoch: 427	Learning Rate :7.994471180663531e-05	Train Loss Step: 0.13768677413463593	Train Loss Full: 0.01445428654551506	Val Loss Step: 0.6243181824684143	Val Loss Full: 0.08277872204780579	Best Val Loss Full: 0.08277872204780579
+Epoch: 428	Learning Rate :7.782762993143374e-05	Train Loss Step: 0.13747470080852509	Train Loss Full: 0.014431864023208618	Val Loss Step: 0.6196030378341675	Val Loss Full: 0.0821712538599968	Best Val Loss Full: 0.0821712538599968
+Epoch: 429	Learning Rate :7.573658963693579e-05	Train Loss Step: 0.1371486634016037	Train Loss Full: 0.014388716779649258	Val Loss Step: 0.6269387602806091	Val Loss Full: 0.08329536020755768	Best Val Loss Full: 0.0821712538599968
+Epoch: 430	Learning Rate :7.367171990835662e-05	Train Loss Step: 0.13688164949417114	Train Loss Full: 0.014354604296386242	Val Loss Step: 0.635313868522644	Val Loss Full: 0.08457215875387192	Best Val Loss Full: 0.0821712538599968
+Epoch: 431	Learning Rate :7.163314811658739e-05	Train Loss Step: 0.1366400420665741	Train Loss Full: 0.01432768814265728	Val Loss Step: 0.6314787268638611	Val Loss Full: 0.08398154377937317	Best Val Loss Full: 0.0821712538599968
+Epoch: 432	Learning Rate :6.962100001033868e-05	Train Loss Step: 0.1364026516675949	Train Loss Full: 0.014299329370260239	Val Loss Step: 0.6290689706802368	Val Loss Full: 0.08363122493028641	Best Val Loss Full: 0.0821712538599968
+Epoch: 433	Learning Rate :6.763539970838408e-05	Train Loss Step: 0.13608324527740479	Train Loss Full: 0.014257635921239853	Val Loss Step: 0.6297693848609924	Val Loss Full: 0.0836978480219841	Best Val Loss Full: 0.0821712538599968
+Epoch: 434	Learning Rate :6.567646969190276e-05	Train Loss Step: 0.1357630491256714	Train Loss Full: 0.014215819537639618	Val Loss Step: 0.6278921961784363	Val Loss Full: 0.08342017978429794	Best Val Loss Full: 0.0821712538599968
+Epoch: 435	Learning Rate :6.374433079692588e-05	Train Loss Step: 0.13548459112644196	Train Loss Full: 0.014182484708726406	Val Loss Step: 0.6250989437103271	Val Loss Full: 0.08311896026134491	Best Val Loss Full: 0.0821712538599968
+Epoch: 436	Learning Rate :6.183910220688158e-05	Train Loss Step: 0.13536588847637177	Train Loss Full: 0.014168624766170979	Val Loss Step: 0.6240405440330505	Val Loss Full: 0.08314307779073715	Best Val Loss Full: 0.0821712538599968
+Epoch: 437	Learning Rate :5.996090144524364e-05	Train Loss Step: 0.1350603550672531	Train Loss Full: 0.01413353718817234	Val Loss Step: 0.6277320981025696	Val Loss Full: 0.08344675600528717	Best Val Loss Full: 0.0821712538599968
+Epoch: 438	Learning Rate :5.810984436828226e-05	Train Loss Step: 0.1347590684890747	Train Loss Full: 0.014096496626734734	Val Loss Step: 0.6236319541931152	Val Loss Full: 0.08265643566846848	Best Val Loss Full: 0.0821712538599968
+Epoch: 439	Learning Rate :5.6286045157917095e-05	Train Loss Step: 0.13455568253993988	Train Loss Full: 0.014071439392864704	Val Loss Step: 0.617676317691803	Val Loss Full: 0.0817936584353447	Best Val Loss Full: 0.0817936584353447
+Epoch: 440	Learning Rate :5.448961631467426e-05	Train Loss Step: 0.13428647816181183	Train Loss Full: 0.014036346226930618	Val Loss Step: 0.6172703504562378	Val Loss Full: 0.0818336009979248	Best Val Loss Full: 0.0817936584353447
+Epoch: 441	Learning Rate :5.2720668650747066e-05	Train Loss Step: 0.13428515195846558	Train Loss Full: 0.014036845415830612	Val Loss Step: 0.6151415705680847	Val Loss Full: 0.08171221613883972	Best Val Loss Full: 0.08171221613883972
+Epoch: 442	Learning Rate :5.09793112831595e-05	Train Loss Step: 0.13393297791481018	Train Loss Full: 0.013994910754263401	Val Loss Step: 0.6206424236297607	Val Loss Full: 0.08221974223852158	Best Val Loss Full: 0.08171221613883972
+Epoch: 443	Learning Rate :4.926565162703672e-05	Train Loss Step: 0.13369965553283691	Train Loss Full: 0.013965347781777382	Val Loss Step: 0.6137093305587769	Val Loss Full: 0.08126948028802872	Best Val Loss Full: 0.08126948028802872
+Epoch: 444	Learning Rate :4.7579795388978435e-05	Train Loss Step: 0.13347220420837402	Train Loss Full: 0.01393739040941	Val Loss Step: 0.6189360618591309	Val Loss Full: 0.08222894370555878	Best Val Loss Full: 0.08126948028802872
+Epoch: 445	Learning Rate :4.592184656053841e-05	Train Loss Step: 0.13330024480819702	Train Loss Full: 0.013916370458900928	Val Loss Step: 0.6167013645172119	Val Loss Full: 0.08189062029123306	Best Val Loss Full: 0.08126948028802872
+Epoch: 446	Learning Rate :4.4291907411810113e-05	Train Loss Step: 0.1330931931734085	Train Loss Full: 0.013890910893678665	Val Loss Step: 0.6191219091415405	Val Loss Full: 0.08240540325641632	Best Val Loss Full: 0.08126948028802872
+Epoch: 447	Learning Rate :4.269007848511769e-05	Train Loss Step: 0.13297873735427856	Train Loss Full: 0.013877235352993011	Val Loss Step: 0.6134940981864929	Val Loss Full: 0.08118721097707748	Best Val Loss Full: 0.08118721097707748
+Epoch: 448	Learning Rate :4.111645858881486e-05	Train Loss Step: 0.13273444771766663	Train Loss Full: 0.013847839087247849	Val Loss Step: 0.6164921522140503	Val Loss Full: 0.08173922449350357	Best Val Loss Full: 0.08118721097707748
+Epoch: 449	Learning Rate :3.957114479118918e-05	Train Loss Step: 0.13253045082092285	Train Loss Full: 0.013823644258081913	Val Loss Step: 0.6137789487838745	Val Loss Full: 0.08141214400529861	Best Val Loss Full: 0.08118721097707748
+Epoch: 450	Learning Rate :3.805423241447474e-05	Train Loss Step: 0.13239985704421997	Train Loss Full: 0.013808146119117737	Val Loss Step: 0.6167473793029785	Val Loss Full: 0.08183009177446365	Best Val Loss Full: 0.08118721097707748
+Epoch: 451	Learning Rate :3.656581502897223e-05	Train Loss Step: 0.13223548233509064	Train Loss Full: 0.01378971803933382	Val Loss Step: 0.6104366779327393	Val Loss Full: 0.08089917153120041	Best Val Loss Full: 0.08089917153120041
+Epoch: 452	Learning Rate :3.510598444727714e-05	Train Loss Step: 0.13209156692028046	Train Loss Full: 0.01377031859010458	Val Loss Step: 0.6149550080299377	Val Loss Full: 0.08158498257398605	Best Val Loss Full: 0.08089917153120041
+Epoch: 453	Learning Rate :3.367483071861597e-05	Train Loss Step: 0.13191412389278412	Train Loss Full: 0.013749482110142708	Val Loss Step: 0.6108537316322327	Val Loss Full: 0.0810033306479454	Best Val Loss Full: 0.08089917153120041
+Epoch: 454	Learning Rate :3.227244212329236e-05	Train Loss Step: 0.13180392980575562	Train Loss Full: 0.013736199587583542	Val Loss Step: 0.6115362048149109	Val Loss Full: 0.0810491070151329	Best Val Loss Full: 0.08089917153120041
+Epoch: 455	Learning Rate :3.089890516724031e-05	Train Loss Step: 0.1316082924604416	Train Loss Full: 0.013712051324546337	Val Loss Step: 0.612489640712738	Val Loss Full: 0.08129680156707764	Best Val Loss Full: 0.08089917153120041
+Epoch: 456	Learning Rate :2.9554304576689545e-05	Train Loss Step: 0.13146467506885529	Train Loss Full: 0.013694954104721546	Val Loss Step: 0.6126554012298584	Val Loss Full: 0.08126404881477356	Best Val Loss Full: 0.08089917153120041
+Epoch: 457	Learning Rate :2.8238723292938014e-05	Train Loss Step: 0.13135971128940582	Train Loss Full: 0.013682497665286064	Val Loss Step: 0.6095492243766785	Val Loss Full: 0.08081365376710892	Best Val Loss Full: 0.08081365376710892
+Epoch: 458	Learning Rate :2.695224246723618e-05	Train Loss Step: 0.13120488822460175	Train Loss Full: 0.013664128258824348	Val Loss Step: 0.611034095287323	Val Loss Full: 0.08105558156967163	Best Val Loss Full: 0.08081365376710892
+Epoch: 459	Learning Rate :2.5694941455781313e-05	Train Loss Step: 0.131085604429245	Train Loss Full: 0.013649571686983109	Val Loss Step: 0.6115922927856445	Val Loss Full: 0.08108865469694138	Best Val Loss Full: 0.08081365376710892
+Epoch: 460	Learning Rate :2.4466897814822164e-05	Train Loss Step: 0.13095656037330627	Train Loss Full: 0.013634792529046535	Val Loss Step: 0.6118661165237427	Val Loss Full: 0.08123331516981125	Best Val Loss Full: 0.08081365376710892
+Epoch: 461	Learning Rate :2.326818729587504e-05	Train Loss Step: 0.13086843490600586	Train Loss Full: 0.013624471612274647	Val Loss Step: 0.6119149327278137	Val Loss Full: 0.08119454234838486	Best Val Loss Full: 0.08081365376710892
+Epoch: 462	Learning Rate :2.2098883841051458e-05	Train Loss Step: 0.13073831796646118	Train Loss Full: 0.013608093373477459	Val Loss Step: 0.6094686985015869	Val Loss Full: 0.08077096939086914	Best Val Loss Full: 0.08077096939086914
+Epoch: 463	Learning Rate :2.095905957849605e-05	Train Loss Step: 0.13062594830989838	Train Loss Full: 0.013595487922430038	Val Loss Step: 0.6090021729469299	Val Loss Full: 0.08080875128507614	Best Val Loss Full: 0.08077096939086914
+Epoch: 464	Learning Rate :1.984878481793865e-05	Train Loss Step: 0.1305265575647354	Train Loss Full: 0.013583598658442497	Val Loss Step: 0.609001874923706	Val Loss Full: 0.08073331415653229	Best Val Loss Full: 0.08073331415653229
+Epoch: 465	Learning Rate :1.8768128046356278e-05	Train Loss Step: 0.13043256103992462	Train Loss Full: 0.013572967611253262	Val Loss Step: 0.6068994402885437	Val Loss Full: 0.08043313771486282	Best Val Loss Full: 0.08043313771486282
+Epoch: 466	Learning Rate :1.7717155923748942e-05	Train Loss Step: 0.13033059239387512	Train Loss Full: 0.013560332357883453	Val Loss Step: 0.6077883839607239	Val Loss Full: 0.08054564148187637	Best Val Loss Full: 0.08043313771486282
+Epoch: 467	Learning Rate :1.6695933279027683e-05	Train Loss Step: 0.13023492693901062	Train Loss Full: 0.013549290597438812	Val Loss Step: 0.6062394976615906	Val Loss Full: 0.08035644143819809	Best Val Loss Full: 0.08035644143819809
+Epoch: 468	Learning Rate :1.5704523106015584e-05	Train Loss Step: 0.13013745844364166	Train Loss Full: 0.013538136146962643	Val Loss Step: 0.6077669262886047	Val Loss Full: 0.0805680900812149	Best Val Loss Full: 0.08035644143819809
+Epoch: 469	Learning Rate :1.4742986559562107e-05	Train Loss Step: 0.13004782795906067	Train Loss Full: 0.013527329079806805	Val Loss Step: 0.6063653826713562	Val Loss Full: 0.08034264296293259	Best Val Loss Full: 0.08034264296293259
+Epoch: 470	Learning Rate :1.381138295177072e-05	Train Loss Step: 0.1299670934677124	Train Loss Full: 0.013517956249415874	Val Loss Step: 0.6081297993659973	Val Loss Full: 0.08049611747264862	Best Val Loss Full: 0.08034264296293259
+Epoch: 471	Learning Rate :1.2909769748340156e-05	Train Loss Step: 0.1298917979001999	Train Loss Full: 0.013509131036698818	Val Loss Step: 0.6063393354415894	Val Loss Full: 0.08030372112989426	Best Val Loss Full: 0.08030372112989426
+Epoch: 472	Learning Rate :1.2038202565019702e-05	Train Loss Step: 0.12980309128761292	Train Loss Full: 0.013498818501830101	Val Loss Step: 0.6099724173545837	Val Loss Full: 0.08093176037073135	Best Val Loss Full: 0.08030372112989426
+Epoch: 473	Learning Rate :1.1196735164178873e-05	Train Loss Step: 0.12973585724830627	Train Loss Full: 0.013491185382008553	Val Loss Step: 0.6073458194732666	Val Loss Full: 0.08053433895111084	Best Val Loss Full: 0.08030372112989426
+Epoch: 474	Learning Rate :1.038541945149041e-05	Train Loss Step: 0.12967564165592194	Train Loss Full: 0.01348376926034689	Val Loss Step: 0.6064680814743042	Val Loss Full: 0.08032574504613876	Best Val Loss Full: 0.08030372112989426
+Epoch: 475	Learning Rate :9.604305472729282e-06	Train Loss Step: 0.1296113282442093	Train Loss Full: 0.013476220890879631	Val Loss Step: 0.6071907877922058	Val Loss Full: 0.08053950220346451	Best Val Loss Full: 0.08030372112989426
+Epoch: 476	Learning Rate :8.853441410684874e-06	Train Loss Step: 0.1295425444841385	Train Loss Full: 0.013468516059219837	Val Loss Step: 0.6075965166091919	Val Loss Full: 0.08054392784833908	Best Val Loss Full: 0.08030372112989426
+Epoch: 477	Learning Rate :8.132873582189595e-06	Train Loss Step: 0.12948158383369446	Train Loss Full: 0.013461203314363956	Val Loss Step: 0.6059612035751343	Val Loss Full: 0.08027980476617813	Best Val Loss Full: 0.08027980476617813
+Epoch: 478	Learning Rate :7.442646435261263e-06	Train Loss Step: 0.12942419946193695	Train Loss Full: 0.013454803265631199	Val Loss Step: 0.605525553226471	Val Loss Full: 0.08024661988019943	Best Val Loss Full: 0.08024661988019943
+Epoch: 479	Learning Rate :6.7828025463614775e-06	Train Loss Step: 0.12937414646148682	Train Loss Full: 0.013448772951960564	Val Loss Step: 0.6054897308349609	Val Loss Full: 0.08022885769605637	Best Val Loss Full: 0.08022885769605637
+Epoch: 480	Learning Rate :6.153382617769488e-06	Train Loss Step: 0.1293182373046875	Train Loss Full: 0.01344247069209814	Val Loss Step: 0.6059436798095703	Val Loss Full: 0.08035047352313995	Best Val Loss Full: 0.08022885769605637
+Epoch: 481	Learning Rate :5.55442547507132e-06	Train Loss Step: 0.12927226722240448	Train Loss Full: 0.01343716960400343	Val Loss Step: 0.6061211824417114	Val Loss Full: 0.08036618679761887	Best Val Loss Full: 0.08022885769605637
+Epoch: 482	Learning Rate :4.9859680647648525e-06	Train Loss Step: 0.12922531366348267	Train Loss Full: 0.013431832194328308	Val Loss Step: 0.6052123308181763	Val Loss Full: 0.08020370453596115	Best Val Loss Full: 0.08020370453596115
+Epoch: 483	Learning Rate :4.448045451980923e-06	Train Loss Step: 0.12918290495872498	Train Loss Full: 0.013426871038973331	Val Loss Step: 0.6053658723831177	Val Loss Full: 0.08022790402173996	Best Val Loss Full: 0.08020370453596115
+Epoch: 484	Learning Rate :3.9406908183199995e-06	Train Loss Step: 0.1291465163230896	Train Loss Full: 0.01342286728322506	Val Loss Step: 0.6044867038726807	Val Loss Full: 0.08010029792785645	Best Val Loss Full: 0.08010029792785645
+Epoch: 485	Learning Rate :3.46393545980582e-06	Train Loss Step: 0.12910540401935577	Train Loss Full: 0.013418101705610752	Val Loss Step: 0.605021595954895	Val Loss Full: 0.0801692008972168	Best Val Loss Full: 0.08010029792785645
+Epoch: 486	Learning Rate :3.017808784954656e-06	Train Loss Step: 0.12907323241233826	Train Loss Full: 0.013414346612989902	Val Loss Step: 0.6052693128585815	Val Loss Full: 0.08022486418485641	Best Val Loss Full: 0.08010029792785645
+Epoch: 487	Learning Rate :2.6023383129611555e-06	Train Loss Step: 0.12903976440429688	Train Loss Full: 0.013410467654466629	Val Loss Step: 0.6063177585601807	Val Loss Full: 0.08041505515575409	Best Val Loss Full: 0.08010029792785645
+Epoch: 488	Learning Rate :2.2175496720010877e-06	Train Loss Step: 0.1290079802274704	Train Loss Full: 0.01340697705745697	Val Loss Step: 0.6053407788276672	Val Loss Full: 0.08022233843803406	Best Val Loss Full: 0.08010029792785645
+Epoch: 489	Learning Rate :1.8634665976503871e-06	Train Loss Step: 0.12898404896259308	Train Loss Full: 0.0134042426943779	Val Loss Step: 0.605717658996582	Val Loss Full: 0.08030220866203308	Best Val Loss Full: 0.08010029792785645
+Epoch: 490	Learning Rate :1.5401109314209335e-06	Train Loss Step: 0.12895938754081726	Train Loss Full: 0.013401433825492859	Val Loss Step: 0.6047638654708862	Val Loss Full: 0.08019084483385086	Best Val Loss Full: 0.08010029792785645
+Epoch: 491	Learning Rate :1.2475026194134099e-06	Train Loss Step: 0.128936305642128	Train Loss Full: 0.013398806564509869	Val Loss Step: 0.6058796048164368	Val Loss Full: 0.0803506150841713	Best Val Loss Full: 0.08010029792785645
+Epoch: 492	Learning Rate :9.856597110867853e-07	Train Loss Step: 0.12891626358032227	Train Loss Full: 0.013396542519330978	Val Loss Step: 0.6049221158027649	Val Loss Full: 0.08019586652517319	Best Val Loss Full: 0.08010029792785645
+Epoch: 493	Learning Rate :7.545983581449833e-07	Train Loss Step: 0.1288989931344986	Train Loss Full: 0.013394619338214397	Val Loss Step: 0.6048304438591003	Val Loss Full: 0.08016758412122726	Best Val Loss Full: 0.08010029792785645
+Epoch: 494	Learning Rate :5.543328135406796e-07	Train Loss Step: 0.1288839429616928	Train Loss Full: 0.013392888940870762	Val Loss Step: 0.6047407984733582	Val Loss Full: 0.0801483541727066	Best Val Loss Full: 0.08010029792785645
+Epoch: 495	Learning Rate :3.848754305960046e-07	Train Loss Step: 0.1288699507713318	Train Loss Full: 0.013391343876719475	Val Loss Step: 0.6046279668807983	Val Loss Full: 0.0801376923918724	Best Val Loss Full: 0.08010029792785645
+Epoch: 496	Learning Rate :2.462366622405977e-07	Train Loss Step: 0.1288585513830185	Train Loss Full: 0.013390067033469677	Val Loss Step: 0.6046779751777649	Val Loss Full: 0.08013717830181122	Best Val Loss Full: 0.08010029792785645
+Epoch: 497	Learning Rate :1.3842506036662342e-07	Train Loss Step: 0.12884953618049622	Train Loss Full: 0.0133891012519598	Val Loss Step: 0.6048603653907776	Val Loss Full: 0.08016537129878998	Best Val Loss Full: 0.08010029792785645
+Epoch: 498	Learning Rate :6.144727530169254e-08	Train Loss Step: 0.12884239852428436	Train Loss Full: 0.013388285413384438	Val Loss Step: 0.6048223972320557	Val Loss Full: 0.08016154170036316	Best Val Loss Full: 0.08010029792785645
+Epoch: 499	Learning Rate :1.5308055398024608e-08	Train Loss Step: 0.12883739173412323	Train Loss Full: 0.013387727551162243	Val Loss Step: 0.6048058271408081	Val Loss Full: 0.08015541732311249	Best Val Loss Full: 0.08010029792785645
+Epoch: 500	Learning Rate :1.0246740125861636e-11	Train Loss Step: 0.12883466482162476	Train Loss Full: 0.013387431390583515	Val Loss Step: 0.6048151850700378	Val Loss Full: 0.08015725761651993	Best Val Loss Full: 0.08010029792785645
+Finish Training !
