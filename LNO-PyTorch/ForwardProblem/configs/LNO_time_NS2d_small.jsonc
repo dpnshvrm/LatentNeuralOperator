@@ -1,0 +1,46 @@
+{
+    // Param-matched to LTO's NS2d ae-reconloss checkpoint (1,126,211 params)
+    // -- see find_lno_param_config.py for the grid search that picked
+    // n_block=4/n_mode=64/n_dim=160/n_head=8 (1,148,385 params, +2.0% over
+    // target, the closest grid point found). n_layer/attn/act/loss/
+    // optimizer/scheduler/train all identical to LNO_time_NS2d.jsonc
+    // (the natural-size ~5.08M-param config, kept for the Darcy-consistent
+    // comparison) -- only the model's capacity knobs changed.
+    "data": {
+        "name": "NS2d",
+        "train_batch_size" : 4,
+        "val_batch_size": 4
+    },
+    "model": {
+        "name": "LNO",
+        "n_block": 4,
+        "n_mode": 64,
+        "n_dim" : 160,
+        "n_head" : 8,
+        "n_layer": 2,
+        "attn": "Attention_Vanilla",
+        "act": "GELU"
+    },
+    "loss": {
+        "name": "rL2"
+    },
+    "optimizer": {
+        "name": "AdamW",
+        "lr": 1e-3,
+        "weight_decay": 0.00005,
+        "beta0": 0.9,
+        "beta1": 0.99
+    },
+    "scheduler": {
+        "name": "OneCycle",
+        "div_factor": 1e4,
+        "final_div_factor": 1e4,
+        "pct_start": 0.2
+    },
+    "train":{
+        "epoch": 500,
+        "log_print_interval_epoch": 1,
+        "model_save_interval_epoch": 50,
+        "grad_clip": 1000.0
+    }
+}
