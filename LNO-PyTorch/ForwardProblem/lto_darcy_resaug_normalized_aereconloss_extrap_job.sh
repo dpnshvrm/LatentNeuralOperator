@@ -57,21 +57,24 @@
 # "exp.py drift incident" note in claude/convcnp-lno-integration-plan.md):
 #   grep -n "needs_y2\|rL2_ae\|RelLpLossWithRecon\|compute_recon_loss" exp.py module/utils.py module/loss.py module/convcnp_lto.py
 #
-# CONDA_ENV_PATH note: this uses /scratch/dverma/lno-conda (the
-# LNO-PyTorch repo's own env, separate from the LTO repo's
-# /scratch/dverma/lto-conda, which was recently found broken -- Fatal
-# Python error: init_fs_encoding -- and fixed by switching to
-# /home/dverma/lto-conda for LTO repo jobs). This env is UNVERIFIED --
-# not yet confirmed broken or working -- kept as-is since every other
-# Darcy job here uses it successfully as far as this session's records
-# show. If this job hits the same init_fs_encoding failure, the same
-# fix (switch to an equivalent /home/dverma path, if one exists) likely
-# applies.
+# CONDA_ENV_PATH note (UPDATED 2026-09-23): this job actually hit the
+# same init_fs_encoding/codec fatal-error as the earlier /scratch/dverma/
+# lto-conda bug -- this time on /scratch/dverma/lno-conda, which every
+# prior Darcy job had used successfully. Same root cause pattern (env
+# under /scratch, not /home). Fixed the same way: env rebuilt fresh at
+# /home/dverma/lno-conda (Python 3.9, same package list as the original --
+# pip install torch numpy scipy einops jsmin matplotlib tqdm tensorboard).
+# Every OTHER already-run Darcy job script still points at the old
+# /scratch/dverma/lno-conda path and was deliberately left untouched
+# (doesn't need to rerun) -- only this job and its sibling
+# (lto_darcy_resaug_normalized_attn_aereconloss_extrap_job.sh) plus their
+# two eval job scripts were updated, since none of the four had
+# successfully run yet.
 
 set -e
 cd "${SLURM_SUBMIT_DIR:-.}"
 source /etc/profile
 module load anaconda3/2023.09-0
-source activate /scratch/dverma/lno-conda
+source activate /home/dverma/lno-conda
 
 bash scripts/LTO_Darcy_resaug_normalized_aereconloss_extrap.sh

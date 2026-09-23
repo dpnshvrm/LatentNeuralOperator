@@ -24,7 +24,11 @@ set -e
 cd "${SLURM_SUBMIT_DIR:-.}"
 source /etc/profile
 module load anaconda3/2023.09-0
-source activate /scratch/dverma/lno-conda
+# 2026-09-23: switched to /home/dverma/lno-conda -- the /scratch copy hit
+# the same init_fs_encoding fatal error as the earlier lto-conda bug, so
+# this env was rebuilt fresh under /home. See the training job's own
+# comment for the full note.
+source activate /home/dverma/lno-conda
 
 python prepare_resolution_sweep.py
 

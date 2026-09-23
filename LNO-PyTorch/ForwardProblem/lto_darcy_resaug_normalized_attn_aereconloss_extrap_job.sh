@@ -38,14 +38,16 @@
 # BEFORE SUBMITTING: same verification as the sibling job --
 #   grep -n "needs_y2\|rL2_ae\|RelLpLossWithRecon\|compute_recon_loss" exp.py module/utils.py module/loss.py module/convcnp_lto.py
 #
-# CONDA_ENV_PATH: same note as the sibling job (uses
-# /scratch/dverma/lno-conda, unverified but consistent with every other
-# Darcy job here).
+# CONDA_ENV_PATH (UPDATED 2026-09-23): same fix as the sibling job --
+# /scratch/dverma/lno-conda hit the init_fs_encoding fatal error, same
+# root cause as the earlier lto-conda /scratch bug. Switched to a fresh
+# /home/dverma/lno-conda (Python 3.9, same package list). See the
+# sibling job's own comment for the full note.
 
 set -e
 cd "${SLURM_SUBMIT_DIR:-.}"
 source /etc/profile
 module load anaconda3/2023.09-0
-source activate /scratch/dverma/lno-conda
+source activate /home/dverma/lno-conda
 
 bash scripts/LTO_Darcy_resaug_normalized_attn_aereconloss_extrap.sh
