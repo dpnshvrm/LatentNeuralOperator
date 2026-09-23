@@ -85,7 +85,21 @@ class SetConvEncoder2D(nn.Module):
     def __init__(self, grid_size, hidden_channels=16, out_channels=8,
                  init_length_scale=0.1, channel_mode="raw", y_dim=1):
         super().__init__()
-        assert channel_mode in ("raw", "normalized"), channel_mode
+        # channel_mode (2026-09-23 update: added "fully_normalized", mirrored
+        # from the LTO repo's lto/common.py -- see that file's module
+        # docstring for the full "raw" vs. "normalized" vs. "fully_normalized"
+        # explanation and the NS2d diagnostic that motivated it. "normalized"
+        # only ever normalizes `signal` (divides by the raw density sum);
+        # `density` itself stays a raw w.sum() that scales with n_ctx in BOTH
+        # "raw" and "normalized" modes. "fully_normalized" additionally
+        # divides `density` by n_ctx, turning it into a proper kernel-density
+        # estimate that's close to invariant to context point count -- this
+        # is the fix for Darcy's own super-native resolution-transfer gap
+        # (resolution 421: 0.218 rL2, 25.6x to LNO), on the theory that the
+        # same raw-density-scales-with-N mechanism diagnosed on NS2d applies
+        # here too (not yet directly confirmed on Darcy -- this run is that
+        # confirmation).
+        assert channel_mode in ("raw", "normalized", "fully_normalized"), channel_mode
         self.channel_mode = channel_mode
         g = torch.linspace(0, 1, grid_size)
         gy, gx = torch.meshgrid(g, g, indexing="ij")
@@ -103,10 +117,20 @@ class SetConvEncoder2D(nn.Module):
         ell = torch.exp(self.log_length_scale)
         diff = self.grid.unsqueeze(0).unsqueeze(2) - x_ctx.unsqueeze(1)  # (B, G^2, N, 2)
         w = torch.exp(-0.5 * (diff ** 2).sum(-1) / ell ** 2)  # (B, G^2, N)
-        density = w.sum(-1, keepdim=True)
+        density_raw = w.sum(-1, keepdim=True)  # unnormalized kernel-weight sum -- scales with N, see class docstring
         signal = torch.bmm(w, y_ctx)
         if self.channel_mode == "normalized":
-            signal = signal / (density + 1e-8)
+            density = density_raw
+            signal = signal / (density_raw + 1e-8)
+        elif self.channel_mode == "fully_normalized":
+            # 2026-09-23: same signal behavior as "normalized" (still
+            # divided by the RAW density sum, unchanged); density itself is
+            # now divided by n_ctx -- see __init__'s comment for why.
+            n_ctx = x_ctx.shape[1]
+            density = density_raw / n_ctx
+            signal = signal / (density_raw + 1e-8)
+        else:  # "raw"
+            density = density_raw
         h = torch.cat([density, signal], dim=-1)  # (B, G^2, 1+y_dim)
         B, _, C = h.shape
         h = h.transpose(1, 2).reshape(B, C, self.grid_size, self.grid_size)

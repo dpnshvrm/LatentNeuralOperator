@@ -1,0 +1,51 @@
+{
+    "data": {
+        "name": "Darcy",
+        "train_batch_size" : 4,
+        "val_batch_size": 4
+    },
+    "model": {
+        "name": "LTO_ConvCNP",
+        // Identical to LTO_Darcy_resaug_normalized_aereconloss_extrap.jsonc
+        // (currently running, job lto-darcy-resaug-normalized-aereconloss-
+        // extrap) except ONE change: channel_mode "normalized" ->
+        // "fully_normalized" -- see module/convcnp_lto.py's
+        // SetConvEncoder2D.__init__ comment and
+        // claude/convcnp-lno-integration-plan-part4.md's 2026-09-23 entry
+        // for the full reasoning. Runs in PARALLEL with the normalized
+        // run, not instead of it -- own exp_name/master_port below, so
+        // both finish independently and are directly comparable.
+        "grid_size": 64,
+        "hidden_channels": 16,
+        "latent_channels": 8,
+        "flow_hidden": 32,
+        "decoder_hidden": 64,
+        "init_length_scale": 0.1,
+        "channel_mode": "fully_normalized",
+        "context_frac_min": 0.05,
+        "context_frac_max": 4.0
+    },
+    "loss": {
+        "name": "rL2_ae",
+        "recon_loss_weight": 1.0
+    },
+    "optimizer": {
+        "name": "AdamW",
+        "lr": 1e-3,
+        "weight_decay": 0.00005,
+        "beta0": 0.9,
+        "beta1": 0.99
+    },
+    "scheduler": {
+        "name": "OneCycle",
+        "div_factor": 1e4,
+        "final_div_factor": 1e4,
+        "pct_start": 0.2
+    },
+    "train":{
+        "epoch": 500,
+        "log_print_interval_epoch": 1,
+        "model_save_interval_epoch": 50,
+        "grad_clip": 1000.0
+    }
+}
