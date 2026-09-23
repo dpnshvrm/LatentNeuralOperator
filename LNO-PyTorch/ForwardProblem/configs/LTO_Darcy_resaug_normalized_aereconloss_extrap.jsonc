@@ -1,0 +1,63 @@
+{
+    "data": {
+        "name": "Darcy",
+        "train_batch_size" : 4,
+        "val_batch_size": 4
+    },
+    "model": {
+        "name": "LTO_ConvCNP",
+        // Identical architecture to LTO_Darcy_resaug_normalized.jsonc
+        // (29,139 params -- our small-cap, plain-Gaussian-kernel Darcy
+        // baseline) -- only loss.name and context_frac_max change below.
+        "grid_size": 64,
+        "hidden_channels": 16,
+        "latent_channels": 8,
+        "flow_hidden": 32,
+        "decoder_hidden": 64,
+        "init_length_scale": 0.1,
+        "channel_mode": "normalized",
+        // context_frac_max extended 1.0 -> 4.0 (2026-09-23): this
+        // checkpoint (resaug_normalized) is the one still genuinely
+        // broken at the super-native eval point (resolution 421: 0.218
+        // rL2, 25.6x gap to LNO, its worst point on the curve -- see
+        // claude/convcnp-lno-integration-plan.md's 2026-08-23 result).
+        // 4.0, NOT 2.0: context_frac is a POINT-COUNT fraction of the
+        // native grid (n_ctx / N), and resolution 421's point count is
+        // (421*421)/(211*211) = 3.98 -- 421/211 = 2.0 is the RESOLUTION
+        // ratio, a different quantity (the same distinction caught in
+        // train_ns2d_evolution.py's make_context_query() docstring).
+        // 4.0 is what actually reaches resolution ~421 during training.
+        "context_frac_min": 0.05,
+        "context_frac_max": 4.0
+    },
+    "loss": {
+        // rL2_ae (added 2026-09-23, see module/loss.py's
+        // RelLpLossWithRecon and module/convcnp_lto.py's forward()):
+        // adds the AE reconstruction loss (recon_s + recon_t, mirroring
+        // train_burgers_pdebench.py / train_ns2d_evolution.py's
+        // --recon_loss_weight mechanism) never previously tried on
+        // Darcy. recon_loss_weight=1.0 matches the Burgers/NS2d default,
+        // not separately tuned for Darcy.
+        "name": "rL2_ae",
+        "recon_loss_weight": 1.0
+    },
+    "optimizer": {
+        "name": "AdamW",
+        "lr": 1e-3,
+        "weight_decay": 0.00005,
+        "beta0": 0.9,
+        "beta1": 0.99
+    },
+    "scheduler": {
+        "name": "OneCycle",
+        "div_factor": 1e4,
+        "final_div_factor": 1e4,
+        "pct_start": 0.2
+    },
+    "train":{
+        "epoch": 500,
+        "log_print_interval_epoch": 1,
+        "model_save_interval_epoch": 50,
+        "grad_clip": 1000.0
+    }
+}

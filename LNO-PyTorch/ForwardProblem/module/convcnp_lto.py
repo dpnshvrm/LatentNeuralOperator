@@ -283,7 +283,8 @@ class ConvCNP_LTO(nn.Module):
     def __init__(self, grid_size, x_dim=2, hidden_channels=16, latent_channels=8,
                  flow_hidden=32, decoder_hidden=64, init_length_scale=0.1,
                  channel_mode="raw", context_frac_min=None, context_frac_max=None,
-                 use_dilated=False, use_attention_encoder=False, attn_dim=32, y_dim=1):
+                 use_dilated=False, use_attention_encoder=False, attn_dim=32, y_dim=1,
+                 compute_recon_loss=False):
         super().__init__()
         # y_dim (added 2026-08-27 for the NS2d time-evolution experiment --
         # see claude/convcnp-lno-integration-plan.md): the encoder's
@@ -298,6 +299,18 @@ class ConvCNP_LTO(nn.Module):
         self.context_frac_min = context_frac_min
         self.context_frac_max = context_frac_max
         self.use_attention_encoder = use_attention_encoder
+        # compute_recon_loss (added 2026-09-23 for the Darcy AE-loss
+        # retrofit, see claude/convcnp-lno-integration-plan-part4.md and
+        # module/loss.py's RelLpLossWithRecon docstring): default False,
+        # so every existing checkpoint/config is unaffected. When True and
+        # the model is in training mode, forward() populates
+        # self.last_recon_loss (a real, graph-attached tensor) each call;
+        # RelLpLossWithRecon reads it back and folds it into the total
+        # loss without exp.py's own loss-call structure changing at all.
+        self.compute_recon_loss = compute_recon_loss
+        self.last_recon_loss = torch.zeros(())  # plain attribute, not a
+        # registered buffer -- never enters state_dict, so old checkpoints
+        # still load cleanly and this never becomes a persisted weight.
         if use_attention_encoder:
             # PhCA-style learned attention encoder, in place of the fixed
             # Gaussian SetConv kernel -- see AttentiveSetConvEncoder2D's
@@ -321,20 +334,118 @@ class ConvCNP_LTO(nn.Module):
     def decode(self, x_qry, r):
         return self.decoder(x_qry, r)
 
-    def forward(self, x, y1, x_qry=None):
-        y_ctx = y1[..., self.x_dim:]
-        x_ctx = x
-        # Context-size augmentation, training only (see module docstring) --
-        # subsample x/y_ctx to a random fraction of the full dense grid.
-        # x_qry defaults to the full, UNSUBSAMPLED x below, so the loss is
-        # always computed against the full dense field regardless.
-        if self.training and self.context_frac_min is not None and self.context_frac_max is not None:
-            B, N, _ = x.shape
-            frac = torch.empty(1, device=x.device).uniform_(self.context_frac_min, self.context_frac_max).item()
+    def _densify_context(self, x_full, y_full, resolution):
+        """Synthesizes a denser-than-native context via bilinear
+        interpolation (align_corners=True) of the real field -- added
+        2026-09-23, direct port of train_ns2d_evolution.py's
+        make_context_query() extrapolation fix (see that function's
+        docstring for the numerical-equivalence argument: bilinear with
+        align_corners=True reproduces separable-linear interpolation
+        exactly, verified there to ~2e-5 at float32 precision), adapted
+        to Darcy's batched (B, N, x_dim) coordinate convention (vs.
+        NS2d's shared, unbatched x_coords). Assumes x_full is a flattened
+        SQUARE regular grid -- true for every Darcy TRAINING batch (always
+        the fixed native 211x211 grid; only the eval script's resolution
+        sweep tests other sizes, and this path never runs at eval time)."""
+        B, N, x_dim = x_full.shape
+        C = y_full.shape[-1]
+        gh = gw = int(round(N ** 0.5))
+        assert gh * gw == N, "context densification assumes a square native grid"
+        x_grid = x_full[0].reshape(gh, gw, x_dim)
+        x_axis = x_grid[:, 0, 0]
+        y_axis = x_grid[0, :, 1]
+        field_grid = y_full.reshape(B, gh, gw, C).permute(0, 3, 1, 2)  # (B, C, gh, gw)
+        field_dense = F.interpolate(field_grid, size=(resolution, resolution),
+                                     mode="bilinear", align_corners=True)
+        y_dense = field_dense.permute(0, 2, 3, 1).reshape(B, resolution * resolution, C)
+        new_x = torch.linspace(x_axis.min().item(), x_axis.max().item(), resolution, device=x_full.device)
+        new_y = torch.linspace(y_axis.min().item(), y_axis.max().item(), resolution, device=x_full.device)
+        xx, yy = torch.meshgrid(new_x, new_y, indexing="ij")
+        x_dense_single = torch.stack([xx, yy], dim=-1).reshape(resolution * resolution, x_dim)
+        x_dense = x_dense_single.unsqueeze(0).expand(B, -1, -1)
+        return x_dense, y_dense
+
+    def _augment_context(self, x_full, y_full):
+        """Context-size augmentation, shared by the main forecast context
+        and (when compute_recon_loss=True) the recon_t self-encode below
+        -- both draw from the SAME sampled frac when called from forward()
+        in the same step (consistent with how
+        train_burgers_pdebench.py / train_ns2d_evolution.py's recon_t
+        term reuses the step's own context_frac) but an INDEPENDENT
+        random subset/densification each time this is called.
+
+        frac<=1.0 (original behavior, unchanged): random point subsample.
+        frac>1.0 (added 2026-09-23): synthetic denser-than-native grid,
+        see _densify_context. context_frac is a POINT-COUNT fraction of
+        the native grid (n_ctx / N), NOT a resolution ratio -- e.g.
+        Darcy's super-native eval resolution 421 is (421*421)/(211*211) =
+        3.98 in this convention, not 421/211 = 2.0 (the same point-count-
+        vs-resolution-ratio distinction caught and documented in
+        train_ns2d_evolution.py's make_context_query())."""
+        B, N, _ = x_full.shape
+        frac = torch.empty(1, device=x_full.device).uniform_(self.context_frac_min, self.context_frac_max).item()
+        if frac > 1.0:
+            gh = int(round(N ** 0.5))
+            new_res = max(gh + 1, int(round((frac * N) ** 0.5)))
+            x_ctx, y_ctx = self._densify_context(x_full, y_full, new_res)
+        else:
             n_ctx = max(1, int(N * frac))
-            idx = torch.stack([torch.randperm(N, device=x.device)[:n_ctx] for _ in range(B)])
-            x_ctx = torch.gather(x, 1, idx.unsqueeze(-1).expand(-1, -1, x.shape[-1]))
-            y_ctx = torch.gather(y_ctx, 1, idx.unsqueeze(-1).expand(-1, -1, y_ctx.shape[-1]))
-        r = self.encode(x_ctx, y_ctx)
-        r = self.propagate(r)
-        return self.decode(x_qry if x_qry is not None else x, r)
+            idx = torch.stack([torch.randperm(N, device=x_full.device)[:n_ctx] for _ in range(B)])
+            x_ctx = torch.gather(x_full, 1, idx.unsqueeze(-1).expand(-1, -1, x_full.shape[-1]))
+            y_ctx = torch.gather(y_full, 1, idx.unsqueeze(-1).expand(-1, -1, y_full.shape[-1]))
+        return x_ctx, y_ctx, frac
+
+    def forward(self, x, y1, x_qry=None, y2=None):
+        # y2 (added 2026-09-23, see module/loss.py's RelLpLossWithRecon
+        # docstring): optional, only ever passed by exp.py when
+        # model_attr["needs_y2"] is True (config.loss.name == "rL2_ae").
+        # Every other call site/config passes it as None, unchanged
+        # behavior. Not used for the main forecast at all -- only for the
+        # recon_t auxiliary term below.
+        y_ctx_full = y1[..., self.x_dim:]
+        x_ctx, y_ctx = x, y_ctx_full
+        # Context-size augmentation, training only (see module docstring) --
+        # subsample/densify x/y_ctx to a random fraction of the full dense
+        # grid. x_qry defaults to the full, UNAUGMENTED x below, so the
+        # forecast loss is always computed against the full dense field
+        # regardless.
+        if self.training and self.context_frac_min is not None and self.context_frac_max is not None:
+            x_ctx, y_ctx, _frac = self._augment_context(x, y_ctx_full)
+        r_s = self.encode(x_ctx, y_ctx)
+        r_t = self.propagate(r_s)
+        x_qry_used = x_qry if x_qry is not None else x
+        out = self.decode(x_qry_used, r_t)
+
+        if self.training and self.compute_recon_loss:
+            # recon_s: reuse r_s (no re-encode), decode it DIRECTLY -- no
+            # propagate() call -- against the FULL dense INPUT
+            # (coefficient) field. Classic autoencoder round-trip:
+            # decode(encode(y1)) ~= y1. Mirrors
+            # train_burgers_pdebench.py / train_ns2d_evolution.py's
+            # recon_s_loss exactly.
+            recon_s = self.decode(x, r_s)
+            recon_s_loss = F.mse_loss(recon_s, y_ctx_full)
+            if y2 is not None:
+                # recon_t: fresh encode+decode of the TRUE target
+                # (solution) field, same augmentation mechanism as the
+                # forecast context (independent random draw), no
+                # propagate() call. Darcy's direct analog of
+                # train_burgers_pdebench.py / train_ns2d_evolution.py's
+                # recon_t_loss (history_len==1 case) -- Darcy has no
+                # multi-frame trajectory to draw a second real frame
+                # from, so y2 (the only other real field the model ever
+                # sees) plays that role.
+                if self.context_frac_min is not None and self.context_frac_max is not None:
+                    x_ctx_t, y_ctx_t, _frac_t = self._augment_context(x, y2)
+                else:
+                    x_ctx_t, y_ctx_t = x, y2
+                r_t_self = self.encode(x_ctx_t, y_ctx_t)
+                recon_t = self.decode(x, r_t_self)
+                recon_t_loss = F.mse_loss(recon_t, y2)
+                self.last_recon_loss = 0.5 * (recon_s_loss + recon_t_loss)
+            else:
+                self.last_recon_loss = recon_s_loss
+        else:
+            self.last_recon_loss = torch.zeros((), device=x.device)
+
+        return out

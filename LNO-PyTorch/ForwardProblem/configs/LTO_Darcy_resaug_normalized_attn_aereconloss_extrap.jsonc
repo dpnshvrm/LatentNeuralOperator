@@ -1,0 +1,66 @@
+{
+    "data": {
+        "name": "Darcy",
+        "train_batch_size" : 4,
+        "val_batch_size": 4
+    },
+    "model": {
+        "name": "LTO_ConvCNP",
+        // Identical architecture to LTO_Darcy_resaug_normalized_attn.jsonc
+        // (28,894 params -- our small-cap, learned-attention-encoder
+        // Darcy checkpoint, "closing to under 4x" in the paper's
+        // Discussion) -- only loss.name and context_frac_max change below.
+        "grid_size": 64,
+        "hidden_channels": 16,
+        "latent_channels": 8,
+        "flow_hidden": 32,
+        "decoder_hidden": 64,
+        "init_length_scale": 0.1,
+        // channel_mode is IGNORED when use_attention_encoder is true (see
+        // AttentiveSetConvEncoder2D's docstring) -- kept here only so
+        // this config still parses cleanly, matching the sibling config's
+        // own comment.
+        "channel_mode": "normalized",
+        "use_attention_encoder": true,
+        "attn_dim": 12,
+        // context_frac_max extended 1.0 -> 4.0 (2026-09-23): NOT fixing a
+        // known break here -- this checkpoint is ALREADY flat/best at the
+        // super-native eval point (resolution 421: 0.04121, its own best
+        // point on the curve, see claude/convcnp-lno-integration-plan.md's
+        // 2026-08-26 result). Added anyway for a clean, consistent
+        // comparison against the regular (non-attention) variant's own
+        // extrap+AE-loss run, per Dee's explicit choice (both variants
+        // get both changes) -- not because attention needs this fix.
+        // Same 4.0-not-2.0 point-count-fraction reasoning as the sibling
+        // config (see its own comment).
+        "context_frac_min": 0.05,
+        "context_frac_max": 4.0
+    },
+    "loss": {
+        // rL2_ae -- see module/loss.py's RelLpLossWithRecon and the
+        // sibling (non-attention) config's own comment for the full
+        // mechanism description. Never previously tried on Darcy in
+        // either encoder variant.
+        "name": "rL2_ae",
+        "recon_loss_weight": 1.0
+    },
+    "optimizer": {
+        "name": "AdamW",
+        "lr": 1e-3,
+        "weight_decay": 0.00005,
+        "beta0": 0.9,
+        "beta1": 0.99
+    },
+    "scheduler": {
+        "name": "OneCycle",
+        "div_factor": 1e4,
+        "final_div_factor": 1e4,
+        "pct_start": 0.2
+    },
+    "train":{
+        "epoch": 500,
+        "log_print_interval_epoch": 1,
+        "model_save_interval_epoch": 50,
+        "grad_clip": 1000.0
+    }
+}

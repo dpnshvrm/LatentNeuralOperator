@@ -71,6 +71,14 @@ def train(train_dataloader,
             model.train()
             if model_attr["single"]:
                 res = model(y1)
+            elif model_attr.get("needs_y2", False):
+                # Added 2026-09-23 for the Darcy AE-loss retrofit (rL2_ae
+                # loss, see module/loss.py's RelLpLossWithRecon docstring
+                # and module/convcnp_lto.py's forward()) -- ONLY the extra
+                # y2=y2 kwarg differs from the plain branch below; every
+                # other config leaves model_attr["needs_y2"] unset (.get
+                # default False) and takes the unchanged model(x, y1) path.
+                res = model(x, y1, y2=y2)
             else:
                 res = model(x, y1)
 
@@ -154,6 +162,13 @@ def val(val_dataloader,
             model.eval()
             if model_attr["single"]:
                 res = model(y1)
+            elif model_attr.get("needs_y2", False):
+                # Same branch as train() above -- harmless at eval time
+                # (model.eval() means ConvCNP_LTO.forward()'s
+                # self.training check skips all recon computation
+                # regardless of y2 being passed), kept symmetric with
+                # train() rather than special-cased.
+                res = model(x, y1, y2=y2)
             else:
                 res = model(x, y1)
 
@@ -403,6 +418,13 @@ if __name__ == "__main__":
         model_attr["single"] = True
     else:
         model_attr["single"] = False
+
+    # Added 2026-09-23 for the Darcy AE-loss retrofit (see module/loss.py's
+    # RelLpLossWithRecon docstring) -- False for every config except the
+    # new opt-in "rL2_ae" loss, so train()/val()'s model(x, y1) call is
+    # completely unchanged for every other config, including every LNO
+    # baseline run.
+    model_attr["needs_y2"] = (config.loss.name == "rL2_ae")
 
     if model_attr["time"]:
         train_time(

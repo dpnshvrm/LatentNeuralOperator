@@ -256,6 +256,12 @@ def get_model_data(config, model_attr, device):
         # field), matching every existing Darcy/Advection-style config
         # that doesn't set it -- so this is a no-op for those. NS2d's
         # config sets y_dim=10 (a 10-frame sliding-window history).
+        # compute_recon_loss (added 2026-09-23, see module/loss.py's
+        # RelLpLossWithRecon docstring): derived directly from
+        # config.loss.name rather than a separate config.model field, so
+        # there's one single place (the loss name) that turns the whole
+        # AE-loss mechanism on -- .get() isn't needed since config.loss.name
+        # is always required (every existing config already sets it).
         model = ConvCNP_LTO(config.model.grid_size, x_dim, config.model.hidden_channels, config.model.latent_channels,
                     config.model.flow_hidden, config.model.decoder_hidden, config.model.init_length_scale,
                     config.model.channel_mode, config.model.get("context_frac_min"),
@@ -263,7 +269,8 @@ def get_model_data(config, model_attr, device):
                     use_dilated=config.model.get("use_dilated", False),
                     use_attention_encoder=config.model.get("use_attention_encoder", False),
                     attn_dim=config.model.get("attn_dim", 32),
-                    y_dim=config.model.get("y_dim", 1)).to(device)
+                    y_dim=config.model.get("y_dim", 1),
+                    compute_recon_loss=(config.loss.name == "rL2_ae")).to(device)
     else:
         raise NotImplementedError("Invalid Model !")
 
@@ -277,6 +284,16 @@ def get_model_data(config, model_attr, device):
         loss = RelLpLoss(p=2).to(device)
     elif config.loss.name == "rL1":
         loss = RelLpLoss(p=1).to(device)
+    elif config.loss.name == "rL2_ae":
+        # Added 2026-09-23 for the Darcy AE-loss retrofit -- see
+        # module/loss.py's RelLpLossWithRecon docstring. `model` (the
+        # DDP-wrapped ConvCNP_LTO, already built above with
+        # compute_recon_loss=True for this same config.loss.name) is
+        # captured by reference here so the loss can read back
+        # model.module.last_recon_loss each call. Opt-in only -- every
+        # other config keeps using "rL2"/"L2"/"L1"/"rL1", unaffected.
+        loss = RelLpLossWithRecon(p=2, model=model,
+                    recon_loss_weight=config.loss.get("recon_loss_weight", 1.0)).to(device)
     else:
         raise NotImplementedError("Invalid Loss !")
 
