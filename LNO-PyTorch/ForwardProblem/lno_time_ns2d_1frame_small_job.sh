@@ -58,6 +58,6 @@ set -e
 cd "${SLURM_SUBMIT_DIR:-.}"
 source /etc/profile
 module load anaconda3/2023.09-0
-source activate /scratch/dverma/lno-conda
+source activate /home/dverma/lno-conda
 
 bash scripts/LNO_NS2d_1frame_small.sh
