@@ -1,0 +1,29 @@
+Skipping r85 (already exists)
+Skipping r106 (already exists)
+Skipping r141 (already exists)
+Skipping r421 (already exists)
+=== LNO_Darcy_matched vs LTO_Darcy_resaug_normalized (plain kernel, full normalization) ===
+LNO experiment: LNO_Darcy_matched  checkpoint: epoch 500 (./experiments/LNO_Darcy_matched/checkpoint/500.pt)
+LTO experiment: LTO_Darcy_resaug_normalized_aereconloss_extrap_fullnorm  checkpoint: epoch 150 (./experiments/LTO_Darcy_resaug_normalized_aereconloss_extrap_fullnorm/checkpoint/150.pt)
+
+Parameter counts: LNO = 29,171   LTO = 29,139
+
+       Res       LNO rL2       LTO rL2
+        85       0.01160       0.14697
+       106       0.01133       0.14683
+       141       0.01116       0.14669
+       211       0.01111       0.14657
+       421       0.01113       0.14645
+
+=== LNO_Darcy_matched vs LTO_Darcy_resaug_normalized_attn (learned attention) ===
+LNO experiment: LNO_Darcy_matched  checkpoint: epoch 500 (./experiments/LNO_Darcy_matched/checkpoint/500.pt)
+LTO experiment: LTO_Darcy_resaug_normalized_attn_aereconloss_extrap  checkpoint: epoch 500 (./experiments/LTO_Darcy_resaug_normalized_attn_aereconloss_extrap/checkpoint/500.pt)
+
+Parameter counts: LNO = 29,171   LTO = 28,894
+
+       Res       LNO rL2       LTO rL2
+        85       0.01160       0.05495
+       106       0.01133       0.05483
+       141       0.01116       0.05474
+       211       0.01111       0.05468
+       421       0.01113       0.05462
