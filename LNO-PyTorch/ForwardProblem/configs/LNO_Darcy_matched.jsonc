@@ -1,0 +1,59 @@
+{
+    // Param-matched LNO Darcy variant, requested 2026-09-24 to make the
+    // Darcy table's LNO comparison capacity-fair (LNO_Darcy.jsonc is
+    // 762,113 params, vs. LTO's much smaller 29,139 / 240,594) --
+    // same idea as configs/LNO_time_NS2d_small.jsonc for NS2d.
+    //
+    // *** PLACEHOLDER CAPACITY -- DO NOT SUBMIT AS-IS ***
+    // n_block/n_mode/n_dim/n_head below are NOT yet a verified param
+    // match: run find_lno_param_config_darcy.py first (see its own
+    // docstring for usage) and replace the four values below with
+    // whichever grid point it reports as closest to your chosen target:
+    //   python find_lno_param_config_darcy.py --target 240594   # match LTO's attn+bigcap "ours"
+    //   python find_lno_param_config_darcy.py --target 29139    # match LTO's plain-kernel baseline
+    // Update this comment with the exact match found (params, and %
+    // over/under target) once you've run it, same as LNO_time_NS2d_small.jsonc
+    // documents its own 1,148,385-param match.
+    //
+    // n_layer/attn/act/loss/optimizer/scheduler/train all identical to
+    // LNO_Darcy.jsonc (the natural-size 762,113-param config, kept as
+    // the Darcy-consistent comparison) -- only the model's capacity
+    // knobs are meant to change.
+    "data": {
+        "name": "Darcy",
+        "train_batch_size" : 4,
+        "val_batch_size": 4
+    },
+    "model": {
+        "name": "LNO",
+        "n_block": 4,
+        "n_mode": 256,
+        "n_dim" : 128,
+        "n_head" : 8,
+        "n_layer": 2,
+        "attn": "Attention_Vanilla",
+        "act": "GELU"
+    },
+    "loss": {
+        "name": "rL2"
+    },
+    "optimizer": {
+        "name": "AdamW",
+        "lr": 1e-3,
+        "weight_decay": 0.00005,
+        "beta0": 0.9,
+        "beta1": 0.99
+    },
+    "scheduler": {
+        "name": "OneCycle",
+        "div_factor": 1e4,
+        "final_div_factor": 1e4,
+        "pct_start": 0.2
+    },
+    "train":{
+        "epoch": 500,
+        "log_print_interval_epoch": 1,
+        "model_save_interval_epoch": 50,
+        "grad_clip": 1000.0
+    }
+}

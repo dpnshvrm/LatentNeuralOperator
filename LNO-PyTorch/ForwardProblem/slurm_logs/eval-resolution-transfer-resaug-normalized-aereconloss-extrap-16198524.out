@@ -1,0 +1,29 @@
+Skipping r85 (already exists)
+Skipping r106 (already exists)
+Skipping r141 (already exists)
+Skipping r421 (already exists)
+=== LTO_Darcy_resaug_normalized_aereconloss_extrap, latest (epoch 500) ===
+LNO checkpoint: epoch 350 (./experiments/LNO_Darcy/checkpoint/350.pt)
+LTO checkpoint: epoch 450 (./experiments/LTO_Darcy_resaug_normalized_aereconloss_extrap/checkpoint/450.pt)
+
+Parameter counts: LNO = 762,113   LTO = 29,139
+
+       Res       LNO rL2       LTO rL2
+        85       0.01215       0.19941
+       106       0.01044       0.20015
+       141       0.00898       0.19940
+       211       0.00815       0.19904
+       421       0.00853       0.29708
+
+=== LTO_Darcy_resaug_normalized_aereconloss_extrap, best.pt ===
+LNO checkpoint: epoch 350 (./experiments/LNO_Darcy/checkpoint/350.pt)
+LTO checkpoint: epoch best (./experiments/LTO_Darcy_resaug_normalized_aereconloss_extrap/checkpoint/best.pt)
+
+Parameter counts: LNO = 762,113   LTO = 29,139
+
+       Res       LNO rL2       LTO rL2
+        85       0.01215       0.19991
+       106       0.01044       0.20068
+       141       0.00898       0.19956
+       211       0.00815       0.19859
+       421       0.00853       0.31041
