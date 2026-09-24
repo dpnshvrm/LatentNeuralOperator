@@ -40,9 +40,9 @@ source activate /home/dverma/lno-conda
 
 python prepare_resolution_sweep.py
 
-echo "=== LNO_Darcy_matched vs LTO_Darcy_resaug_normalized (plain kernel) ==="
-python evaluate_resolution_transfer_matched.py --lno_exp LNO_Darcy_matched --lto_exp LTO_Darcy_resaug_normalized
+echo "=== LNO_Darcy_matched vs LTO_Darcy_resaug_normalized (plain kernel, full normalization) ==="
+python evaluate_resolution_transfer_matched.py --lno_exp LNO_Darcy_matched --lto_exp LTO_Darcy_resaug_normalized_aereconloss_extrap_fullnorm
 
 echo ""
 echo "=== LNO_Darcy_matched vs LTO_Darcy_resaug_normalized_attn (learned attention) ==="
-python evaluate_resolution_transfer_matched.py --lno_exp LNO_Darcy_matched --lto_exp LTO_Darcy_resaug_normalized_attn
+python evaluate_resolution_transfer_matched.py --lno_exp LNO_Darcy_matched --lto_exp LTO_Darcy_resaug_normalized_attn_aereconloss_extrap
