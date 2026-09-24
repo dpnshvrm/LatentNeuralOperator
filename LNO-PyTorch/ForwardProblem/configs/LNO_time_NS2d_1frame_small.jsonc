@@ -1,0 +1,59 @@
+{
+    // 1-frame-context ablation of LNO_time_NS2d_small.jsonc, requested
+    // 2026-09-24: does LNO's advantage over LTO shrink once it's given
+    // the same single-state input LTO gets, instead of a 10-frame
+    // history window? Trained on NS2d_1frame_{train,val}.npy (produced
+    // by prepare_ns2d_1frame.py -- context = frame 9 only, target =
+    // frame 10 only, same target as the existing Direct comparison, only
+    // the context window shrunk from 10 frames to 1).
+    //
+    // Param-matched to the SAME target as LNO_time_NS2d_small.jsonc
+    // (LTO's NS2d ae-reconloss checkpoint, 1,126,211 params) -- re-run
+    // via find_lno_param_config.py --y1_dim 3 (x_dim=2 + 1 context frame,
+    // vs. the original config's --y1_dim 12 = x_dim=2 + 10 frames), since
+    // shrinking the context window changes the branch_projector's input
+    // width and therefore the parameter count at any given n_block/n_dim/
+    // n_head/n_mode. Closest grid point found: n_block=4/n_dim=160/
+    // n_head=8/n_mode=64 -> 1,146,945 params (+1.8% over target; the
+    // original small config landed at +2.0%, so this is a comparably
+    // tight match). n_layer/attn/act/loss/optimizer/scheduler/train all
+    // identical to LNO_time_NS2d_small.jsonc -- only the model's capacity
+    // knobs (re-matched for the new y1_dim) and the data source changed.
+    "data": {
+        "name": "NS2d_1frame",
+        "train_batch_size" : 4,
+        "val_batch_size": 4
+    },
+    "model": {
+        "name": "LNO",
+        "n_block": 4,
+        "n_mode": 64,
+        "n_dim" : 160,
+        "n_head" : 8,
+        "n_layer": 2,
+        "attn": "Attention_Vanilla",
+        "act": "GELU"
+    },
+    "loss": {
+        "name": "rL2"
+    },
+    "optimizer": {
+        "name": "AdamW",
+        "lr": 1e-3,
+        "weight_decay": 0.00005,
+        "beta0": 0.9,
+        "beta1": 0.99
+    },
+    "scheduler": {
+        "name": "OneCycle",
+        "div_factor": 1e4,
+        "final_div_factor": 1e4,
+        "pct_start": 0.2
+    },
+    "train":{
+        "epoch": 500,
+        "log_print_interval_epoch": 1,
+        "model_save_interval_epoch": 50,
+        "grad_clip": 1000.0
+    }
+}

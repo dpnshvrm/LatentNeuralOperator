@@ -242,7 +242,12 @@ def train_time(train_dataloader,
 
             model.train()
 
-            T = 10
+            # T was hardcoded to 10 (added 2026-09-24 fix, for the 1-frame NS2d
+            # ablation): now derived from the actual target width so a dataset with
+            # fewer/more target frames than 10 doesn't index past the end of y2 or
+            # silently train on padded/repeated targets. No-op for every existing
+            # dataset here, since y2.shape[-1] is already 10 for all of them.
+            T = y2.shape[-1]
             step = 1
             loss = 0
             for t in range(0, T, step):
@@ -346,7 +351,8 @@ def val_time(val_dataloader,
 
             model.eval()
 
-            T = 10
+            # See train_time's matching comment above -- same fix, same reasoning.
+            T = y2.shape[-1]
             step = 1
             loss = 0
             for t in range(0, T, step):
