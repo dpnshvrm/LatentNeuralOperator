@@ -14,22 +14,18 @@
 # lno_time_ns2d_small_job.sh for NS2d: LNO_Darcy.jsonc's native
 # architecture (n_block=4/n_mode=256/n_dim=128/n_head=8, 762,113 params)
 # is far larger than either of our published LTO Darcy configs
-# (29,139 plain-kernel / 240,594 attn+bigcap "ours"), so the headline
-# Darcy table compares LTO against an LNO with ~3-26x more parameters.
-# This variant shrinks LNO to match one of those, for an equal-capacity
-# comparison alongside the existing natural-size one (LNO_Darcy.jsonc is
-# kept, not replaced -- same "both framings" choice made for NS2d).
+# (29,139 plain-kernel / 28,894 attn-only), so the headline Darcy table
+# compares LTO against an LNO with ~26x more parameters. This variant
+# shrinks LNO to match those, for an equal-capacity comparison
+# alongside the existing natural-size one (LNO_Darcy.jsonc is kept, not
+# replaced -- same "both framings" choice made for NS2d).
 #
-# *** BEFORE SUBMITTING ***: configs/LNO_Darcy_matched.jsonc's
-# n_block/n_mode/n_dim/n_head are still PLACEHOLDERS (copied from
-# LNO_Darcy.jsonc, i.e. NOT yet param-matched to anything). Run
-# find_lno_param_config_darcy.py first to find the actual closest grid
-# point for your chosen target, e.g.:
-#   python find_lno_param_config_darcy.py --target 240594   # match LTO's attn+bigcap "ours"
-#   python find_lno_param_config_darcy.py --target 29139    # match LTO's plain-kernel baseline
-# then edit configs/LNO_Darcy_matched.jsonc's model block with the
-# result before running this job -- otherwise this just retrains
-# LNO_Darcy's native size again under a different experiment name.
+# configs/LNO_Darcy_matched.jsonc's n_block=3/n_mode=128/n_dim=26/n_head=2
+# (29,171 params) was found and verified directly by instantiating the
+# real module.model.LNO class (not hand-derived) -- see that config's
+# own header comment for the exact search command. +0.11% over the
+# plain-kernel LTO target, +0.96% over the attn-only target -- one
+# config serves both comparisons.
 #
 # Own master_port (12353, set inside scripts/LNO_Darcy_matched.sh) --
 # doesn't collide with any other Darcy/NS2d script (highest previously
@@ -40,7 +36,7 @@
 # in lto_darcy_resaug_normalized_aereconloss_extrap_job.sh's own header;
 # this is a new job that hasn't run yet, so it should use the fixed path.
 #
-# Submit from LNO-PyTorch/ForwardProblem/, after editing the config:
+# Submit from LNO-PyTorch/ForwardProblem/:
 #   sbatch lno_darcy_matched_job.sh
 # Once it finishes, it can be evaluated the same way the other Darcy
 # checkpoints are (evaluate_resolution_transfer.py currently hardcodes

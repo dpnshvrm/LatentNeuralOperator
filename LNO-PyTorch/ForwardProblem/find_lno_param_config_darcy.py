@@ -43,10 +43,17 @@ widen --n_dim_grid/--n_block_grid/--n_mode_grid further on the command
 line rather than editing this file.
 
 Usage (run from LNO-PyTorch/ForwardProblem/, in the lno-conda env):
-    # Match LTO's headline Darcy config (attn+bigcap, "ours"):
+    # Match LTO's plain-kernel / attn-only Darcy configs (default):
+    python find_lno_param_config_darcy.py
+    # Match LTO's headline attn+bigcap "ours" config instead:
     python find_lno_param_config_darcy.py --target 240594
-    # Match LTO's plain-kernel Darcy baseline instead:
-    python find_lno_param_config_darcy.py --target 29139
+
+RESULT (2026-09-24, verified against the real module.model.LNO class):
+n_block=3, n_dim=26, n_head=2, n_mode=128 -> 29,171 params (+0.11% over
+the plain-kernel target 29,139, +0.96% over the attn-only target
+28,894 -- one config serves both). Already written into
+configs/LNO_Darcy_matched.jsonc; rerun this script only if you want a
+different target or a finer search.
 """
 
 import argparse
@@ -55,11 +62,13 @@ from module.model import LNO
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--target", type=int, default=240_594,
+    parser.add_argument("--target", type=int, default=29_139,
                          help="Target param count. Default: LTO's Darcy "
-                              "attn+bigcap 'ours' checkpoint (240,594). "
-                              "Pass --target 29139 to match the plain-kernel "
-                              "LTO Darcy baseline instead.")
+                              "plain-kernel baseline (29,139; the attn-only "
+                              "baseline at 28,894 is close enough that the "
+                              "same match serves both). Pass --target 240594 "
+                              "to match LTO's attn+bigcap 'ours' config "
+                              "instead.")
     parser.add_argument("--x_dim", type=int, default=2)
     parser.add_argument("--y1_dim", type=int, default=3)
     parser.add_argument("--y2_dim", type=int, default=1)

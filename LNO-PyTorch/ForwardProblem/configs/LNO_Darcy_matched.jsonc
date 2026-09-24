@@ -1,24 +1,27 @@
 {
     // Param-matched LNO Darcy variant, requested 2026-09-24 to make the
     // Darcy table's LNO comparison capacity-fair (LNO_Darcy.jsonc is
-    // 762,113 params, vs. LTO's much smaller 29,139 / 240,594) --
-    // same idea as configs/LNO_time_NS2d_small.jsonc for NS2d.
+    // 762,113 params, vs. LTO's much smaller 29,139 plain-kernel /
+    // 28,894 attn-only configs) -- same idea as
+    // configs/LNO_time_NS2d_small.jsonc for NS2d.
     //
-    // *** PLACEHOLDER CAPACITY -- DO NOT SUBMIT AS-IS ***
-    // n_block/n_mode/n_dim/n_head below are NOT yet a verified param
-    // match: run find_lno_param_config_darcy.py first (see its own
-    // docstring for usage) and replace the four values below with
-    // whichever grid point it reports as closest to your chosen target:
-    //   python find_lno_param_config_darcy.py --target 240594   # match LTO's attn+bigcap "ours"
-    //   python find_lno_param_config_darcy.py --target 29139    # match LTO's plain-kernel baseline
-    // Update this comment with the exact match found (params, and %
-    // over/under target) once you've run it, same as LNO_time_NS2d_small.jsonc
-    // documents its own 1,148,385-param match.
+    // n_block=3/n_mode=128/n_dim=26/n_head=2 -- the closest grid point
+    // found by find_lno_param_config_darcy.py's search (real
+    // module.model.LNO instances, params counted directly, not
+    // hand-derived), refined with a finer grid centered on the coarse
+    // search's best region:
+    //   python find_lno_param_config_darcy.py --target 29139 --n_dim_grid "16,18,20,22,24,26,28,30,32" --n_block_grid "2,3,4,5" --n_mode_grid "32,48,64,80,96,128" --n_head_grid "1,2"
+    // Result: 29,171 params -- +0.11% over LTO's plain-kernel baseline
+    // (29,139) and +0.96% over LTO's attn-only baseline (28,894, close
+    // enough that one matched LNO config serves both comparisons).
+    // n_head doesn't move the param count for this architecture (pure
+    // reshape of the same projections) -- 2 was picked arbitrarily from
+    // the tied options.
     //
     // n_layer/attn/act/loss/optimizer/scheduler/train all identical to
     // LNO_Darcy.jsonc (the natural-size 762,113-param config, kept as
     // the Darcy-consistent comparison) -- only the model's capacity
-    // knobs are meant to change.
+    // knobs changed.
     "data": {
         "name": "Darcy",
         "train_batch_size" : 4,
@@ -26,10 +29,10 @@
     },
     "model": {
         "name": "LNO",
-        "n_block": 4,
-        "n_mode": 256,
-        "n_dim" : 128,
-        "n_head" : 8,
+        "n_block": 3,
+        "n_mode": 128,
+        "n_dim" : 26,
+        "n_head" : 2,
         "n_layer": 2,
         "attn": "Attention_Vanilla",
         "act": "GELU"
