@@ -1,0 +1,6 @@
+{
+  "config": "LTO_Darcy_resaug_normalized_attn",
+  "device": "0",
+  "seed": 0,
+  "exp": "LTO_Darcy_resaug_normalized_attn"
+}

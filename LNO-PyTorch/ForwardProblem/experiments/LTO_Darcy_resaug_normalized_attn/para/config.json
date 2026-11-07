@@ -1,0 +1,43 @@
+{
+  "data": {
+    "name": "Darcy",
+    "train_batch_size": 4,
+    "val_batch_size": 4
+  },
+  "model": {
+    "name": "LTO_ConvCNP",
+    "grid_size": 64,
+    "hidden_channels": 16,
+    "latent_channels": 8,
+    "flow_hidden": 32,
+    "decoder_hidden": 64,
+    "init_length_scale": 0.1,
+    "channel_mode": "normalized",
+    "use_attention_encoder": true,
+    "attn_dim": 12,
+    "context_frac_min": 0.05,
+    "context_frac_max": 1.0
+  },
+  "loss": {
+    "name": "rL2"
+  },
+  "optimizer": {
+    "name": "AdamW",
+    "lr": 0.001,
+    "weight_decay": 5e-05,
+    "beta0": 0.9,
+    "beta1": 0.99
+  },
+  "scheduler": {
+    "name": "OneCycle",
+    "div_factor": 10000.0,
+    "final_div_factor": 10000.0,
+    "pct_start": 0.2
+  },
+  "train": {
+    "epoch": 500,
+    "log_print_interval_epoch": 1,
+    "model_save_interval_epoch": 50,
+    "grad_clip": 1000.0
+  }
+}
