@@ -1,5 +1,19 @@
 datas/
 experiments/*
 !experiments/LNO_Darcy/
+!experiments/LNO_Darcy/**
+
+# Paper checkpoints -- the primary trained models backing the current
+# iclr2027 figures/tables that live in this fork's harness rather than
+# the standalone LTO repo (see LTO/.gitignore for the other four).
+!experiments/LNO_NS2d/
+!experiments/LNO_NS2d/**
+!experiments/LNO_NS2d_small/
+!experiments/LNO_NS2d_small/**
+!experiments/LTO_Darcy_resaug_normalized_attn/
+!experiments/LTO_Darcy_resaug_normalized_attn/**
+!experiments/LTO_Darcy_resaug_normalized/
+!experiments/LTO_Darcy_resaug_normalized/**
+
 module/__pycache__/
 *.pyc

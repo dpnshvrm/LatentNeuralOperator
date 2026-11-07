@@ -36,7 +36,7 @@ source activate /home/dverma/lno-conda
 python prepare_resolution_sweep.py
 
 echo "=== LTO_Darcy_resaug_normalized_aereconloss_extrap, latest (epoch 500) ==="
-python evaluate_resolution_transfer.py --lto_exp LTO_Darcy_resaug_normalized_aereconloss_extrap
+python evaluate_resolution_transfer.py --lto_exp LTO_Darcy_resaug_normalized_aereconloss_extrap 
 
 echo ""
 echo "=== LTO_Darcy_resaug_normalized_aereconloss_extrap, best.pt ==="
