@@ -10,6 +10,8 @@ experiments/*
 !experiments/LNO_NS2d/**
 !experiments/LNO_NS2d_small/
 !experiments/LNO_NS2d_small/**
+!experiments/LNO_NS2d_1frame_small/
+!experiments/LNO_NS2d_1frame_small/**
 !experiments/LTO_Darcy_resaug_normalized_attn/
 !experiments/LTO_Darcy_resaug_normalized_attn/**
 !experiments/LTO_Darcy_resaug_normalized/
